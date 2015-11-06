@@ -34,18 +34,18 @@ public class Slot<T extends Part> {
     
     /**
      * Constructs a new Slot object positioned at the Body's origin point (0, 0)
-     * (top left corner), a Z index of 1, and an initial rotation of zero 
+     * (top left corner), a Z index of zero, and an initial rotation of zero 
      * radians.
      * 
      * Once set, the X and Y coordinates and Z index cannot be changed.
      */
     public Slot() {
-        this(0, 0, 1, 0);
+        this(0, 0, 0, 0);
     }
     
     /**
      * Constructs a new Slot object with the specified position, a Z index of
-     * 1, and an initial rotation of zero radians.
+     * zero, and an initial rotation of zero radians.
      * 
      * Once set, the X and Y coordinates and Z index cannot be changed.
      * 
@@ -53,7 +53,7 @@ public class Slot<T extends Part> {
      * @param y the Y coordinate of the Slot's position on the Body
      */
     public Slot(int x, int y) {
-        this(x, y, 1, 0);
+        this(x, y, 0, 0);
     }
     
     /**

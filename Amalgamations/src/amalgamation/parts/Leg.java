@@ -16,8 +16,10 @@ public abstract class Leg extends Part {
     
     // Compatablie Constructor with the Part constructor
     public Leg(String name, BufferedImage image, 
-            int baseHealth, int baseAttack, int baseDefense, int baseSpeed) {
+            int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
+            int pivotX, int pivotY) {
         // Calls the PArt class constructor
-        super(name, image, baseHealth, baseAttack, baseDefense, baseSpeed);
+        super(name, image, baseHealth, baseAttack, baseDefense, baseSpeed,
+                pivotX, pivotY);
     }
 }

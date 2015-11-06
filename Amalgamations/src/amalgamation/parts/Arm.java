@@ -17,9 +17,11 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Arm extends Part {
     // Compatible constructor with the Part contructor.
-    public Arm(String name, BufferedImage image,
-            int baseHealth, int baseAttack, int baseDefense, int baseSpeed) {
-        // Call the Part constructor with the given parameters.
-        super(name, image, baseHealth, baseAttack, baseDefense, baseSpeed);
+    public Arm(String name, BufferedImage image, 
+            int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
+            int pivotX, int pivotY) {
+        // Calls the PArt class constructor
+        super(name, image, baseHealth, baseAttack, baseDefense, baseSpeed,
+                pivotX, pivotY);
     }
 }

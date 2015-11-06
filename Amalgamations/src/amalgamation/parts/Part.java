@@ -1,5 +1,7 @@
 package amalgamation.parts;
 
+import java.awt.Graphics2D;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -23,6 +25,10 @@ public abstract class Part {
     private final int baseDefense;
     // The base Speed stat that the body part supplies.
     private final int baseSpeed;
+    // The x position of the Part's pivot position.
+    private final int pivotX;
+    // The y position of the Part's pivot position.
+    private final int pivotY;
     
     /**
      * Constructs an object of the Part class.
@@ -39,9 +45,14 @@ public abstract class Part {
      * @param baseAttack the base Attack stat that the body part will supply
      * @param baseDefense the base Defense stat that the body part will supply
      * @param baseSpeed the base Speed stat that the body part will supply
+     * @param pivotX the X coordinate of the position the Part's image will
+     *               pivot around when rotated
+     * @param pivotY the Y coordinate of the position the Part's image will
+     *               pivot around when rotated
      */
     public Part(String name, BufferedImage image, 
-            int baseHealth, int baseAttack, int baseDefense, int baseSpeed) {
+            int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
+            int pivotX, int pivotY) {
         // Initialize all instance variables.
         this.name = name;
         this.image = image;
@@ -49,6 +60,8 @@ public abstract class Part {
         this.baseAttack = baseAttack;
         this.baseDefense = baseDefense;
         this.baseSpeed = baseSpeed;
+        this.pivotX = pivotX;
+        this.pivotY = pivotY;
     }
     
     /**
@@ -111,5 +124,42 @@ public abstract class Part {
         return name;
     }
     
+    /**
+     * Draws the Part's image on the given image.
+     * 
+     * The X and Y coordinates determine the position on the image
+     * that the Part's image will draw its pivot point. The rotation determines 
+     * how many radians the image will rotate around its pivot point clockwise.
+     * 
+     * @param img the image to draw the Part on
+     * @param x the X position to draw the Part image's pivot point
+     * @param y the Y position to draw the Part image's pivot point
+     * @param rotation the number of radians to rotate the Part image clockwise
+     *                 around the pivot point
+     */
+    public void render(BufferedImage img, int x, int y, double rotation) {
+        // Create a new image that is the same size as the given image.
+        BufferedImage temp = new BufferedImage(img.getWidth(), img.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        
+        // Draw the part's image on the temp image.
+        Graphics2D g = (Graphics2D)temp.getGraphics();
+        temp.createGraphics().drawImage(
+                image, 
+                // Ensure the pivot point is at (x, y).
+                x - pivotX,
+                y - pivotY, 
+                null
+        );
+        
+        // Rotate the temp image's graphics around the pivot point.
+        g.rotate(rotation, x + pivotX, y + pivotY);
+        g.dispose();
+        
+        // Draw the temp image over top the given image.
+        g = img.createGraphics();
+        g.drawImage(temp, 0, 0, null);
+        g.dispose();
+    }
 }
 
