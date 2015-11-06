@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  * stats, however the leg will focus mainly on the agility stat. 
  * It will also have a name and image.
  * 
- * @author aam5617
+ * @author Adam Meanor
  */
 public class Leg extends Part {
     
