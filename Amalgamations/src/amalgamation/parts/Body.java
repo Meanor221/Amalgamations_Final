@@ -51,6 +51,19 @@ public abstract class Body extends Part {
         this.legs = legs;
     }
     
+    /**
+     * Generates the graphical representation of the body with all of the body
+     * parts connected to its slots. 
+     * 
+     * This method should be used to update the image of the body and its
+     * connected parts when the status of one of the body's slots changes (via
+     * changing the rotation or connecting/disconnecting a part). A reference
+     * to the image returned by this image should be saved instead of constantly
+     * calling this method, as it is not a simple operation.
+     * 
+     * @return the full image of the body combined with all of its connected
+     *         parts
+     */
     public BufferedImage fullImage() {
         // Create an image matching the size of the boy's image.
         final BufferedImage fullImage = new BufferedImage(getImage().getWidth(), 
@@ -111,7 +124,20 @@ public abstract class Body extends Part {
         return arms;
     }
     
-    public Slot<Part>[] getSlots() {
+    /**
+     * Retrieves the full list of all Slots of all types.
+     * 
+     * The type of the Slots returned are the most generic type of Slot. This
+     * means that there is no way to determine what type of body part can be
+     * connected to the slot without using <code>instanceof</code>.
+     * 
+     * Ideally, this method should not be used to connect parts to the Slots.
+     * Use the more specific getXXXSlots methods to retrieve the necessary
+     * Slots. This method's use should be used simply to evaluate the Slots.
+     * 
+     * @return the list of all the Slots of all types on the body.
+     */
+    public Slot[] getSlots() {
         // Create an ArrayList to store every slot.
         ArrayList<Slot> slots = new ArrayList<>();
         
