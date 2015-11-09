@@ -126,7 +126,7 @@ public class Slot<T extends Part> implements Serializable {
      *         while a negative value rotates the body part counterclockwise.
      */
     public double getRotationDegrees() {
-        return (rotation * 180) / Math.PI;
+        return Math.toDegrees(rotation);
     }
     
     /**
@@ -196,6 +196,6 @@ public class Slot<T extends Part> implements Serializable {
      *                 counterclockwise.
      */
     public void setRotationDegrees(double rotation) {
-        this.rotation = (rotation * Math.PI) / 180;
+        this.rotation = Math.toRadians(rotation);
     }
 }
