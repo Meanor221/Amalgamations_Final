@@ -2,6 +2,7 @@ package amalgamation.parts;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -17,7 +18,7 @@ import javax.imageio.ImageIO;
  * 
  * @author Caleb Rush
  */
-public abstract class Part {
+public abstract class Part implements Serializable {
     // The name of the body part. To be used in menus.
     private final String name;
     // The image that will represent the body part graphically.

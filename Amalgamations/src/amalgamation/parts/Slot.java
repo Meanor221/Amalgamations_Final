@@ -1,5 +1,7 @@
 package amalgamation.parts;
 
+import java.io.Serializable;
+
 /**
  * A Slot specifies an area on a body where a specific type of body part can be
  * connected. 
@@ -20,7 +22,7 @@ package amalgamation.parts;
  *            </ul>
  * @author Caleb Rush
  */
-public class Slot<T extends Part> {
+public class Slot<T extends Part> implements Serializable {
     // The x position of the slot on the body.
     private final int x;
     // The y position of the slot on the body.
