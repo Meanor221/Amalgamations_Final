@@ -1,7 +1,6 @@
 package amalgamation.parts;
 
-import java.awt.image.BufferedImage;
-
+import java.io.IOException;
 /**
  * An Arm is a type of Part that makes up an Amalgamation.
  * 
@@ -17,11 +16,16 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Arm extends Part {
     // Compatible constructor with the Part contructor.
-    public Arm(String name, BufferedImage image, 
+    public Arm(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) {
-        // Calls the PArt class constructor
-        super(name, image, baseHealth, baseAttack, baseDefense, baseSpeed,
+            int pivotX, int pivotY) throws IOException {
+        // Calls the Part class constructor
+        super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
                 pivotX, pivotY);
+    }
+    
+    @Override
+    public String imageDirectory() {
+        return super.imageDirectory() + "Arms/";
     }
 }

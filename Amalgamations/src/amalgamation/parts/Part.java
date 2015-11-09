@@ -1,8 +1,13 @@
 package amalgamation.parts;
 
-import java.awt.Graphics2D;
+import java.io.File;
+import java.io.IOException;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 
 /**
  * A Part represents a body part on an Amalgamation.
@@ -39,8 +44,8 @@ public abstract class Part {
      * relatively small.
      * 
      * @param name the name of the body part to be used in menus
-     * @param image the image that will act as the graphical representation of
-     *              the body part
+     * @param imageFile the name of the image file in the appropriate directory
+     *                  to attempt to load the image from
      * @param baseHealth the base Health stat that the body part will supply
      * @param baseAttack the base Attack stat that the body part will supply
      * @param baseDefense the base Defense stat that the body part will supply
@@ -49,13 +54,15 @@ public abstract class Part {
      *               pivot around when rotated
      * @param pivotY the Y coordinate of the position the Part's image will
      *               pivot around when rotated
+     * @throws IOException if the image file name does not point to a valid file
+     *                     or if the file it refers to does not have read access
      */
-    public Part(String name, BufferedImage image, 
+    public Part(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) {
+            int pivotX, int pivotY) throws IOException {
         // Initialize all instance variables.
         this.name = name;
-        this.image = image;
+        this.image = loadImage(imageFile);
         this.baseHealth = baseHealth;
         this.baseAttack = baseAttack;
         this.baseDefense = baseDefense;
@@ -125,6 +132,36 @@ public abstract class Part {
     }
     
     /**
+     * Returns the relative Path where the image files for this particular type
+     * of Part should be located. 
+     * 
+     * This method should only be overriden by a subclass if the subclass has a
+     * different directory where its images should be stored.
+     * 
+     * @return the relative Path to the folder containing Part image files.
+     */
+    public String imageDirectory() {
+        return "res/img/Parts/";
+    }
+    
+    /**
+     * Loads an image from the file with the specified name.
+     * 
+     * This method automatically appends the given file name to the directory
+     * returned by the imageDirectory method. Any image that needs to be loaded
+     * should be placed in the correct directory so that only the name of the
+     * file needs to be specified.
+     * 
+     * @param fileName
+     * @return the BufferedImage loaded from the given file
+     * @throws IOException if the file does not exist or does not have read
+     *                     permissions for the current user
+     */
+    public BufferedImage loadImage(String fileName) throws IOException {
+        return ImageIO.read(new File(imageDirectory() + fileName));
+    }
+    
+    /**
      * Draws the Part's image on the given image.
      * 
      * The X and Y coordinates determine the position on the image
@@ -143,22 +180,24 @@ public abstract class Part {
                 BufferedImage.TYPE_INT_ARGB);
         
         // Draw the part's image on the temp image.
-        Graphics2D g = (Graphics2D)temp.getGraphics();
-        temp.createGraphics().drawImage(
+        Graphics2D g = temp.createGraphics();
+        g.drawImage(
                 image, 
                 // Ensure the pivot point is at (x, y).
                 x - pivotX,
                 y - pivotY, 
                 null
         );
-        
-        // Rotate the temp image's graphics around the pivot point.
-        g.rotate(rotation, x + pivotX, y + pivotY);
         g.dispose();
         
         // Draw the temp image over top the given image.
         g = img.createGraphics();
-        g.drawImage(temp, 0, 0, null);
+        g.drawImage(
+                temp, 
+                // Rotate the image around the pivot point.
+                AffineTransform.getRotateInstance(rotation, x, y),
+                null
+        );
         g.dispose();
     }
 }

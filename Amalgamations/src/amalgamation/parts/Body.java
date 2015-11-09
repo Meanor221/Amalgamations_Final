@@ -2,6 +2,8 @@ package amalgamation.parts;
 
 import java.awt.image.BufferedImage;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,8 +32,8 @@ public abstract class Body extends Part {
      * ARGUMENT FOR ANY OF THE ARRAYS.</b>
      * 
      * @param name the name of the body part to be used in menus
-     * @param image the image that will act as the graphical representation of
-     *              the body part
+     * @param imageFile the name of the image file in the appropriate directory
+     *                  to attempt to load the image from
      * @param baseHealth the base Health stat that the body part will supply
      * @param baseAttack the base Attack stat that the body part will supply
      * @param baseDefense the base Defense stat that the body part will supply
@@ -39,12 +41,16 @@ public abstract class Body extends Part {
      * @param arms the array of Arm slots on the body
      * @param heads the array of Head slots on the body
      * @param legs the array of Leg slots on the body
+     * @throws IOException if the image file name does not point to a valid file
+     *                     or if the file it refers to does not have read access
      */
-    public Body(String name, BufferedImage image,
+    public Body(String name, String imageFile,
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs) {
+            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs) 
+            throws IOException {
         // Call Part constructor with the pivot located at (0, 0).
-        super(name, image, baseHealth, baseAttack, baseDefense, baseSpeed, 0, 0);
+        super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed, 
+                0, 0);
         // Initialize arrays of slots.
         this.arms = arms;
         this.heads = heads;
@@ -120,8 +126,8 @@ public abstract class Body extends Part {
      * 
      * @return the list of Slots that can have Leg objects connected to them
      */
-    public Slot<Arm>[] getLegSlots() {
-        return arms;
+    public Slot<Leg>[] getLegSlots() {
+        return legs;
     }
     
     /**
@@ -150,6 +156,11 @@ public abstract class Body extends Part {
         
         // Convert the ArrayList to an array.
         return slots.toArray(new Slot[0]);
+    }
+    
+    @Override
+    public String imageDirectory() {
+        return super.imageDirectory() + "Bodies/";
     }
     
     /**
