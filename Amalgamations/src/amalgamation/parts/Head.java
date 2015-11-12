@@ -11,17 +11,17 @@ import java.io.IOException;
  *
  * @author Jordan LaRiccia, Caleb Rush
  */
-public abstract class Head extends Part {
+public class Head extends Part {
     // Constructor for the head class that inherits from the part class
     public Head(String name, String imageFile, int baseHealth,
             int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) throws IOException {
+            int pivotX, int pivotY) {
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
                 pivotX, pivotY);
     }
     
     @Override
     public String imageDirectory() {
-        return super.imageDirectory() + "Heads/";
+        return Parts.HEADS_IMG_DIR;
     }
 }

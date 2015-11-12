@@ -14,11 +14,11 @@ import java.io.IOException;
  * 
  * @author Caleb Rush
  */
-public abstract class Arm extends Part {
+public class Arm extends Part {
     // Compatible constructor with the Part contructor.
     public Arm(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) throws IOException {
+            int pivotX, int pivotY) {
         // Calls the Part class constructor
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
                 pivotX, pivotY);
@@ -26,6 +26,6 @@ public abstract class Arm extends Part {
     
     @Override
     public String imageDirectory() {
-        return super.imageDirectory() + "Arms/";
+        return Parts.ARMS_IMG_DIR;
     }
 }
