@@ -34,16 +34,14 @@ public class PartEditor extends javax.swing.JFrame {
      */
     public PartEditor() {
         initComponents();
-        
+        // Exit on close.
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Add a new image panel to the PartDisplayPanel.
-        PartDisplayPanel.add(imagePanel);
-        
+        PartDisplayPanel.add(imagePanel);   
         // Make the ImagePanel transparent.
         imagePanel.setOpaque(false);
-        
         // Retrieve the lists of Parts.
         updateFileLists();
-        
         // Disable all the fields.
         disableFields();
     }
@@ -213,7 +211,7 @@ public class PartEditor extends javax.swing.JFrame {
         EditPanel.setName(""); // NOI18N
 
         PartDisplayPanel.setBackground(new java.awt.Color(255, 255, 255));
-        PartDisplayPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PartDisplayPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PartDisplayPanel.setPreferredSize(new java.awt.Dimension(350, 350));
         PartDisplayPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -236,7 +234,7 @@ public class PartEditor extends javax.swing.JFrame {
         PartDisplayPanel.setLayout(PartDisplayPanelLayout);
         PartDisplayPanelLayout.setHorizontalGroup(
             PartDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
+            .addGap(0, 346, Short.MAX_VALUE)
         );
         PartDisplayPanelLayout.setVerticalGroup(
             PartDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,7 +468,7 @@ public class PartEditor extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        AddButton.setText("Add");
+        AddButton.setText("New Part");
         AddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddButtonActionPerformed(evt);
@@ -484,13 +482,11 @@ public class PartEditor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(AddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(PartTypePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PartTypePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(EditPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -676,6 +672,10 @@ public class PartEditor extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     private void add() {
+        ArmsList.clearSelection();
+        BodiesList.clearSelection();
+        HeadsList.clearSelection();
+        LegsList.clearSelection();
         disableFields();
         enableFields();        
     }
@@ -797,6 +797,7 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedField.setEnabled(false);
         PartTypeCombo.setEnabled(false);
         SaveButton.setEnabled(false);
+        repaint();
     }
     
     private void enableFields() {
@@ -808,6 +809,7 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedField.setEnabled(true);
         PartTypeCombo.setEnabled(true);
         SaveButton.setEnabled(true);
+        repaint();
     }
 
     public PartEditor(GraphicsConfiguration gc) {
@@ -909,13 +911,18 @@ public class PartEditor extends javax.swing.JFrame {
         updateFileLists();
     }
     
-    // Updates all the file lists to show any new files that are in the Part
-    // res folders.
-    private void updateFileLists() {
-        // Load the directory for the Arms.
-        java.io.File directory = new java.io.File(Parts.ARMS_RES_DIR);
+    // Retrieves the list of names of the part files from the given directory.
+    private String[] getPartNames(String dirPath) {
+        // Load the directory.
+        java.io.File directory = new java.io.File(dirPath);
+        
+        // Load only files with the .part file extension.
+        String[] fileNames = directory.list((dir, name) ->
+                Parts.PARTS_FILE_EXT.equals(
+                    name.substring(name.lastIndexOf(".")))
+        );
+        
         // Remove the file extensions from the file names.
-        String[] fileNames = directory.list();
         String[] names = new String[fileNames.length];
         for (int i = 0; i < names.length; i++) {
             // Retrieve the last index of a period in the filename.
@@ -923,50 +930,21 @@ public class PartEditor extends javax.swing.JFrame {
             // Set the arm name to everything before the period.
             names[i] = fileNames[i].substring(0, index);
         }
-        // Set the list model to the list of files in the directory.
-        ArmsList.setListData(names);
         
-        // Load the directory for the Bodies.
-        directory = new java.io.File(Parts.BODIES_RES_DIR);
-        // Remove the file extensions from the file names.
-        fileNames = directory.list();
-        names = new String[fileNames.length];
-        for (int i = 0; i < names.length; i++) {
-            // Retrieve the last index of a period in the filename.
-            int index = fileNames[i].lastIndexOf('.');
-            // Set the arm name to everything before the period.
-            names[i] = fileNames[i].substring(0, index);
-        }
+        return names;
+    }
+    
+    // Updates all the file lists to show any new files that are in the Part
+    // res folders.
+    private void updateFileLists() {
         // Set the list model to the list of files in the directory.
-        BodiesList.setListData(names);
-        
-        // Load the directory for the Heads.
-        directory = new java.io.File(Parts.HEADS_RES_DIR);
-        // Remove the file extensions from the file names.
-        fileNames = directory.list();
-        names = new String[fileNames.length];
-        for (int i = 0; i < names.length; i++) {
-            // Retrieve the last index of a period in the filename.
-            int index = fileNames[i].lastIndexOf('.');
-            // Set the arm name to everything before the period.
-            names[i] = fileNames[i].substring(0, index);
-        }
+        ArmsList.setListData(getPartNames(Parts.ARMS_RES_DIR));
         // Set the list model to the list of files in the directory.
-        HeadsList.setListData(names);
-        
-        // Load the directory for the Legs.
-        directory = new java.io.File(Parts.LEGS_RES_DIR);
-        // Remove the file extensions from the file names.
-        fileNames = directory.list();
-        names = new String[fileNames.length];
-        for (int i = 0; i < names.length; i++) {
-            // Retrieve the last index of a period in the filename.
-            int index = fileNames[i].lastIndexOf('.');
-            // Set the arm name to everything before the period.
-            names[i] = fileNames[i].substring(0, index);
-        }
+        BodiesList.setListData(getPartNames(Parts.BODIES_RES_DIR));
         // Set the list model to the list of files in the directory.
-        LegsList.setListData(names);
+        HeadsList.setListData(getPartNames(Parts.HEADS_RES_DIR));
+        // Set the list model to the list of files in the directory.
+        LegsList.setListData(getPartNames(Parts.LEGS_RES_DIR));
     }
     
     // Panel to draw the image.

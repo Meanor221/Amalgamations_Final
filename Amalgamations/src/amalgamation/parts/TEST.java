@@ -1,10 +1,5 @@
 package amalgamation.parts;
 
-import amalgamation.parts.arms.*;
-import amalgamation.parts.bodies.*;
-import amalgamation.parts.heads.*;
-import amalgamation.parts.legs.*;
-
 /**
  * Testing Parts functionality.
  * 
@@ -26,7 +21,7 @@ public class TEST extends javax.swing.JFrame {
         
         // Create the body.
         try {
-            body = new Board();
+            body = new amalgamation.parts.bodies.Board();
             // Load parts from files.
             Arm redStick = (Arm)Parts.load(Parts.TYPE_ARM, "Red Stick");
             Head greenCircle = (Head)Parts.load(Parts.TYPE_HEAD, "Green Circle");
