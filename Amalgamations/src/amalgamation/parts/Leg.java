@@ -1,5 +1,6 @@
 package amalgamation.parts;
 
+import amalgamations.abilities.Ability;
 import java.io.IOException;
 
 /**
@@ -17,10 +18,10 @@ public class Leg extends Part {
     // Compatablie Constructor with the Part constructor
     public Leg(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) {
+            int pivotX, int pivotY, Ability[] abilities) {
         // Calls the PArt class constructor
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
-                pivotX, pivotY);
+                pivotX, pivotY, abilities);
     }
     
     @Override

@@ -1,5 +1,6 @@
 package amalgamation.parts;
 
+import amalgamations.abilities.Ability;
 import java.io.IOException;
 /**
  * An Arm is a type of Part that makes up an Amalgamation.
@@ -18,10 +19,10 @@ public class Arm extends Part {
     // Compatible constructor with the Part contructor.
     public Arm(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) {
+            int pivotX, int pivotY, Ability[] abilities) {
         // Calls the Part class constructor
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
-                pivotX, pivotY);
+                pivotX, pivotY, abilities);
     }
     
     @Override
