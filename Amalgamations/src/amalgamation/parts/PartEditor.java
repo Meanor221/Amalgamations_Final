@@ -1072,7 +1072,6 @@ public class PartEditor extends javax.swing.JFrame {
         ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
                 .setRowCount(0);
         slot = null;
-        BodySlotTable.setEnabled(false);
         repaint();
     }
     
