@@ -5,7 +5,7 @@
  */
 package amalgamation.parts;
 
-import amalgamations.abilities.Ability;
+import amalgamation.abilities.Ability;
 import java.io.IOException;
 
 /**

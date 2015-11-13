@@ -1,6 +1,6 @@
 package amalgamation.parts;
 
-import amalgamations.abilities.Ability;
+import amalgamation.abilities.Ability;
 import java.io.IOException;
 /**
  * An Arm is a type of Part that makes up an Amalgamation.

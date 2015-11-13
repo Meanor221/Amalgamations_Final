@@ -1,6 +1,6 @@
 package amalgamation.parts;
 
-import amalgamations.abilities.Ability;
+import amalgamation.abilities.Ability;
 import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
