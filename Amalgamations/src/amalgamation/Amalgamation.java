@@ -13,7 +13,7 @@ public class Amalgamation {
     // The range in which the variance can be calculated.
     private static final double VARIANCE_RANGE = 0.3;
     // The highest level that can be reached (also used for calculations).
-    private static final int    MAX_LEVEL = 100;
+    public static final int    MAX_LEVEL = 100;
     
     // The Body containing all the Parts that make up the Amalgamation.
     private final Body      body;
