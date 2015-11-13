@@ -95,6 +95,144 @@ public class Parts {
     }
     
     /**
+     * Loads all the names of the Part files in the given directory.
+     * 
+     * The names returned do not contain the absolute path or the actual file
+     * extension. They are returned such that each Part can be loaded by simply
+     * passing the name to the load method.
+     * 
+     * @param dirPath the path to the directory to retrieve the name of the Part
+     *                files from
+     * @return an array of Strings containing the names of all of the Part files
+     *         found in the directory. The names do not contain either the
+     *         directory or the Part file extension.
+     */
+    public static String[] getPartNames(String dirPath) { 
+        // Load the directory. 
+        java.io.File directory = new java.io.File(dirPath); 
+          
+        // Load only files with the .part file extension. 
+        String[] fileNames = directory.list((dir, name) -> 
+                PARTS_FILE_EXT.equals( 
+                    name.substring(name.lastIndexOf("."))) 
+        ); 
+          
+        // Remove the file extensions from the file names. 
+        String[] names = new String[fileNames.length]; 
+        for (int i = 0; i < names.length; i++) { 
+            // Retrieve the last index of a period in the filename. 
+            int index = fileNames[i].lastIndexOf('.'); 
+            // Set the arm name to everything before the period. 
+            names[i] = fileNames[i].substring(0, index); 
+        } 
+          
+        return names; 
+    }
+    
+    /**
+     * Retrieves all the Arms saved in Part files in the specified directory.
+     * 
+     * @param dirPath the path of the directory to load all of the Arms from
+     * @return an array of all the Arms loaded from the directory.
+     * @throws java.io.IOException if the directory pointed to by dirPath does
+     *                             not exist.
+     */
+    public static Arm[] getArms(String dirPath) throws java.io.IOException {
+        // Filter out the Arms from the list of Parts in this directory.
+        return (Arm[])java.util.stream.Stream.of(getParts(dirPath))
+                    .filter(part -> part instanceof Arm)
+                    .toArray();
+    }
+    
+    /**
+     * Retrieves all the Bodies saved in Part files in the specified directory.
+     * 
+     * @param dirPath the path of the directory to load all of the Bodies from
+     * @return an array of all the Bodies loaded from the directory.
+     * @throws java.io.IOException if the directory pointed to by dirPath does
+     *                             not exist.
+     */
+    public static Body[] getBodies(String dirPath) throws java.io.IOException {
+        // Filter out the Arms from the list of Parts in this directory.
+        return (Body[])java.util.stream.Stream.of(getParts(dirPath))
+                    .filter(part -> part instanceof Body)
+                    .toArray();
+    }
+    
+    /**
+     * Retrieves all the Heads saved in Part files in the specified directory.
+     * 
+     * @param dirPath the path of the directory to load all of the Heads from
+     * @return an array of all the Heads loaded from the directory.
+     * @throws java.io.IOException if the directory pointed to by dirPath does
+     *                             not exist.
+     */
+    public static Head[] getHeads(String dirPath) throws java.io.IOException {
+        // Filter out the Arms from the list of Parts in this directory.
+        return (Head[])java.util.stream.Stream.of(getParts(dirPath))
+                    .filter(part -> part instanceof Head)
+                    .toArray();
+    }
+    
+    /**
+     * Retrieves all the Legs saved in Part files in the specified directory.
+     * 
+     * @param dirPath the path of the directory to load all of the Legs from
+     * @return an array of all the Legs loaded from the directory.
+     * @throws java.io.IOException if the directory pointed to by dirPath does
+     *                             not exist.
+     */
+    public static Leg[] getLegs(String dirPath) throws java.io.IOException {
+        // Filter out the Arms from the list of Parts in this directory.
+        return (Leg[])java.util.stream.Stream.of(getParts(dirPath))
+                    .filter(part -> part instanceof Leg)
+                    .toArray();
+    }
+    
+    /**
+     * Retrieves all the Parts saved in Part files in the specified directory.
+     * 
+     * The Part array returned by this method is not safe to cast to a specific
+     * type of Part array, even if one of the Part resource directories defined
+     * in this class are used. If a more specific type of part is required, use
+     * the appropriate getXXXXs method.
+     * 
+     * @param dirPath the path of the directory to load all of the Parts from
+     * @return an array of all the Parts loaded from the directory.
+     * @throws java.io.IOException if the directory pointed to by dirPath does
+     *                             not exist.
+     * @see Parts#getArms getArms
+     * @see Parts#getBodies getBodies
+     * @see Parts#getHeads getHeads
+     * @see Parts#getLegs getLegs
+     */
+    public static Part[] getParts(String dirPath) throws java.io.IOException {
+        // Load the directory.
+        java.io.File directory = new java.io.File(dirPath);
+        
+        // Load only files with the .part file extension.
+        java.io.File[] files = directory.listFiles((dir, name) ->
+                PARTS_FILE_EXT.equals( 
+                    name.substring(name.lastIndexOf(".")))
+        );
+        
+        // Load the Parts from each file.
+        Part[] parts = new Part[files.length];
+        for (int i = 0; i < files.length; i++) {
+            try (java.io.ObjectInputStream in = new java.io.ObjectInputStream(
+                        new java.io.FileInputStream(files[i]))) {
+                parts[i] = (Part)in.readObject();
+            } catch (ClassNotFoundException e) {
+                // If the class is not found, something is seriously wrong.
+                e.printStackTrace();
+                return null;
+            }   
+        }
+        
+        return parts;
+    }
+
+    /**
      * Creates and saves a Part instance with the given characteristics to
      * a resource file, allowing it to later be loaded with the load method.
      * 
