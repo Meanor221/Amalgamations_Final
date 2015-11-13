@@ -32,6 +32,52 @@ public class Parts {
     public static final int     TYPE_LEG        = 4;
     
     /**
+     * Deletes the Part file from the appropriate Part resource directory.
+     * 
+     * This delete operation cannot be reversed and does not prompt the user,
+     * so be sure to warn the user before performing this operation.
+     * 
+     * @param type the type of Part. This is important,
+     *             as this will decide which subfolder to search for the Part
+     *             file. The values to be used for this parameter are defined as 
+     *             constants in this class called TYPE_XXXX. Be sure to use
+     *             the class constants and not the actual values, as the values
+     *             could theoretically change.
+     * @param partFileName the name of the Part file to be deleted.
+     * @throws IllegalArgumentException if the type is invalid
+     */
+    public static void delete(int type, String partFileName) 
+            throws IllegalArgumentException {
+        String resDirectory = PARTS_RES_DIR;
+        
+        // Determine the type of the Part.
+        switch(type) {
+            case TYPE_ARM:
+                resDirectory = ARMS_RES_DIR;
+                break;
+                
+            case TYPE_BODY:
+                resDirectory = BODIES_RES_DIR;
+                break;
+                
+            case TYPE_HEAD:
+                resDirectory = HEADS_RES_DIR;
+                break;
+                
+            case TYPE_LEG:
+                resDirectory = LEGS_RES_DIR;
+                break;
+                
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid Part type: " + type);
+        }
+        
+        // Delete the file.
+        new java.io.File(resDirectory + partFileName + PARTS_FILE_EXT).delete();
+    }
+    
+    /**
      * Loads a Part from the given file.
      * 
      * Although the return type of this method is a Part, the returned value
