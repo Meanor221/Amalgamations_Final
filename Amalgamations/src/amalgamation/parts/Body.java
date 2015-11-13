@@ -1,5 +1,6 @@
 package amalgamation.parts;
 
+import amalgamations.abilities.Ability;
 import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
@@ -42,10 +43,10 @@ public class Body extends Part {
      */
     public Body(String name, String imageFile,
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs) {
+            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs, Ability[] abilities) {
         // Call Part constructor with the pivot located at (0, 0).
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed, 
-                0, 0);
+                0, 0, abilities);
         // Initialize arrays of slots.
         this.arms = arms;
         this.heads = heads;

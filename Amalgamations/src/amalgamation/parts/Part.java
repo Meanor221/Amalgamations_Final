@@ -1,5 +1,6 @@
 package amalgamation.parts;
 
+import amalgamations.abilities.Ability;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -37,6 +38,8 @@ public abstract class Part implements Serializable {
     private final int pivotX;
     // The y position of the Part's pivot position.
     private final int pivotY;
+    // List of the part's available Abilities
+    private final Ability[] abilities;
     
     /**
      * Constructs an object of the Part class.
@@ -57,10 +60,11 @@ public abstract class Part implements Serializable {
      *               pivot around when rotated
      * @param pivotY the Y coordinate of the position the Part's image will
      *               pivot around when rotated
+     * @param abilities the list of the Part's available moves/abilities which are of type Ability
      */
     public Part(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) {
+            int pivotX, int pivotY, Ability[] abilities) {
         // Initialize all instance variables.
         this.name = name;
         this.imageFile = imageFile;
@@ -70,6 +74,15 @@ public abstract class Part implements Serializable {
         this.baseSpeed = baseSpeed;
         this.pivotX = pivotX;
         this.pivotY = pivotY;
+        this.abilities = abilities;
+    }
+    
+    /**
+     * Returns the array containing all of the abilities of this part
+     * @return the abilities array
+     */
+    public Ability[] getAbilities() {
+        return abilities;
     }
     
     /**

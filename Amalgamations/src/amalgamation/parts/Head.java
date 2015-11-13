@@ -5,6 +5,7 @@
  */
 package amalgamation.parts;
 
+import amalgamations.abilities.Ability;
 import java.io.IOException;
 
 /**
@@ -15,9 +16,9 @@ public class Head extends Part {
     // Constructor for the head class that inherits from the part class
     public Head(String name, String imageFile, int baseHealth,
             int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) {
+            int pivotX, int pivotY, Ability[] abilities) {
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
-                pivotX, pivotY);
+                pivotX, pivotY, abilities);
     }
     
     @Override

@@ -1,5 +1,6 @@
 package amalgamation.parts;
 
+import amalgamations.abilities.Ability;
 /**
  * Parts is a utility class that contains useful Part related functions and
  * constants.
@@ -318,7 +319,7 @@ public class Parts {
     public static String save(int type, java.io.File imageFile, String name, 
             int pivotX, int pivotY, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs)
+            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs, Ability[] abilities)
                 throws IllegalArgumentException {
         Part part = null;
         String imageDirectory = PARTS_IMG_DIR;
@@ -329,7 +330,7 @@ public class Parts {
             case TYPE_ARM:
                 part = new Arm(name, imageFile.getName(),
                         baseHealth, baseAttack, baseDefense, baseSpeed,
-                        pivotX, pivotY);
+                        pivotX, pivotY, abilities);
                 imageDirectory = ARMS_IMG_DIR;
                 resDirectory = ARMS_RES_DIR;
                 break;
@@ -337,7 +338,7 @@ public class Parts {
             case TYPE_BODY:
                 part = new Body(name, imageFile.getName(),
                         baseHealth, baseAttack, baseDefense, baseSpeed,
-                        arms, heads, legs);
+                        arms, heads, legs, abilities);
                 imageDirectory = BODIES_IMG_DIR;
                 resDirectory = BODIES_RES_DIR;
                 break;
@@ -345,7 +346,7 @@ public class Parts {
             case TYPE_HEAD:
                 part = new Head(name, imageFile.getName(),
                         baseHealth, baseAttack, baseDefense, baseSpeed,
-                        pivotX, pivotY);
+                        pivotX, pivotY, abilities);
                 imageDirectory = HEADS_IMG_DIR;
                 resDirectory = HEADS_RES_DIR;
                 break;
@@ -353,7 +354,7 @@ public class Parts {
             case TYPE_LEG:
                 part = new Leg(name, imageFile.getName(),
                         baseHealth, baseAttack, baseDefense, baseSpeed,
-                        pivotX, pivotY);
+                        pivotX, pivotY, abilities);
                 imageDirectory = LEGS_IMG_DIR;
                 resDirectory = LEGS_RES_DIR;
                 break;
