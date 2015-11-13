@@ -405,7 +405,11 @@ public class AbilityEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_AbilityListValueChanged
 
     private void AbilityListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AbilityListKeyPressed
-        javax.swing.SwingUtilities.invokeLater(this::delete);
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed.
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE)
+                delete();
+        });
     }//GEN-LAST:event_AbilityListKeyPressed
 
     private void CooldownFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CooldownFieldActionPerformed
