@@ -1,5 +1,7 @@
 package amalgamation;
 
+import amalgamation.parts.Body;
+
 /**
  *
  * @author Adam Meanor
@@ -80,15 +82,13 @@ public class Amalgamations {
     
     /**
      * Attempts to save an Amalgamation file to the directory
-     * @param imageFile the imageFile containing the Amalgamation
+     * @param body the Body object of the Amalgamation
      * @param name the name of the Amalgamation and thus the name of the file
-     * @return null if it is successful in saving,
-     * and returns an error message if the save fails
      * @throws IllegalArgumentException 
      */
-    public static String save(java.io.File imageFile, String name) 
+    public static void save(Body body, String name) 
                 throws IllegalArgumentException {
-        Amalgamation amalgamation = null;
+        Amalgamation amalgamation = new Amalgamation(name, body);
         String imageDirectory = AMAL_IMG_DIR;
         String resDirectory = AMAL_RES_DIR;
         
@@ -99,23 +99,9 @@ public class Amalgamations {
             // Write the created Part to the file.
             out.writeObject(amalgamation);
         } catch (java.io.IOException e) {
-            return "Could not save the Amalgamation to a resource file. Please make "
-                    + "sure the directory " + resDirectory + " exists.";
+            System.out.println("Could not save the Amalgamation to "
+                    + "a resource file. Please make sure the directory "
+                    + resDirectory + " exists.");
         }
-        
-        // Attempt to copy the image file.
-        try {
-            java.nio.file.Files.copy(
-                    // Copy the image file...
-                    java.nio.file.Paths.get(imageFile.getAbsolutePath()),
-                    // ... into the image folder.
-                    java.nio.file.Paths.get(imageDirectory, imageFile.getName())
-            );
-        } catch (java.io.IOException e) {
-            return "The image file " + imageFile.getAbsolutePath() + " already"
-                    + " exists. The Amalgamation was saved successfully, but the image"
-                    + " it uses may not be correct.";
-        }
-        return null;
     }
 }
