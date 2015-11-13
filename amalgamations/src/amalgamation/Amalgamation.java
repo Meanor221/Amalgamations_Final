@@ -83,6 +83,22 @@ public class Amalgamation {
         return attack;
     }
     
+    public int getCurrentAttack() {
+        return currentAttack;
+    }
+    
+    public int getCurrentDefense() {
+        return currentDefense;
+    }
+    
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+    
+    public int getCurrentSpeed() {
+        return currentSpeed;
+    }
+    
     // Gets defense stat
     public int getDefense() {
         return defense;
