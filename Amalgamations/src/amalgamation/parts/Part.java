@@ -2,6 +2,7 @@ package amalgamation.parts;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -17,11 +18,13 @@ import javax.imageio.ImageIO;
  * 
  * @author Caleb Rush
  */
-public abstract class Part {
+public abstract class Part implements Serializable {
     // The name of the body part. To be used in menus.
     private final String name;
+    // The name of the image that will represent the body part graphically.
+    private final String imageFile;
     // The image that will represent the body part graphically.
-    private final BufferedImage image;
+    private transient BufferedImage image;
     // The base Health stat that the body part supplies.
     private final int baseHealth;
     // The base Attack stat that the body part supplies.
@@ -54,15 +57,13 @@ public abstract class Part {
      *               pivot around when rotated
      * @param pivotY the Y coordinate of the position the Part's image will
      *               pivot around when rotated
-     * @throws IOException if the image file name does not point to a valid file
-     *                     or if the file it refers to does not have read access
      */
     public Part(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) throws IOException {
+            int pivotX, int pivotY) {
         // Initialize all instance variables.
         this.name = name;
-        this.image = loadImage(imageFile);
+        this.imageFile = imageFile;
         this.baseHealth = baseHealth;
         this.baseAttack = baseAttack;
         this.baseDefense = baseDefense;
@@ -115,10 +116,33 @@ public abstract class Part {
      * Retrieves the image that will be used to represent the body part
      * graphically.
      * 
+     * The first time this method is called, the image will be loaded from the 
+     * file containing the Part's image. If this operation fails, null will be
+     * returned. If the image is successfully loaded, subsequent calls of this
+     * method will not need to load the image from the file again.
+     * 
      * @return the body part's image
      */
     public BufferedImage getImage() {
+        // If the image has not been loaded yet, load it from the file.
+        if (image == null) {
+            try {
+                image = loadImage(imageFile);
+            } catch (IOException e) {
+                image = null;
+            }
+        }
+        
         return image;
+    }
+    
+    /**
+     * Retrieves the absolute path of the image file.
+     * 
+     * @return the absolute path of the image file.
+     */
+    public String getImageFile() {
+        return new File(imageDirectory() + imageFile).getAbsolutePath();
     }
     
     /**
@@ -129,6 +153,24 @@ public abstract class Part {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Retrieves the X position of the Part's Pivot position.
+     * 
+     * @return the X position of the Part's Pivot position.
+     */
+    public int getPivotX() {
+        return pivotX;
+    }
+    
+    /**
+     * Retrieves the Y position of the Part's Pivot position.
+     * 
+     * @return the Y position of the Part's Pivot position.
+     */
+    public int getPivotY() {
+        return pivotY;
     }
     
     /**
@@ -141,7 +183,7 @@ public abstract class Part {
      * @return the relative Path to the folder containing Part image files.
      */
     public String imageDirectory() {
-        return "res/img/Parts/";
+        return Parts.PARTS_IMG_DIR;
     }
     
     /**
@@ -182,7 +224,7 @@ public abstract class Part {
         // Draw the part's image on the temp image.
         Graphics2D g = temp.createGraphics();
         g.drawImage(
-                image, 
+                getImage(), 
                 // Ensure the pivot point is at (x, y).
                 x - pivotX,
                 y - pivotY, 

@@ -2,8 +2,6 @@ package amalgamation.parts;
 
 import java.awt.image.BufferedImage;
 
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +11,7 @@ import java.util.Arrays;
  *
  * @author Caleb Rush, Adam Meanor
  */
-public abstract class Body extends Part {
+public class Body extends Part {
     // The list of arm slots on the body.
     private final Slot<Arm>[] arms;
     // The list of head slots on the body.
@@ -41,13 +39,10 @@ public abstract class Body extends Part {
      * @param arms the array of Arm slots on the body
      * @param heads the array of Head slots on the body
      * @param legs the array of Leg slots on the body
-     * @throws IOException if the image file name does not point to a valid file
-     *                     or if the file it refers to does not have read access
      */
     public Body(String name, String imageFile,
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs) 
-            throws IOException {
+            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs) {
         // Call Part constructor with the pivot located at (0, 0).
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed, 
                 0, 0);
@@ -160,7 +155,7 @@ public abstract class Body extends Part {
     
     @Override
     public String imageDirectory() {
-        return super.imageDirectory() + "Bodies/";
+        return Parts.BODIES_IMG_DIR;
     }
     
     /**

@@ -12,12 +12,12 @@ import java.io.IOException;
  * 
  * @author Adam Meanor, Caleb Rush
  */
-public abstract class Leg extends Part {
+public class Leg extends Part {
     
     // Compatablie Constructor with the Part constructor
     public Leg(String name, String imageFile, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            int pivotX, int pivotY) throws IOException {
+            int pivotX, int pivotY) {
         // Calls the PArt class constructor
         super(name, imageFile, baseHealth, baseAttack, baseDefense, baseSpeed,
                 pivotX, pivotY);
@@ -25,6 +25,6 @@ public abstract class Leg extends Part {
     
     @Override
     public String imageDirectory() {
-        return super.imageDirectory() + "Legs/";
+        return Parts.LEGS_IMG_DIR;
     }
 }

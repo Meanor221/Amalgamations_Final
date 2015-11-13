@@ -1,10 +1,5 @@
 package amalgamation.parts;
 
-import amalgamation.parts.arms.*;
-import amalgamation.parts.bodies.*;
-import amalgamation.parts.heads.*;
-import amalgamation.parts.legs.*;
-
 /**
  * Testing Parts functionality.
  * 
@@ -15,6 +10,8 @@ public class TEST extends javax.swing.JFrame {
     private Body body;
     // Image of the full body.
     private java.awt.Image image;
+    // ImagePanel to draw the image.
+    private final ImagePanel imagePanel = new ImagePanel();
     
     /**
      * Creates new form TEST
@@ -23,14 +20,18 @@ public class TEST extends javax.swing.JFrame {
         initComponents();
         
         // Create the body.
-        try {
-            body = new Board();
+            body = (Body)Parts.load(Parts.TYPE_BODY, "Board");
+            // Load parts from files.
+            Arm redStick = (Arm)Parts.load(Parts.TYPE_ARM, "Red Stick");
+            Head greenCircle = (Head)Parts.load(Parts.TYPE_HEAD, "Green Circle");
+            Leg blueL = (Leg)Parts.load(Parts.TYPE_LEG, "Blue L");
+            
             // Add parts to the slots.
-            body.getHeadSlots()[0].setPart(new GreenCircle());
-            body.getArmSlots()[0].setPart(new RedStick());
-            body.getArmSlots()[1].setPart(new RedStick());
-            body.getLegSlots()[0].setPart(new BlueL());
-            body.getLegSlots()[1].setPart(new BlueL());
+            body.getHeadSlots()[0].setPart(greenCircle);
+            body.getArmSlots()[0].setPart(redStick);
+            body.getArmSlots()[1].setPart(redStick);
+            body.getLegSlots()[0].setPart(blueL);
+            body.getLegSlots()[1].setPart(blueL);
             
             // Create the body's image.
             image = body.fullImage();
@@ -41,9 +42,8 @@ public class TEST extends javax.swing.JFrame {
             DefenseField.setText("" + body.totalBaseDefense());
             SpeedField.setText("" + body.totalBaseSpeed());
             
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
+            // Add the image panel to the body panel.
+            BodyPanel.add(imagePanel);
     }
 
     /**
@@ -217,14 +217,32 @@ public class TEST extends javax.swing.JFrame {
 
     @Override
     public void paint(java.awt.Graphics g) {
+        // Center the ImagePanel.
+        imagePanel.center();
         super.paint(g);
+    }
+    
+    // Panel to draw the image.
+    private class ImagePanel extends javax.swing.JPanel {
         
-        // Paint the image of the body.
-        g.drawImage(
-                image,
-                BodyPanel.getX() + BodyPanel.getWidth() / 2 - image.getWidth(null) / 2,
-                BodyPanel.getY() + BodyPanel.getHeight() / 2 - image.getHeight(null) / 2,
-                this
-        );
+        public void center() {
+            setLocation(BodyPanel.getWidth() / 2 - image.getWidth(null) / 2,
+                    BodyPanel.getHeight() / 2 - image.getHeight(null) / 2);
+            setSize(image.getWidth(null), image.getHeight(null));
+        }
+        
+        @Override
+        protected void paintComponent(java.awt.Graphics g) {
+            super.paintComponent(g);
+            
+            // Paint the image on the display panel.
+            if (image != null)
+                g.drawImage(
+                        image,
+                        0,
+                        0,
+                        null
+                );
+        }
     }
 }
