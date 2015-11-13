@@ -1,23 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package amalgamations.abilities;
 import java.util.Random;
 
 /**
- *
- * @author jjl5451
+ * A damage dealing Ability 
+ * @author Jordan LaRiccia
  */
 public class Attack extends Ability {
     private final int damage;
     private static final double VARIANCE_RANGE = 0.3;
     private final double damageVariance;
 
-
+    /**
+     * Constructs a new Attack object
+     * @param name the name of the Attack
+     * @param cooldown the cooldown value for the Attack
+     * @param accuracy the accuracy value for the Attack
+     * @param script the flavor text for the Attack
+     * @param damage the damage that the Attack does to the opponent
+     */
     public Attack(String name, int cooldown, int accuracy, String script,int damage) {
-        super(name, cooldown, accuracy, script, 0, 0, 0, 0);
+        super(name, cooldown, accuracy, script);
         this.damage=damage;
         
         Random random   =   new Random();

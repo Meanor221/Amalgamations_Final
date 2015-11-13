@@ -2,44 +2,48 @@
 package amalgamations.abilities;
 
 import amalgamation.Amalgamation;
+import java.util.ArrayList;
 
 /**
- *
- * @author jjl5451
+ * The Ability that an Amalgamation can use in combat
+ * @author Jordan LaRiccia
  */
 public class Ability {
     private final String name;
     private final int cooldown;
     private final int accuracy;
     private final String script;
+    private final ArrayList<StatModifier> modifiers;
     public static final char SPLITTER = '|';
     
-    private final int healthModifier;
-    private final int attackModifier;
-    private final int defenseModifier;
-    private final int speedModifier;
-    
-     
+     /**
+      * Constructs a new Ability objecy
+      * @param name the name of the ability
+      * @param cooldown the cooldown value of the ability
+      * @param accuracy the accuracy value of the ability
+      * @param script the flavor text of the ability
+      * @param modifiers the list of stat modifiers for the ability
+      */
     public Ability(String name, int cooldown, int accuracy, String script,
-    int healthModifier, int attackModifier, int defenseModifier, 
-    int speedModifier){
+            StatModifier... modifiers){
         this.name=name;
         this.accuracy=accuracy;
         this.cooldown=cooldown;
         this.script=script;
-        this.attackModifier=attackModifier;
-        this.defenseModifier=defenseModifier;
-        this.healthModifier=healthModifier;
-        this.speedModifier=speedModifier;
+        this.modifiers = new ArrayList<>(java.util.Arrays.asList(modifiers));
     }
     
-    
-    private void affect(Amalgamation a){
-       
-        a.setCurrentAttack(a.getAttack()+ attackModifier);
-        a.setCurrentDefense(a.getDefense()+ defenseModifier);
-        a.setCurrentHealth(a.getHealth()+ healthModifier);
-        a.setCurrentSpeed(a.getSpeed()+ speedModifier);
+    /**
+     * Calls statAdjuster for the list of stat modifiers for the move
+     * @param player the current user/Amalgamation of the ability
+     * @param opponent the other Amalgamation that is opposing the current
+     * Amalgamation
+     */
+    private void affect(Amalgamation player, Amalgamation opponent){
+        for(StatModifier m : modifiers) 
+        {
+            m.statAdjuster(player, opponent);
+        }
     }
     
     public void doMove(Amalgamation a){
@@ -51,38 +55,6 @@ public class Ability {
      */
     public int getAccuracy(){
         return accuracy;
-    }
-    
-    /**
-     * Gets the attack modifier value  
-     * @return attackModifier
-     */
-    public int getAttackModifier(){
-        return attackModifier;
-    }
-    
-    /**
-     * Gets the cooldown value  
-     * @return cooldown
-     */
-    public int getCooldown(){
-        return cooldown;
-    }
-    
-    /**
-     * Gets the defense modifier value 
-     * @return defenseModifier
-     */
-    public int getDefenseModifier(){
-        return defenseModifier;
-    }
-    
-    /**
-     * Gets the health modifier value  
-     * @return healthModifier
-     */
-    public int getHealthModifier(){
-        return healthModifier;
     }
     /**
      * Gets the name of the ability 
@@ -99,14 +71,4 @@ public class Ability {
     public String getScript(){
         return script;
     }
-    
-    /**
-     * Gets the speed modifier value  
-     * @return speedModifier
-     */
-    public int getSpeedModifier(){
-        return speedModifier;
-    }
-   
-    
 }
