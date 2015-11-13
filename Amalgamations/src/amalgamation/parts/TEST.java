@@ -20,8 +20,7 @@ public class TEST extends javax.swing.JFrame {
         initComponents();
         
         // Create the body.
-        try {
-            body = new amalgamation.parts.bodies.Board();
+            body = (Body)Parts.load(Parts.TYPE_BODY, "Board");
             // Load parts from files.
             Arm redStick = (Arm)Parts.load(Parts.TYPE_ARM, "Red Stick");
             Head greenCircle = (Head)Parts.load(Parts.TYPE_HEAD, "Green Circle");
@@ -45,9 +44,6 @@ public class TEST extends javax.swing.JFrame {
             
             // Add the image panel to the body panel.
             BodyPanel.add(imagePanel);
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
