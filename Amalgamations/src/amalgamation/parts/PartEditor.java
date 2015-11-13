@@ -7,11 +7,11 @@ import java.awt.GraphicsConfiguration;
  * @author Caleb Rush
  */
 public class PartEditor extends javax.swing.JFrame {
-    // Path to Parts' image resource directory.
-    private final static String IMAGE_DIR = "res/img/Parts/";
-    // Path to Parts resource directory.
-    private final static String RES_DIR = "res/part/";
-    
+    // <editor-fold desc="Instance Variables" defaultstate="collapsed"> 
+    // Size of the crosshair.
+    private final static int CROSSHAIR_SIZE = 10;
+    // Radius of the slot.
+    private final static int SLOT_RADIUS = 5;
     // The image to draw on the Body Part image panel.
     private java.awt.Image image;
     // The file containing the image.
@@ -19,16 +19,17 @@ public class PartEditor extends javax.swing.JFrame {
     // The coordinates to draw the crosshairs on the image.
     private int crossX;
     private int crossY;
+    // The coordinates to draw the current slot on the image.
+    private int[] slot;
     // Whether or not to draw the crosshairs.
     private boolean drawCrosshairs = false;
     // Whether or not to move the crosshairs.
     private boolean pivotSet = false;
     // The ImagePanel that paints the image.
     private final ImagePanel imagePanel = new ImagePanel();
-    
-    // Size of the crosshair.
-    private final static int CROSSHAIR_SIZE = 10;
+    // </editor-fold>
 
+    // <editor-fold desc="Constructor" defaultstate="collapsed">
     /**
      * Creates new form PartEditor
      */
@@ -44,7 +45,12 @@ public class PartEditor extends javax.swing.JFrame {
         updateFileLists();
         // Disable all the fields.
         disableFields();
+        // Initialize the table.
+        initTable();
+        // Center window on screen.
+        setLocationRelativeTo(null);
     }
+    // </editor-fold>
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -95,11 +101,20 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedField = new javax.swing.JTextField();
         SaveButton = new javax.swing.JButton();
         PartTypeCombo = new javax.swing.JComboBox<String>();
+        BodySlotPanel = new javax.swing.JPanel();
+        BodySlotLabel = new javax.swing.JLabel();
+        BodySlotScrollPane = new javax.swing.JScrollPane();
+        BodySlotTable = new javax.swing.JTable();
         AddButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ArmsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        ArmsList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ArmsListKeyPressed(evt);
+            }
+        });
         ArmsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 ArmsListValueChanged(evt);
@@ -120,13 +135,18 @@ public class PartEditor extends javax.swing.JFrame {
             ArmsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ArmsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ArmsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(ArmsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         PartTypePane.addTab("Arms", ArmsPanel);
 
         BodiesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        BodiesList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BodiesListKeyPressed(evt);
+            }
+        });
         BodiesList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 BodiesListValueChanged(evt);
@@ -147,13 +167,18 @@ public class PartEditor extends javax.swing.JFrame {
             BodiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BodiesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(BodiesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(BodiesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         PartTypePane.addTab("Bodies", BodiesPanel);
 
         HeadsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        HeadsList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                HeadsListKeyPressed(evt);
+            }
+        });
         HeadsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 HeadsListValueChanged(evt);
@@ -174,13 +199,18 @@ public class PartEditor extends javax.swing.JFrame {
             HeadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeadsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(HeadsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(HeadsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         PartTypePane.addTab("Heads", HeadsPanel);
 
         LegsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        LegsList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                LegsListKeyPressed(evt);
+            }
+        });
         LegsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 LegsListValueChanged(evt);
@@ -201,7 +231,7 @@ public class PartEditor extends javax.swing.JFrame {
             LegsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LegsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -234,11 +264,11 @@ public class PartEditor extends javax.swing.JFrame {
         PartDisplayPanel.setLayout(PartDisplayPanelLayout);
         PartDisplayPanelLayout.setHorizontalGroup(
             PartDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
+            .addGap(0, 350, Short.MAX_VALUE)
         );
         PartDisplayPanelLayout.setVerticalGroup(
             PartDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 346, Short.MAX_VALUE)
         );
 
         PartNameLabel.setText("Name:");
@@ -280,9 +310,9 @@ public class PartEditor extends javax.swing.JFrame {
                 .addComponent(PartImageLabel)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(PartImagePanelLayout.createSequentialGroup()
-                .addComponent(PartImageField, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PartImageButton, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+                .addComponent(PartImageField)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PartImageButton))
         );
         PartImagePanelLayout.setVerticalGroup(
             PartImagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,7 +349,7 @@ public class PartEditor extends javax.swing.JFrame {
                 .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PartPivotYLabel)
                     .addComponent(PartPivotXLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(PartPivotXField)
                     .addComponent(PartPivotYField)))
@@ -426,6 +456,75 @@ public class PartEditor extends javax.swing.JFrame {
         });
 
         PartTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arm", "Body", "Head", "Leg" }));
+        PartTypeCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PartTypeComboActionPerformed(evt);
+            }
+        });
+
+        BodySlotLabel.setText("Slots:");
+
+        BodySlotTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "X", "Y", "Z", "Rotation", "Type"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        BodySlotTable.getTableHeader().setReorderingAllowed(false);
+        BodySlotTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BodySlotTableMouseClicked(evt);
+            }
+        });
+        BodySlotTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BodySlotTableKeyPressed(evt);
+            }
+        });
+        BodySlotScrollPane.setViewportView(BodySlotTable);
+        if (BodySlotTable.getColumnModel().getColumnCount() > 0) {
+            BodySlotTable.getColumnModel().getColumn(0).setResizable(false);
+            BodySlotTable.getColumnModel().getColumn(1).setResizable(false);
+            BodySlotTable.getColumnModel().getColumn(2).setResizable(false);
+            BodySlotTable.getColumnModel().getColumn(3).setResizable(false);
+            BodySlotTable.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout BodySlotPanelLayout = new javax.swing.GroupLayout(BodySlotPanel);
+        BodySlotPanel.setLayout(BodySlotPanelLayout);
+        BodySlotPanelLayout.setHorizontalGroup(
+            BodySlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BodySlotPanelLayout.createSequentialGroup()
+                .addGroup(BodySlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BodySlotLabel)
+                    .addComponent(BodySlotScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
+        );
+        BodySlotPanelLayout.setVerticalGroup(
+            BodySlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BodySlotPanelLayout.createSequentialGroup()
+                .addComponent(BodySlotLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BodySlotScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout EditPanelLayout = new javax.swing.GroupLayout(EditPanel);
         EditPanel.setLayout(EditPanelLayout);
@@ -436,15 +535,18 @@ public class PartEditor extends javax.swing.JFrame {
                 .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PartImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(EditPanelLayout.createSequentialGroup()
-                        .addComponent(PartDisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(PartNamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(PartPivotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                            .addComponent(PartTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(PartDisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(EditPanelLayout.createSequentialGroup()
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(PartNamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PartPivotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PartTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(BodySlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         EditPanelLayout.setVerticalGroup(
@@ -452,20 +554,22 @@ public class PartEditor extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EditPanelLayout.createSequentialGroup()
                 .addComponent(PartImagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(EditPanelLayout.createSequentialGroup()
-                        .addComponent(PartNamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(PartPivotPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(PartTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SaveButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(PartDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(EditPanelLayout.createSequentialGroup()
+                                .addComponent(PartNamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(PartPivotPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(PartTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BodySlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(SaveButton))
+                    .addComponent(PartDisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         AddButton.setText("New Part");
@@ -481,16 +585,16 @@ public class PartEditor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PartTypePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(PartTypePane)
                     .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addComponent(EditPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -498,12 +602,13 @@ public class PartEditor extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AddButton))
                     .addComponent(EditPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold desc="Event Handlers" defaultstate="collapsed">
     private void PartImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PartImageButtonActionPerformed
         javax.swing.SwingUtilities.invokeLater(() -> browseImage());
     }//GEN-LAST:event_PartImageButtonActionPerformed
@@ -536,8 +641,24 @@ public class PartEditor extends javax.swing.JFrame {
 
     private void PartDisplayPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PartDisplayPanelMouseClicked
         javax.swing.SwingUtilities.invokeLater(() -> {
-            if (image != null)
-                pivotSet = !pivotSet;
+            // Ensure there is an image.
+            if (image != null) {
+                // Check if a Body part is being edited.
+                if ("Body".equals(PartTypeCombo.getSelectedItem().toString())) {
+                    // Check if a row in the slot table is being edited.
+                    int row = BodySlotTable.getSelectedRow();
+                    if (row == -1)
+                        // Add a slot at the specified position.
+                        addSlot(evt.getX() - imagePanel.getX(), 
+                                evt.getY() - imagePanel.getY());
+                    else
+                        moveSlot(row, evt.getX() - imagePanel.getX(),
+                                evt.getY() - imagePanel.getY());
+                }
+                // Otherwise, ensure there is an image.
+                else
+                    pivotSet = !pivotSet;
+            }
         });
     }//GEN-LAST:event_PartDisplayPanelMouseClicked
 
@@ -615,6 +736,111 @@ public class PartEditor extends javax.swing.JFrame {
         javax.swing.SwingUtilities.invokeLater(() -> add());
     }//GEN-LAST:event_AddButtonActionPerformed
 
+    private void BodySlotTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BodySlotTableMouseClicked
+        // Check if the row was clicked once or twice.
+        if (evt.getClickCount() == 2)
+            // Clear the selection.
+            BodySlotTable.removeRowSelectionInterval(0, 
+                    BodySlotTable.getRowCount() - 1);
+
+        // Check the selected row in the table.
+        int row = BodySlotTable.getSelectedRow();
+        // Set the slot coordinates according to the values in the selected row.
+        if (row == -1)
+            slot = null;
+        else {
+            slot = new int[] { (Integer)BodySlotTable.getValueAt(row, 0),
+                               (Integer)BodySlotTable.getValueAt(row, 1) };
+        }
+        repaint();
+    }//GEN-LAST:event_BodySlotTableMouseClicked
+
+    private void BodySlotTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BodySlotTableKeyPressed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed,
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+                // Delete the selected row in the table.
+                int row = BodySlotTable.getSelectedRow();
+                if (row != -1) {
+                    ((javax.swing.table.DefaultTableModel)
+                            BodySlotTable.getModel()).removeRow(row);
+                    slot = null;
+                    repaint();
+                }
+            }
+        });
+    }//GEN-LAST:event_BodySlotTableKeyPressed
+
+    private void ArmsListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ArmsListKeyPressed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed,
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+                // Ensure a part is selected.
+                String selected = ArmsList.getSelectedValue();
+                if (selected != null)
+                    // Delete the part.
+                    deletePart(Parts.TYPE_ARM, selected);
+            }
+        });
+    }//GEN-LAST:event_ArmsListKeyPressed
+
+    private void BodiesListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BodiesListKeyPressed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed,
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+                // Ensure a part is selected.
+                String selected = BodiesList.getSelectedValue();
+                if (selected != null)
+                    // Delete the part.
+                    deletePart(Parts.TYPE_BODY, selected);
+            }
+        });
+    }//GEN-LAST:event_BodiesListKeyPressed
+
+    private void HeadsListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HeadsListKeyPressed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed,
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+                // Ensure a part is selected.
+                String selected = HeadsList.getSelectedValue();
+                if (selected != null)
+                    // Delete the part.
+                    deletePart(Parts.TYPE_HEAD, selected);
+            }
+        });
+    }//GEN-LAST:event_HeadsListKeyPressed
+
+    private void LegsListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LegsListKeyPressed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed,
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+                // Ensure a part is selected.
+                String selected = LegsList.getSelectedValue();
+                if (selected != null)
+                    // Delete the part.
+                    deletePart(Parts.TYPE_LEG, selected);
+            }
+        });
+    }//GEN-LAST:event_LegsListKeyPressed
+
+    private void PartTypeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PartTypeComboActionPerformed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            if ("Body".equals(PartTypeCombo.getSelectedItem().toString())) {
+                PartPivotXField.setText("");
+                PartPivotYField.setText("");
+                pivotSet = false;
+            }
+            else {
+                ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
+                        .setRowCount(0);
+                slot = null;
+                repaint();
+            }
+        });
+    }//GEN-LAST:event_PartTypeComboActionPerformed
+    // </editor-fold>
+    
+    // <editor-fold desc="Main" defaultstate="collapsed">
     /**
      * @param args the command line arguments
      */
@@ -626,7 +852,9 @@ public class PartEditor extends javax.swing.JFrame {
             }
         });
     }
+    // </editor-fold>
 
+    // <editor-fold desc="GUI Variables" defaultstate="collapsed">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddButton;
     private javax.swing.JList<String> ArmsList;
@@ -635,6 +863,10 @@ public class PartEditor extends javax.swing.JFrame {
     private javax.swing.JList<String> BodiesList;
     private javax.swing.JPanel BodiesPanel;
     private javax.swing.JScrollPane BodiesScrollPane;
+    private javax.swing.JLabel BodySlotLabel;
+    private javax.swing.JPanel BodySlotPanel;
+    private javax.swing.JScrollPane BodySlotScrollPane;
+    private javax.swing.JTable BodySlotTable;
     private javax.swing.JPanel EditPanel;
     private javax.swing.JList<String> HeadsList;
     private javax.swing.JPanel HeadsPanel;
@@ -670,14 +902,35 @@ public class PartEditor extends javax.swing.JFrame {
     private javax.swing.JButton SaveButton;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold>
     
+    // <editor-fold desc="Added Methods" defaultstate="collapsed">
     private void add() {
         ArmsList.clearSelection();
         BodiesList.clearSelection();
         HeadsList.clearSelection();
         LegsList.clearSelection();
         disableFields();
-        enableFields();        
+        enableFields();
+        browseImage();
+    }
+    
+    // Adds a row to the slot table with default values for all values.
+    private void addSlot() {
+        addSlot(0, 0);
+    }
+    
+    // Adds a row to the slot table with default values for all values and the
+    // specified x and y values.
+    private void addSlot(int x, int y) {
+        ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
+                .addRow(new Object[] { x, y, 1, 0, "Arm" });
+        // Set the selected row to the newly added row.
+        BodySlotTable.setRowSelectionInterval(BodySlotTable.getRowCount() - 1,
+                BodySlotTable.getRowCount() - 1);
+        // Set the slot.
+        slot = new int[] { x, y };
+        repaint();
     }
     
     // Let the user browse for an image file.
@@ -733,13 +986,16 @@ public class PartEditor extends javax.swing.JFrame {
                     javax.swing.JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        // Check pivot.
-        if (!pivotSet) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "You must set a pivot position.",
-                    "No pivot",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return false;
+        // Check if Body is not being edited.
+        if (!"Body".equals(PartTypeCombo.getSelectedItem().toString())) {
+            // Check pivot.
+            if (!pivotSet) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "You must set a pivot position.",
+                        "No pivot",
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
         }
         // Check stats.
         try { Integer.parseInt(PartBaseHealthField.getText()); }
@@ -778,6 +1034,22 @@ public class PartEditor extends javax.swing.JFrame {
         return true;
     }
     
+    // Deletes the given part file after prompting the user to ensure they
+    // they want to proceed with it.
+    private void deletePart(int partType, String partName) {
+        // Confirm that the user wants to delete the part file.
+        if (javax.swing.JOptionPane.showConfirmDialog(this, 
+                "Are you sure you would like to delete " + partName + "?") 
+                == javax.swing.JOptionPane.YES_OPTION) {
+            // Delete the file.
+            Parts.delete(partType, partName);
+            // Refresh the files.
+            updateFileLists();
+            // Disable the fields.
+            disableFields();
+        }
+    }
+    
     // Disables all fields so that the user cannot edit anything.
     private void disableFields() {
         image = null;
@@ -797,6 +1069,10 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedField.setEnabled(false);
         PartTypeCombo.setEnabled(false);
         SaveButton.setEnabled(false);
+        ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
+                .setRowCount(0);
+        slot = null;
+        BodySlotTable.setEnabled(false);
         repaint();
     }
     
@@ -811,6 +1087,92 @@ public class PartEditor extends javax.swing.JFrame {
         SaveButton.setEnabled(true);
         repaint();
     }
+    
+    // Retrieves all the arm slots from the slot table.
+    private Slot<Arm>[] getArmSlots() {
+        java.util.ArrayList<Slot<Arm>> slots = new java.util.ArrayList<>();
+        
+        // Iterate through each row in the slots table.
+        for (int r = 0; r < BodySlotTable.getRowCount(); r++)
+            // Check if the row contains an Arm slot.
+            if ("Arm".equals(BodySlotTable.getValueAt(r, 4)))
+                // Retrieve the arm slot from the table.
+                slots.add((Slot<Arm>)getSlot(r, new Arm[0]));
+        
+        return slots.toArray((Slot<Arm>[])new Slot[0]);
+    }
+    
+    // Retrieves all the head slots from the slot table.
+    private Slot<Head>[] getHeadSlots() {
+        java.util.ArrayList<Slot<Head>> slots = new java.util.ArrayList<>();
+        
+        // Iterate through each row in the slots table.
+        for (int r = 0; r < BodySlotTable.getRowCount(); r++)
+            // Check if the row contains a Head slot.
+            if ("Head".equals(BodySlotTable.getValueAt(r, 4)))
+                // Retrieve the Head slot from the table.
+                slots.add((Slot<Head>)getSlot(r, new Head[0]));
+        
+        return slots.toArray((Slot<Head>[])new Slot[0]);
+    }
+    
+    // Retrieves all the arm slots from the slot table.
+    private Slot<Leg>[] getLegSlots() {
+        java.util.ArrayList<Slot<Leg>> slots = new java.util.ArrayList<>();
+        
+        // Iterate through each row in the slots table.
+        for (int r = 0; r < BodySlotTable.getRowCount(); r++)
+            // Check if the row contains a Leg slot.
+            if ("Leg".equals(BodySlotTable.getValueAt(r, 4)))
+                // Retrieve the Leg slot from the table.
+                slots.add((Slot<Leg>)getSlot(r, new Leg[0]));
+        
+        return slots.toArray((Slot<Leg>[])new Slot[0]);
+    }
+    
+    // Retrieves the slot from the given row of the table.
+    private <T extends Part> Slot<T> getSlot(int r, T[] type) {
+        // Retrieve inputs from the table row.
+        int x = (int)BodySlotTable.getValueAt(r, 0);
+        int y = (int)BodySlotTable.getValueAt(r, 1);
+        int z = (int)BodySlotTable.getValueAt(r, 2);
+        int rotation = (int)BodySlotTable.getValueAt(r, 3);
+        
+        // Determine the type of the Slot object.
+        Slot<T> slot = null;
+        switch(BodySlotTable.getValueAt(r, 4).toString()) {
+            case "Arm":
+                slot = new Slot<>(x, y, z);
+                break;
+            case "Head":
+                slot = new Slot<>(x, y, z);
+                break;
+            case "Leg":
+                slot = new Slot<>(x, y, z);
+        }
+        
+        // Set the rotation of the slot.
+        slot.setRotationDegrees(rotation);
+        
+        return slot;
+    }
+    
+    // Sets up the Slot table.
+    private void initTable() {
+        // Retrieve the table's current model.
+        javax.swing.table.DefaultTableModel model = 
+                (javax.swing.table.DefaultTableModel)BodySlotTable.getModel();
+        // Remove any rows fromt the table.
+        model.setRowCount(0);
+        // Create a new Cell Editor for the type column.
+        BodySlotTable.getColumnModel().getColumn(4).setCellEditor(
+                new javax.swing.DefaultCellEditor(
+                        new javax.swing.JComboBox<>(
+                                new String[] { "Arm", "Head", "Leg" }
+                        )
+                )
+        );
+    }
 
     public PartEditor(GraphicsConfiguration gc) {
         super(gc);
@@ -819,6 +1181,7 @@ public class PartEditor extends javax.swing.JFrame {
     // Loads the part into the fields.
     private void loadPart(int partType, String partName) {
         // Enable the fields.
+        disableFields();
         enableFields();
         
         // Load the part from the file.
@@ -828,11 +1191,6 @@ public class PartEditor extends javax.swing.JFrame {
         imagePanel.center();
         PartImageField.setText(part.getImageFile());
         PartNameField.setText(partName);
-        PartPivotXField.setText("" + part.getPivotX());
-        crossX = part.getPivotX();
-        PartPivotYField.setText("" + part.getPivotY());
-        crossY = part.getPivotY();
-        pivotSet = true;
         drawCrosshairs = true;
         PartBaseHealthField.setText("" + part.getBaseHealth());
         PartBaseAttackField.setText("" + part.getBaseAttack());
@@ -840,6 +1198,37 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedField.setText("" + part.getBaseSpeed());
         PartTypeCombo.setSelectedIndex(partType - 1);
         PartTypeCombo.setEnabled(false);
+        
+        // Check if the part is a body or not.
+        if (part instanceof Body) {
+            // Load the arm slots into the table.
+            for (Slot<Arm> s : ((Body)part).getArmSlots())
+                ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
+                        .addRow(new Object[] { s.getX(), s.getY(), s.getZ(), 
+                            (int)s.getRotationDegrees(), "Arm" });
+            
+            // Load the head slots into the table.
+            for (Slot<Head> s : ((Body)part).getHeadSlots())
+                ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
+                        .addRow(new Object[] { s.getX(), s.getY(), s.getZ(), 
+                            (int)s.getRotationDegrees(), "Head" });
+            
+            // Load the leg slots into the table.
+            for (Slot<Leg> s : ((Body)part).getLegSlots())
+                ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
+                        .addRow(new Object[] { s.getX(), s.getY(), s.getZ(), 
+                            (int)s.getRotationDegrees(), "Leg" });
+            
+            pivotSet = false;
+        }
+        else {
+            // Set the Pivot information.
+            PartPivotXField.setText("" + part.getPivotX());
+            crossX = part.getPivotX();
+            PartPivotYField.setText("" + part.getPivotY());
+            crossY = part.getPivotY();
+            pivotSet = true;
+        }
     }
     
     private void moveCrosshairs(int x, int y) {
@@ -848,41 +1237,66 @@ public class PartEditor extends javax.swing.JFrame {
             // Move the crosshairs to the mouse position.
             crossX = x;
             crossY = y;
-            // Display the X and Y values in the pivot fields.
-            PartPivotXField.setText("" + crossX);
-            PartPivotYField.setText("" + crossY);
+            
+            // Ensure a body is not being edited.
+            if (!"Body".equals(PartTypeCombo.getSelectedItem().toString())) {
+                // Display the X and Y values in the pivot fields.
+                PartPivotXField.setText("" + crossX);
+                PartPivotYField.setText("" + crossY);
+            }
             // Repaint the screen.
             repaint();
         }
+    }
+    
+    private void moveSlot(int r, int x, int y) {
+        // Set the slot position.
+        slot = new int[] { x, y };
+        // Set the selected position in the table.
+        BodySlotTable.setValueAt(x, r, 0);
+        BodySlotTable.setValueAt(y, r, 1);
+        
+        repaint();
     }
     
     // Save the part to the appropriate directory.
     private void savePart() {
         // Determine the type of body part being saved.
         int partType = 0;
+        int pivotX = 0;
+        int pivotY = 0;
         Slot<Arm>[] arms = null;
         Slot<Head>[] heads = null;
         Slot<Leg>[] legs = null;
         switch (PartTypeCombo.getSelectedItem().toString()) {
             case "Arm":
                 partType = Parts.TYPE_ARM;
+                pivotX = Integer.parseInt(PartPivotXField.getText());
+                pivotY = Integer.parseInt(PartPivotYField.getText());
                 break;
             case "Body":
                 partType = Parts.TYPE_BODY;
+                arms = getArmSlots();
+                heads = getHeadSlots();
+                legs = getLegSlots();
                 break;
             case "Head":
                 partType = Parts.TYPE_HEAD;
+                pivotX = Integer.parseInt(PartPivotXField.getText());
+                pivotY = Integer.parseInt(PartPivotYField.getText());
                 break;
             case "Leg":
                 partType = Parts.TYPE_LEG;
+                pivotX = Integer.parseInt(PartPivotXField.getText());
+                pivotY = Integer.parseInt(PartPivotYField.getText());
                 break;
         }
         
         // Attempt to save the Part.
         String error = Parts.save(
                 partType, imageFile, PartNameField.getText(), 
-                Integer.parseInt(PartPivotXField.getText()),
-                Integer.parseInt(PartPivotYField.getText()),
+                pivotX,
+                pivotY,
                 Integer.parseInt(PartBaseHealthField.getText()), 
                 Integer.parseInt(PartBaseAttackField.getText()),
                 Integer.parseInt(PartBaseDefenseField.getText()),
@@ -911,40 +1325,17 @@ public class PartEditor extends javax.swing.JFrame {
         updateFileLists();
     }
     
-    // Retrieves the list of names of the part files from the given directory.
-    private String[] getPartNames(String dirPath) {
-        // Load the directory.
-        java.io.File directory = new java.io.File(dirPath);
-        
-        // Load only files with the .part file extension.
-        String[] fileNames = directory.list((dir, name) ->
-                Parts.PARTS_FILE_EXT.equals(
-                    name.substring(name.lastIndexOf(".")))
-        );
-        
-        // Remove the file extensions from the file names.
-        String[] names = new String[fileNames.length];
-        for (int i = 0; i < names.length; i++) {
-            // Retrieve the last index of a period in the filename.
-            int index = fileNames[i].lastIndexOf('.');
-            // Set the arm name to everything before the period.
-            names[i] = fileNames[i].substring(0, index);
-        }
-        
-        return names;
-    }
-    
     // Updates all the file lists to show any new files that are in the Part
     // res folders.
     private void updateFileLists() {
         // Set the list model to the list of files in the directory.
-        ArmsList.setListData(getPartNames(Parts.ARMS_RES_DIR));
+        ArmsList.setListData(Parts.getPartNames(Parts.ARMS_RES_DIR));
         // Set the list model to the list of files in the directory.
-        BodiesList.setListData(getPartNames(Parts.BODIES_RES_DIR));
+        BodiesList.setListData(Parts.getPartNames(Parts.BODIES_RES_DIR));
         // Set the list model to the list of files in the directory.
-        HeadsList.setListData(getPartNames(Parts.HEADS_RES_DIR));
+        HeadsList.setListData(Parts.getPartNames(Parts.HEADS_RES_DIR));
         // Set the list model to the list of files in the directory.
-        LegsList.setListData(getPartNames(Parts.LEGS_RES_DIR));
+        LegsList.setListData(Parts.getPartNames(Parts.LEGS_RES_DIR));
     }
     
     // Panel to draw the image.
@@ -970,8 +1361,8 @@ public class PartEditor extends javax.swing.JFrame {
                 );
 
             // Paint the crosshairs on the display panel.
-            g.setColor(java.awt.Color.WHITE);
             if (drawCrosshairs) {
+                g.setColor(java.awt.Color.WHITE);
                 // Draw horizontal line.
                 g.drawLine(
                         crossX - CROSSHAIR_SIZE / 2,
@@ -987,6 +1378,18 @@ public class PartEditor extends javax.swing.JFrame {
                         crossY + CROSSHAIR_SIZE / 2
                 );
             }
+            
+            // Paint the slot on the display panel.
+            if (slot != null) {
+                g.setColor(java.awt.Color.WHITE);
+                // Draw circle centered at the slot's coordiantes.
+                g.fillOval(
+                        slot[0] - SLOT_RADIUS, 
+                        slot[1] - SLOT_RADIUS,
+                        SLOT_RADIUS * 2,
+                        SLOT_RADIUS * 2);
+            }
         }
     }
+    // </editor-fold>
 }
