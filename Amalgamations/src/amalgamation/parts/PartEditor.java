@@ -83,14 +83,7 @@ public class PartEditor extends javax.swing.JFrame {
         PartImageLabel = new javax.swing.JLabel();
         PartImageField = new javax.swing.JTextField();
         PartImageButton = new javax.swing.JButton();
-        PartPivotPanel = new javax.swing.JPanel();
-        PartPivotLabel = new javax.swing.JLabel();
-        PartPivotXLabel = new javax.swing.JLabel();
-        PartPivotXField = new javax.swing.JTextField();
-        PartPivotYLabel = new javax.swing.JLabel();
-        PartPivotYField = new javax.swing.JTextField();
         PartBaseStatPanel = new javax.swing.JPanel();
-        PartBaseStatLabel = new javax.swing.JLabel();
         PartBaseHealthLabel = new javax.swing.JLabel();
         PartBaseHealthField = new javax.swing.JTextField();
         PartBaseAttackLabel = new javax.swing.JLabel();
@@ -100,11 +93,24 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedLabel = new javax.swing.JLabel();
         PartBaseSpeedField = new javax.swing.JTextField();
         SaveButton = new javax.swing.JButton();
-        PartTypeCombo = new javax.swing.JComboBox<String>();
         BodySlotPanel = new javax.swing.JPanel();
         BodySlotLabel = new javax.swing.JLabel();
         BodySlotScrollPane = new javax.swing.JScrollPane();
         BodySlotTable = new javax.swing.JTable();
+        PartTypePanel = new javax.swing.JPanel();
+        PartTypeLabel = new javax.swing.JLabel();
+        PartTypeCombo = new javax.swing.JComboBox<String>();
+        PartPivotPanel = new javax.swing.JPanel();
+        PartPivotLabel = new javax.swing.JLabel();
+        PartPivotXLabel = new javax.swing.JLabel();
+        PartPivotXField = new javax.swing.JTextField();
+        PartPivotYLabel = new javax.swing.JLabel();
+        PartPivotYField = new javax.swing.JTextField();
+        AbilityPanel = new javax.swing.JPanel();
+        AbilitiesLabel = new javax.swing.JLabel();
+        AbilityListScrollPane = new javax.swing.JScrollPane();
+        AbilityList = new javax.swing.JList<String>();
+        AddAbilitiesButton = new javax.swing.JButton();
         AddButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -135,7 +141,7 @@ public class PartEditor extends javax.swing.JFrame {
             ArmsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ArmsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ArmsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(ArmsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -167,7 +173,7 @@ public class PartEditor extends javax.swing.JFrame {
             BodiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BodiesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(BodiesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(BodiesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -199,7 +205,7 @@ public class PartEditor extends javax.swing.JFrame {
             HeadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeadsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(HeadsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(HeadsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -231,7 +237,7 @@ public class PartEditor extends javax.swing.JFrame {
             LegsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LegsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -264,12 +270,14 @@ public class PartEditor extends javax.swing.JFrame {
         PartDisplayPanel.setLayout(PartDisplayPanelLayout);
         PartDisplayPanelLayout.setHorizontalGroup(
             PartDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         PartDisplayPanelLayout.setVerticalGroup(
             PartDisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        PartNamePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         PartNameLabel.setText("Name:");
 
@@ -278,17 +286,22 @@ public class PartEditor extends javax.swing.JFrame {
         PartNamePanelLayout.setHorizontalGroup(
             PartNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PartNamePanelLayout.createSequentialGroup()
-                .addComponent(PartNameLabel)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(PartNameField)
+                .addContainerGap()
+                .addGroup(PartNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PartNameField)
+                    .addGroup(PartNamePanelLayout.createSequentialGroup()
+                        .addComponent(PartNameLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         PartNamePanelLayout.setVerticalGroup(
             PartNamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PartNamePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(PartNameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PartNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(PartNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         PartImageLabel.setText("Image:");
@@ -325,52 +338,9 @@ public class PartEditor extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PartPivotLabel.setText("Pivot:");
+        PartBaseStatPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        PartPivotXLabel.setText("X: ");
-
-        PartPivotXField.setEditable(false);
-        PartPivotXField.setColumns(4);
-        PartPivotXField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        PartPivotYLabel.setText("Y: ");
-
-        PartPivotYField.setEditable(false);
-        PartPivotYField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        javax.swing.GroupLayout PartPivotPanelLayout = new javax.swing.GroupLayout(PartPivotPanel);
-        PartPivotPanel.setLayout(PartPivotPanelLayout);
-        PartPivotPanelLayout.setHorizontalGroup(
-            PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PartPivotPanelLayout.createSequentialGroup()
-                .addComponent(PartPivotLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(PartPivotPanelLayout.createSequentialGroup()
-                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PartPivotYLabel)
-                    .addComponent(PartPivotXLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PartPivotXField)
-                    .addComponent(PartPivotYField)))
-        );
-        PartPivotPanelLayout.setVerticalGroup(
-            PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PartPivotPanelLayout.createSequentialGroup()
-                .addComponent(PartPivotLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PartPivotXLabel)
-                    .addComponent(PartPivotXField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PartPivotYLabel)
-                    .addComponent(PartPivotYField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        PartBaseStatLabel.setText("Base Stats:");
-
+        PartBaseHealthLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PartBaseHealthLabel.setText("Health: ");
 
         PartBaseHealthField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -380,6 +350,7 @@ public class PartEditor extends javax.swing.JFrame {
             }
         });
 
+        PartBaseAttackLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PartBaseAttackLabel.setText("Attack: ");
 
         PartBaseAttackField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -389,6 +360,7 @@ public class PartEditor extends javax.swing.JFrame {
             }
         });
 
+        PartBaseDefenseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PartBaseDefenseLabel.setText("Defense:");
 
         PartBaseDefenseField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -398,6 +370,7 @@ public class PartEditor extends javax.swing.JFrame {
             }
         });
 
+        PartBaseSpeedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PartBaseSpeedLabel.setText("Speed: ");
 
         PartBaseSpeedField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -412,24 +385,30 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseStatPanelLayout.setHorizontalGroup(
             PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PartBaseStatPanelLayout.createSequentialGroup()
-                .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PartBaseDefenseLabel)
-                    .addComponent(PartBaseSpeedLabel)
-                    .addComponent(PartBaseAttackLabel)
-                    .addComponent(PartBaseHealthLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(PartBaseHealthField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addComponent(PartBaseDefenseField)
-                    .addComponent(PartBaseAttackField)
-                    .addComponent(PartBaseSpeedField, javax.swing.GroupLayout.Alignment.LEADING)))
-            .addComponent(PartBaseStatLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PartBaseStatPanelLayout.createSequentialGroup()
+                        .addComponent(PartBaseHealthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PartBaseHealthField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PartBaseStatPanelLayout.createSequentialGroup()
+                        .addComponent(PartBaseAttackLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PartBaseAttackField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PartBaseStatPanelLayout.createSequentialGroup()
+                        .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(PartBaseDefenseLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                            .addComponent(PartBaseSpeedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PartBaseDefenseField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PartBaseSpeedField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         PartBaseStatPanelLayout.setVerticalGroup(
             PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PartBaseStatPanelLayout.createSequentialGroup()
-                .addComponent(PartBaseStatLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PartBaseHealthLabel)
                     .addComponent(PartBaseHealthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -445,20 +424,13 @@ public class PartEditor extends javax.swing.JFrame {
                 .addGroup(PartBaseStatPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PartBaseSpeedLabel)
                     .addComponent(PartBaseSpeedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         SaveButton.setText("Save");
         SaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveButtonActionPerformed(evt);
-            }
-        });
-
-        PartTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arm", "Body", "Head", "Leg" }));
-        PartTypeCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PartTypeComboActionPerformed(evt);
             }
         });
 
@@ -511,20 +483,135 @@ public class PartEditor extends javax.swing.JFrame {
         BodySlotPanel.setLayout(BodySlotPanelLayout);
         BodySlotPanelLayout.setHorizontalGroup(
             BodySlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BodySlotPanelLayout.createSequentialGroup()
-                .addGroup(BodySlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BodySlotLabel)
-                    .addComponent(BodySlotScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+            .addComponent(BodySlotLabel)
+            .addComponent(BodySlotScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         BodySlotPanelLayout.setVerticalGroup(
             BodySlotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BodySlotPanelLayout.createSequentialGroup()
                 .addComponent(BodySlotLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BodySlotScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BodySlotScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
+        );
+
+        PartTypePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        PartTypeLabel.setText("Part Type:");
+
+        PartTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arm", "Body", "Head", "Leg" }));
+        PartTypeCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PartTypeComboActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PartTypePanelLayout = new javax.swing.GroupLayout(PartTypePanel);
+        PartTypePanel.setLayout(PartTypePanelLayout);
+        PartTypePanelLayout.setHorizontalGroup(
+            PartTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PartTypePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PartTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PartTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PartTypeLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PartTypePanelLayout.setVerticalGroup(
+            PartTypePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PartTypePanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(PartTypeLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PartTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        PartPivotPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        PartPivotLabel.setText("Pivot:");
+
+        PartPivotXLabel.setText("X: ");
+
+        PartPivotXField.setEditable(false);
+        PartPivotXField.setColumns(4);
+        PartPivotXField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        PartPivotYLabel.setText("Y: ");
+
+        PartPivotYField.setEditable(false);
+        PartPivotYField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        javax.swing.GroupLayout PartPivotPanelLayout = new javax.swing.GroupLayout(PartPivotPanel);
+        PartPivotPanel.setLayout(PartPivotPanelLayout);
+        PartPivotPanelLayout.setHorizontalGroup(
+            PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PartPivotPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PartPivotPanelLayout.createSequentialGroup()
+                        .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PartPivotXLabel)
+                            .addComponent(PartPivotYLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(PartPivotYField)
+                            .addComponent(PartPivotXField)))
+                    .addGroup(PartPivotPanelLayout.createSequentialGroup()
+                        .addComponent(PartPivotLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        PartPivotPanelLayout.setVerticalGroup(
+            PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PartPivotPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PartPivotLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PartPivotXLabel)
+                    .addComponent(PartPivotXField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PartPivotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PartPivotYLabel)
+                    .addComponent(PartPivotYField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        AbilitiesLabel.setText("Abilities:");
+
+        AbilityList.setModel(new javax.swing.DefaultListModel());
+        AbilityList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        AbilityList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                AbilityListKeyPressed(evt);
+            }
+        });
+        AbilityListScrollPane.setViewportView(AbilityList);
+
+        javax.swing.GroupLayout AbilityPanelLayout = new javax.swing.GroupLayout(AbilityPanel);
+        AbilityPanel.setLayout(AbilityPanelLayout);
+        AbilityPanelLayout.setHorizontalGroup(
+            AbilityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AbilityPanelLayout.createSequentialGroup()
+                .addComponent(AbilitiesLabel)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(AbilityListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+        );
+        AbilityPanelLayout.setVerticalGroup(
+            AbilityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AbilityPanelLayout.createSequentialGroup()
+                .addComponent(AbilitiesLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AbilityListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+        );
+
+        AddAbilitiesButton.setText("Add Abilities");
+        AddAbilitiesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddAbilitiesButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout EditPanelLayout = new javax.swing.GroupLayout(EditPanel);
         EditPanel.setLayout(EditPanelLayout);
@@ -535,18 +622,22 @@ public class PartEditor extends javax.swing.JFrame {
                 .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PartImagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(EditPanelLayout.createSequentialGroup()
-                        .addComponent(PartDisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(PartDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                            .addComponent(AbilityPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AddAbilitiesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(SaveButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(EditPanelLayout.createSequentialGroup()
+                                .addComponent(PartPivotPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                                 .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(PartNamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PartPivotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(PartTypeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BodySlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(PartTypePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(BodySlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         EditPanelLayout.setVerticalGroup(
@@ -555,21 +646,22 @@ public class PartEditor extends javax.swing.JFrame {
                 .addComponent(PartImagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(PartDisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BodySlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(EditPanelLayout.createSequentialGroup()
-                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(EditPanelLayout.createSequentialGroup()
-                                .addComponent(PartNamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(PartPivotPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(PartTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(BodySlotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SaveButton))
-                    .addComponent(PartDisplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(PartNamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PartTypePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PartBaseStatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PartPivotPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AbilityPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SaveButton)
+                    .addComponent(AddAbilitiesButton))
+                .addGap(12, 12, 12))
         );
 
         AddButton.setText("New Part");
@@ -585,24 +677,24 @@ public class PartEditor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PartTypePane)
-                    .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PartTypePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AddButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
                 .addComponent(EditPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(PartTypePane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(EditPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(PartTypePane)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AddButton))
-                    .addComponent(EditPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(AddButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -838,6 +930,19 @@ public class PartEditor extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_PartTypeComboActionPerformed
+
+    private void AddAbilitiesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddAbilitiesButtonActionPerformed
+        javax.swing.SwingUtilities.invokeLater(this::addAbilities);
+    }//GEN-LAST:event_AddAbilitiesButtonActionPerformed
+
+    private void AbilityListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AbilityListKeyPressed
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Check if the delete key was pressed.
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE)
+                // Delete the currently selected ability.
+                deleteAbility();
+        });
+    }//GEN-LAST:event_AbilityListKeyPressed
     // </editor-fold>
     
     // <editor-fold desc="Main" defaultstate="collapsed">
@@ -856,6 +961,11 @@ public class PartEditor extends javax.swing.JFrame {
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AbilitiesLabel;
+    private javax.swing.JList<String> AbilityList;
+    private javax.swing.JScrollPane AbilityListScrollPane;
+    private javax.swing.JPanel AbilityPanel;
+    private javax.swing.JButton AddAbilitiesButton;
     private javax.swing.JButton AddButton;
     private javax.swing.JList<String> ArmsList;
     private javax.swing.JPanel ArmsPanel;
@@ -881,7 +991,6 @@ public class PartEditor extends javax.swing.JFrame {
     private javax.swing.JLabel PartBaseHealthLabel;
     private javax.swing.JTextField PartBaseSpeedField;
     private javax.swing.JLabel PartBaseSpeedLabel;
-    private javax.swing.JLabel PartBaseStatLabel;
     private javax.swing.JPanel PartBaseStatPanel;
     private javax.swing.JPanel PartDisplayPanel;
     private javax.swing.JButton PartImageButton;
@@ -898,7 +1007,9 @@ public class PartEditor extends javax.swing.JFrame {
     private javax.swing.JTextField PartPivotYField;
     private javax.swing.JLabel PartPivotYLabel;
     private javax.swing.JComboBox<String> PartTypeCombo;
+    private javax.swing.JLabel PartTypeLabel;
     private javax.swing.JTabbedPane PartTypePane;
+    private javax.swing.JPanel PartTypePanel;
     private javax.swing.JButton SaveButton;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
@@ -913,6 +1024,34 @@ public class PartEditor extends javax.swing.JFrame {
         disableFields();
         enableFields();
         browseImage();
+    }
+    
+    // Prompt the user to choose Abilities from the list of Abilities and add
+    // their selections to the list of abilities.
+    private void addAbilities() {
+        // Retrieve the list of ability names to add from the user.
+        String[] abilities = amalgamation.abilities.AbilitiesDialog
+                .showAbilitiesDialog(this);
+        // Ensure the user made a selection.
+        if (abilities == null)
+            return;
+        
+        // Add the abilities to the list.
+        addAbilitiesToList(abilities);
+    }
+    
+    // Add the array of ability names to the ability list.
+    private void addAbilitiesToList(
+            String[] abilities) {
+        // Retrieve the model for the list.
+        javax.swing.DefaultListModel<String> model 
+                = (javax.swing.DefaultListModel<String>)AbilityList.getModel();
+        // Iterate through the new abilities to add.
+        for (String s : abilities)
+            // Ensure the ability is not already in the list.
+            if (!model.contains(s))
+                // Add the ability to the list.
+                model.addElement(s);
     }
     
     // Adds a row to the slot table with default values for all values.
@@ -1034,6 +1173,15 @@ public class PartEditor extends javax.swing.JFrame {
         return true;
     }
     
+    // Deletes the currently selected Ability from the table.
+    private void deleteAbility() {
+        // Check if an ability is selected.
+        if (AbilityList.getSelectedValue() != null)
+            // Remove the selected ability from the table.
+            ((javax.swing.DefaultListModel)AbilityList.getModel())
+                    .remove(AbilityList.getSelectedIndex());
+    }
+    
     // Deletes the given part file after prompting the user to ensure they
     // they want to proceed with it.
     private void deletePart(int partType, String partName) {
@@ -1072,6 +1220,8 @@ public class PartEditor extends javax.swing.JFrame {
         ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
                 .setRowCount(0);
         slot = null;
+        ((javax.swing.DefaultListModel)AbilityList.getModel()).clear();
+        AddAbilitiesButton.setEnabled(false);
         repaint();
     }
     
@@ -1084,6 +1234,7 @@ public class PartEditor extends javax.swing.JFrame {
         PartBaseSpeedField.setEnabled(true);
         PartTypeCombo.setEnabled(true);
         SaveButton.setEnabled(true);
+        AddAbilitiesButton.setEnabled(true);
         repaint();
     }
     
@@ -1127,6 +1278,23 @@ public class PartEditor extends javax.swing.JFrame {
                 slots.add((Slot<Leg>)getSlot(r, new Leg[0]));
         
         return slots.toArray((Slot<Leg>[])new Slot[0]);
+    }
+    
+    // Retrieves all the abilities in the ability list.
+    private amalgamation.abilities.Ability[] getAbilities() {
+        // Retrieve the list model.
+        javax.swing.ListModel<String> model 
+                = (javax.swing.ListModel<String>)AbilityList.getModel();
+        // Create an array to hold the abilities.
+        amalgamation.abilities.Ability[] abilities 
+                = new amalgamation.abilities.Ability[model.getSize()];
+        // Retrieve each Ability name from the model.
+        for (int i = 0; i < model.getSize(); i++)
+            // Load each Ability.
+            abilities[i] = amalgamation.abilities.Abilities.load(
+                    model.getElementAt(i));
+        
+        return abilities;
     }
     
     // Retrieves the slot from the given row of the table.
@@ -1198,6 +1366,12 @@ public class PartEditor extends javax.swing.JFrame {
         PartTypeCombo.setSelectedIndex(partType - 1);
         PartTypeCombo.setEnabled(false);
         
+        // Load the abilities.
+        String[] abilities = new String[part.getAbilities().length];
+        for (int i = 0; i < abilities.length; i++)
+            abilities[i] = part.getAbilities()[i].getName();
+        addAbilitiesToList(abilities);
+        
         // Check if the part is a body or not.
         if (part instanceof Body) {
             // Load the arm slots into the table.
@@ -1266,7 +1440,7 @@ public class PartEditor extends javax.swing.JFrame {
         int pivotY = 0;
         Slot<Arm>[] arms = null;
         Slot<Head>[] heads = null;
-        Slot<Leg>[] legs = null;
+        Slot<Leg>[] legs = null; 
         switch (PartTypeCombo.getSelectedItem().toString()) {
             case "Arm":
                 partType = Parts.TYPE_ARM;
@@ -1300,7 +1474,7 @@ public class PartEditor extends javax.swing.JFrame {
                 Integer.parseInt(PartBaseAttackField.getText()),
                 Integer.parseInt(PartBaseDefenseField.getText()),
                 Integer.parseInt(PartBaseSpeedField.getText()), 
-                arms, heads, legs
+                arms, heads, legs, getAbilities()
         );
         
         // If the save failed, display the error message.
