@@ -1,6 +1,6 @@
 package amalgamation.parts;
 
-import amalgamations.abilities.Ability;
+import amalgamation.abilities.Ability;
 /**
  * Parts is a utility class that contains useful Part related functions and
  * constants.
@@ -312,6 +312,7 @@ public class Parts {
      * @param legs the array of Leg Slots on the Part if the Part is a Body. If
      *             the type of Part is not Body, this will not be used, and can
      *             therefore be null.
+     * @param abilities the array of Abilities that the Part provides.
      * @return the error message if the save failed. If the save was successful,
      *         null is returned.
      * @throws IllegalArgumentException if the type is invalid
@@ -319,8 +320,8 @@ public class Parts {
     public static String save(int type, java.io.File imageFile, String name, 
             int pivotX, int pivotY, 
             int baseHealth, int baseAttack, int baseDefense, int baseSpeed,
-            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs, Ability[] abilities)
-                throws IllegalArgumentException {
+            Slot<Arm>[] arms, Slot<Head>[] heads, Slot<Leg>[] legs, 
+            Ability[] abilities) throws IllegalArgumentException {
         Part part = null;
         String imageDirectory = PARTS_IMG_DIR;
         String resDirectory = PARTS_RES_DIR;
