@@ -441,14 +441,14 @@ public class PartEditor extends javax.swing.JFrame {
 
             },
             new String [] {
-                "X", "Y", "Z", "Rotation", "Type"
+                "X", "Y", "Z", "Rotation", "Flip", "Type"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, true
+                false, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -472,11 +472,21 @@ public class PartEditor extends javax.swing.JFrame {
         });
         BodySlotScrollPane.setViewportView(BodySlotTable);
         if (BodySlotTable.getColumnModel().getColumnCount() > 0) {
-            BodySlotTable.getColumnModel().getColumn(0).setResizable(false);
-            BodySlotTable.getColumnModel().getColumn(1).setResizable(false);
-            BodySlotTable.getColumnModel().getColumn(2).setResizable(false);
-            BodySlotTable.getColumnModel().getColumn(3).setResizable(false);
-            BodySlotTable.getColumnModel().getColumn(4).setResizable(false);
+            BodySlotTable.getColumnModel().getColumn(0).setMinWidth(50);
+            BodySlotTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            BodySlotTable.getColumnModel().getColumn(0).setMaxWidth(50);
+            BodySlotTable.getColumnModel().getColumn(1).setMinWidth(50);
+            BodySlotTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+            BodySlotTable.getColumnModel().getColumn(1).setMaxWidth(50);
+            BodySlotTable.getColumnModel().getColumn(2).setMinWidth(50);
+            BodySlotTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+            BodySlotTable.getColumnModel().getColumn(2).setMaxWidth(50);
+            BodySlotTable.getColumnModel().getColumn(3).setMinWidth(75);
+            BodySlotTable.getColumnModel().getColumn(3).setPreferredWidth(75);
+            BodySlotTable.getColumnModel().getColumn(3).setMaxWidth(75);
+            BodySlotTable.getColumnModel().getColumn(4).setMinWidth(50);
+            BodySlotTable.getColumnModel().getColumn(4).setPreferredWidth(50);
+            BodySlotTable.getColumnModel().getColumn(4).setMaxWidth(50);
         }
 
         javax.swing.GroupLayout BodySlotPanelLayout = new javax.swing.GroupLayout(BodySlotPanel);
@@ -1063,7 +1073,7 @@ public class PartEditor extends javax.swing.JFrame {
     // specified x and y values.
     private void addSlot(int x, int y) {
         ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
-                .addRow(new Object[] { x, y, 1, 0, "Arm" });
+                .addRow(new Object[] { x, y, 1, 0, false, "Arm" });
         // Set the selected row to the newly added row.
         BodySlotTable.setRowSelectionInterval(BodySlotTable.getRowCount() - 1,
                 BodySlotTable.getRowCount() - 1);
@@ -1245,7 +1255,7 @@ public class PartEditor extends javax.swing.JFrame {
         // Iterate through each row in the slots table.
         for (int r = 0; r < BodySlotTable.getRowCount(); r++)
             // Check if the row contains an Arm slot.
-            if ("Arm".equals(BodySlotTable.getValueAt(r, 4)))
+            if ("Arm".equals(BodySlotTable.getValueAt(r, 5)))
                 // Retrieve the arm slot from the table.
                 slots.add((Slot<Arm>)getSlot(r, new Arm[0]));
         
@@ -1259,7 +1269,7 @@ public class PartEditor extends javax.swing.JFrame {
         // Iterate through each row in the slots table.
         for (int r = 0; r < BodySlotTable.getRowCount(); r++)
             // Check if the row contains a Head slot.
-            if ("Head".equals(BodySlotTable.getValueAt(r, 4)))
+            if ("Head".equals(BodySlotTable.getValueAt(r, 5)))
                 // Retrieve the Head slot from the table.
                 slots.add((Slot<Head>)getSlot(r, new Head[0]));
         
@@ -1273,7 +1283,7 @@ public class PartEditor extends javax.swing.JFrame {
         // Iterate through each row in the slots table.
         for (int r = 0; r < BodySlotTable.getRowCount(); r++)
             // Check if the row contains a Leg slot.
-            if ("Leg".equals(BodySlotTable.getValueAt(r, 4)))
+            if ("Leg".equals(BodySlotTable.getValueAt(r, 5)))
                 // Retrieve the Leg slot from the table.
                 slots.add((Slot<Leg>)getSlot(r, new Leg[0]));
         
@@ -1304,22 +1314,20 @@ public class PartEditor extends javax.swing.JFrame {
         int y = (int)BodySlotTable.getValueAt(r, 1);
         int z = (int)BodySlotTable.getValueAt(r, 2);
         int rotation = (int)BodySlotTable.getValueAt(r, 3);
+        boolean flip = (boolean)BodySlotTable.getValueAt(r, 4);
         
         // Determine the type of the Slot object.
         Slot<T> slot = null;
-        switch(BodySlotTable.getValueAt(r, 4).toString()) {
+        switch(BodySlotTable.getValueAt(r, 5).toString()) {
             case "Arm":
-                slot = new Slot<>(x, y, z);
+                slot = new Slot<>(x, y, z, rotation, flip);
                 break;
             case "Head":
-                slot = new Slot<>(x, y, z);
+                slot = new Slot<>(x, y, z, rotation, flip);
                 break;
             case "Leg":
-                slot = new Slot<>(x, y, z);
+                slot = new Slot<>(x, y, z, rotation, flip);
         }
-        
-        // Set the rotation of the slot.
-        slot.setRotationDegrees(rotation);
         
         return slot;
     }
@@ -1332,11 +1340,17 @@ public class PartEditor extends javax.swing.JFrame {
         // Remove any rows fromt the table.
         model.setRowCount(0);
         // Create a new Cell Editor for the type column.
-        BodySlotTable.getColumnModel().getColumn(4).setCellEditor(
+        BodySlotTable.getColumnModel().getColumn(5).setCellEditor(
                 new javax.swing.DefaultCellEditor(
                         new javax.swing.JComboBox<>(
                                 new String[] { "Arm", "Head", "Leg" }
                         )
+                )
+        );
+        // Create a new Cell Editor for the type column.
+        BodySlotTable.getColumnModel().getColumn(4).setCellEditor(
+                new javax.swing.DefaultCellEditor(
+                        new javax.swing.JCheckBox()
                 )
         );
     }
@@ -1378,19 +1392,19 @@ public class PartEditor extends javax.swing.JFrame {
             for (Slot<Arm> s : ((Body)part).getArmSlots())
                 ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
                         .addRow(new Object[] { s.getX(), s.getY(), s.getZ(), 
-                            (int)s.getRotationDegrees(), "Arm" });
+                            (int)s.getRotationDegrees(), s.isFlip(), "Arm" });
             
             // Load the head slots into the table.
             for (Slot<Head> s : ((Body)part).getHeadSlots())
                 ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
                         .addRow(new Object[] { s.getX(), s.getY(), s.getZ(), 
-                            (int)s.getRotationDegrees(), "Head" });
+                            (int)s.getRotationDegrees(), s.isFlip(), "Head" });
             
             // Load the leg slots into the table.
             for (Slot<Leg> s : ((Body)part).getLegSlots())
                 ((javax.swing.table.DefaultTableModel)BodySlotTable.getModel())
                         .addRow(new Object[] { s.getX(), s.getY(), s.getZ(), 
-                            (int)s.getRotationDegrees(), "Leg" });
+                            (int)s.getRotationDegrees(), s.isFlip(), "Leg" });
             
             pivotSet = false;
         }
