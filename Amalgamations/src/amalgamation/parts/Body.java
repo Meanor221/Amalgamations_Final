@@ -84,8 +84,7 @@ public class Body extends Part {
                 // Sort the slots by their Z indices in order to "layer" them.
                 .sorted((s1, s2) -> s1.getZ() - s2.getZ())
                 // Draw each slot's body part to the image.
-                .forEach(s -> s.getPart().render(fullImage, 
-                        s.getX(), s.getY(), s.getRotation()));
+                .forEach(s -> s.render(fullImage));
         
         return fullImage;
     }

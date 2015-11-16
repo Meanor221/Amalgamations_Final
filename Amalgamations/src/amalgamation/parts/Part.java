@@ -215,45 +215,5 @@ public abstract class Part implements Serializable {
     public BufferedImage loadImage(String fileName) throws IOException {
         return ImageIO.read(new File(imageDirectory() + fileName));
     }
-    
-    /**
-     * Draws the Part's image on the given image.
-     * 
-     * The X and Y coordinates determine the position on the image
-     * that the Part's image will draw its pivot point. The rotation determines 
-     * how many radians the image will rotate around its pivot point clockwise.
-     * 
-     * @param img the image to draw the Part on
-     * @param x the X position to draw the Part image's pivot point
-     * @param y the Y position to draw the Part image's pivot point
-     * @param rotation the number of radians to rotate the Part image clockwise
-     *                 around the pivot point
-     */
-    public void render(BufferedImage img, int x, int y, double rotation) {
-        // Create a new image that is the same size as the given image.
-        BufferedImage temp = new BufferedImage(img.getWidth(), img.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
-        
-        // Draw the part's image on the temp image.
-        Graphics2D g = temp.createGraphics();
-        g.drawImage(
-                getImage(), 
-                // Ensure the pivot point is at (x, y).
-                x - pivotX,
-                y - pivotY, 
-                null
-        );
-        g.dispose();
-        
-        // Draw the temp image over top the given image.
-        g = img.createGraphics();
-        g.drawImage(
-                temp, 
-                // Rotate the image around the pivot point.
-                AffineTransform.getRotateInstance(rotation, x, y),
-                null
-        );
-        g.dispose();
-    }
 }
 

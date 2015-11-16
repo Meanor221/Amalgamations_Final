@@ -1,5 +1,8 @@
 package amalgamation.parts;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -31,6 +34,8 @@ public class Slot<T extends Part> implements Serializable {
     private final int z;
     // The number of radians the body part should be rotated.
     private double rotation;
+    // Whether or not to flip the body's image horizontally.
+    private boolean flip;
     // The body part connected to the slot.
     private T part;
     
@@ -85,10 +90,27 @@ public class Slot<T extends Part> implements Serializable {
      * @param rotation the number of radians the body part should be rotated
      */
     public Slot(int x, int y, int z, double rotation) {
+        this(x, y, z, rotation, false);
+    }
+    
+        /**
+     * Constructs a new Slot object with the specified position and rotation.
+     * 
+     * Once set, the X and Y coordinates and Z index cannot be changed.
+     * 
+     * @param x the X coordinate of the Slot's position on the Body
+     * @param y the Y coordinate of the Slot's position on the Body
+     * @param z the Z index determining the layer that the body part should be
+     *          drawn on
+     * @param rotation the number of radians the body part should be rotated
+     * @param flip whether or not the Part's image should be flipped
+     */
+    public Slot(int x, int y, int z, double rotation, boolean flip) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.rotation = rotation;
+        this.flip = flip;
     }
     
     /**
@@ -160,6 +182,67 @@ public class Slot<T extends Part> implements Serializable {
      */
     public int getZ() {
         return z;
+    }
+    
+    /**
+     * Returns whether or not the Slot's Body Part's image should be flipped
+     * horizontally when it is drawn.
+     * 
+     * @return true if the Part's image should be flipped, false otherwise
+     */
+    public boolean isFlip() {
+        return flip;
+    }
+    
+    /**
+     * Draws the Part's image on the given image.
+     * 
+     * The X and Y coordinates determine the position on the image
+     * that the Part's image will draw its pivot point. The rotation determines 
+     * how many radians the image will rotate around its pivot point clockwise.
+     * 
+     * @param img the image to draw the Part on
+     */
+    public void render(BufferedImage img) {
+        // Create a new image that is the same size as the given image.
+        BufferedImage temp = new BufferedImage(img.getWidth(), img.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        
+        // If the Part should be flipped, it should be drawn on the right edge
+        // and its width should be negative.
+        int drawX = flip?
+                part.getImage().getWidth():
+                0;
+        int drawWidth = flip?
+                -part.getImage().getWidth():
+                part.getImage().getWidth();
+        // If the Part is flipped, it should be rotated an extra 180 degrees.
+        double drawRotation = flip?
+                rotation + Math.PI:
+                rotation;
+        
+        // Draw the part's image on the temp image.
+        Graphics2D g = temp.createGraphics();
+        g.drawImage(
+                part.getImage(), 
+                // Ensure the pivot point is at (x, y).
+                x - part.getPivotX(),
+                y - part.getPivotY(),
+                drawWidth,
+                part.getImage().getHeight(),
+                null
+        );
+        g.dispose();
+        
+        // Draw the temp image over top the given image.
+        g = img.createGraphics();
+        g.drawImage(
+                temp, 
+                // Rotate the image around the pivot point.
+                AffineTransform.getRotateInstance(drawRotation, x, y),
+                null
+        );
+        g.dispose();
     }
     
     /**
