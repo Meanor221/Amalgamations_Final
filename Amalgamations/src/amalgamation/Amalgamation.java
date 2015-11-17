@@ -99,12 +99,19 @@ public class Amalgamation implements Serializable {
      * opponents attack.
      * 
      * @param damage the amount to reduce the Amalgamation's currentHealth by.
+     * @return true if the damage lowered the Amaglamation's currentHealth to
+     *         zero, false otherwise.
      */
-    public void doDamage(int damage) { 
+    public boolean doDamage(int damage) { 
         currentHealth = currentHealth - damage;
+        
         // Ensure the currentHealth does not fall below 0.
-        if (currentHealth < 0)
+        if (currentHealth < 0) {
             currentHealth = 0;
+            return true;
+        }
+        
+        return false;
     }
 
     
@@ -289,6 +296,16 @@ public class Amalgamation implements Serializable {
         level++;
         // Recalculate the stats since the level has changed.
         calculateStats();
+    }
+    
+    /**
+     * Resets the Amalgamation's current stats to their default values.
+     */
+    public void resetCurrentStats() {
+        currentHealth = health;
+        currentAttack = attack;
+        currentDefense = defense;
+        currentSpeed = speed;
     }
     
     /**
