@@ -723,7 +723,7 @@ public class AbilityEditor extends javax.swing.JFrame {
                         m.getModifiedStat(),
                         m.getMultiplier(),
                         m.getAdder(),
-                        m.getScript("USER", "TARGET")
+                        m.getScript()
                     });
             //System.out.println( m.getScript("Joe", "Sandy"));
         }
