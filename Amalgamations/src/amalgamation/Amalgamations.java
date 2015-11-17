@@ -13,9 +13,6 @@ public class Amalgamations {
     // The directory that holds this type of file
     public static final String  AMAL_RES_DIR   = "res/amal/";
     
-    // The directory that holds this type of image file
-    public static final String  AMAL_IMG_DIR   = "res/img/Amals/";
-    
     /**
      * Attempts to load an Amalgamation file
      * @param amalFileName
@@ -89,7 +86,6 @@ public class Amalgamations {
     public static void save(Body body, String name) 
                 throws IllegalArgumentException {
         Amalgamation amalgamation = new Amalgamation(name, body);
-        String imageDirectory = AMAL_IMG_DIR;
         String resDirectory = AMAL_RES_DIR;
         
          // Attempt to create the resource file.
@@ -99,9 +95,7 @@ public class Amalgamations {
             // Write the created Part to the file.
             out.writeObject(amalgamation);
         } catch (java.io.IOException e) {
-            System.out.println("Could not save the Amalgamation to "
-                    + "a resource file. Please make sure the directory "
-                    + resDirectory + " exists.");
+            e.printStackTrace();
         }
     }
 }

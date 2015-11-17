@@ -220,9 +220,7 @@ public class Slot<T extends Part> implements Serializable {
         double drawRotation = flip?
                 rotation + Math.PI:
                 rotation;
-        
-        System.out.println(drawX);
-        
+                
         // Draw the part's image on the temp image.
         Graphics2D g = temp.createGraphics();
         g.drawImage(

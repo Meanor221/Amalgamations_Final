@@ -1,7 +1,11 @@
 package amalgamation;
 import amalgamation.parts.Body;
-import java.util.Random;
+
 import java.awt.image.BufferedImage;
+
+import java.io.Serializable;
+
+import java.util.Random;
 
 /**
  * An Amalgamation is a character that contains a body, name, and calculated
@@ -9,7 +13,7 @@ import java.awt.image.BufferedImage;
  * 
  * @author Adam Meanor, Caleb Rush
  */
-public class Amalgamation {    
+public class Amalgamation implements Serializable {    
     // The range in which the variance can be calculated.
     private static final double VARIANCE_RANGE = 0.3;
     // The highest level that can be reached (also used for calculations).
@@ -90,8 +94,10 @@ public class Amalgamation {
      * @param damage the amount to reduce the Amalgamation's currentHealth by.
      */
     public void doDamage(int damage) { 
+        currentHealth = currentHealth - damage;
         
     }
+
     
     /**
      * Increases the current Amalgamation's experience total
@@ -110,6 +116,17 @@ public class Amalgamation {
      */
     public int getAttack() {
         return attack;
+    }
+    
+    /**
+     * Retrieves the Body that makes up the full collection of Parts for this
+     * Amalgamation.
+     * 
+     * @return the Body that makes up the full collection of Parts for this
+     *         Amalgamation
+     */
+    public Body getBody() {
+        return body;
     }
     
     /**
@@ -179,6 +196,15 @@ public class Amalgamation {
     }
     
     /**
+     * Retrieves the name of the Amalgamation.
+     * 
+     * @return the name of the Amalgamation
+     */
+    public String getName(){
+        return name;
+    }
+    
+    /**
      * Retrieves the graphical representation of the Amalgamation.
      * 
      * The first time this method is called, the image will be constructed by
@@ -191,6 +217,22 @@ public class Amalgamation {
         if (fullImage == null)
             fullImage = body.fullImage();
         
+        return fullImage;
+    }
+    
+    /**
+     * Retrieves the graphical representation of the Amalgamation.
+     * 
+     * Unlike getFullImage, this method will update and return the
+     * full image every time it is called. This means that the image will be
+     * redrawn every time this method is called. Use this method when you are
+     * certain that the Amalgamation's image needs to be updated (such as 
+     * when a Slot on the Amalgamation's Body has had a value changed).
+     * 
+     * @return the graphical representation of the Amalgamation
+     */
+    public BufferedImage getFullUpdatedImage() {
+        fullImage = body.fullImage();
         return fullImage;
     }
     
@@ -247,6 +289,5 @@ public class Amalgamation {
      */
     public void setCurrentSpeed(int currentSpeed){
         this.currentSpeed = currentSpeed;
-        
     }
 }
