@@ -58,6 +58,8 @@ public class TEST extends javax.swing.JFrame {
         AttackField.setText("" + test.getAttack());
         DefenseField.setText("" + test.getDefense());
         SpeedField.setText("" + test.getSpeed());
+        TarExpField.setText("" + test.getTargetExperience());
+        DefExpField.setText("" + test.getDefeatedExperience());
         
         BodyPanel.add(imagePanel);
     }
@@ -82,6 +84,10 @@ public class TEST extends javax.swing.JFrame {
         DefenseField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         SpeedField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        TarExpField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        DefExpField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,7 +98,7 @@ public class TEST extends javax.swing.JFrame {
         BodyPanel.setLayout(BodyPanelLayout);
         BodyPanelLayout.setHorizontalGroup(
             BodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 307, Short.MAX_VALUE)
+            .addGap(0, 249, Short.MAX_VALUE)
         );
         BodyPanelLayout.setVerticalGroup(
             BodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,6 +151,20 @@ public class TEST extends javax.swing.JFrame {
         SpeedField.setColumns(10);
         SpeedField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel1.add(SpeedField);
+
+        jLabel5.setText("Target Experience");
+        jPanel1.add(jLabel5);
+
+        TarExpField.setEditable(false);
+        TarExpField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel1.add(TarExpField);
+
+        jLabel6.setText("Defeated Experience");
+        jPanel1.add(jLabel6);
+
+        DefExpField.setEditable(false);
+        DefExpField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel1.add(DefExpField);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -220,13 +240,17 @@ public class TEST extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AttackField;
     private javax.swing.JPanel BodyPanel;
+    private javax.swing.JTextField DefExpField;
     private javax.swing.JTextField DefenseField;
     private javax.swing.JTextField HealthField;
     private javax.swing.JTextField SpeedField;
+    private javax.swing.JTextField TarExpField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSlider jSlider1;
     // End of variables declaration//GEN-END:variables
