@@ -211,8 +211,8 @@ public class Slot<T extends Part> implements Serializable {
         // If the Part should be flipped, it should be drawn on the right edge
         // and its width should be negative.
         int drawX = flip?
-                part.getImage().getWidth():
-                0;
+                x + part.getPivotX():
+                x - part.getPivotX();
         int drawWidth = flip?
                 -part.getImage().getWidth():
                 part.getImage().getWidth();
@@ -221,12 +221,14 @@ public class Slot<T extends Part> implements Serializable {
                 rotation + Math.PI:
                 rotation;
         
+        System.out.println(drawX);
+        
         // Draw the part's image on the temp image.
         Graphics2D g = temp.createGraphics();
         g.drawImage(
                 part.getImage(), 
                 // Ensure the pivot point is at (x, y).
-                x - part.getPivotX(),
+                drawX,
                 y - part.getPivotY(),
                 drawWidth,
                 part.getImage().getHeight(),
