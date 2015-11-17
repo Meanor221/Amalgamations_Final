@@ -17,7 +17,7 @@ public class Amalgamation implements Serializable {
     // The range in which the variance can be calculated.
     private static final double VARIANCE_RANGE = 0.3;
     // The highest level that can be reached (also used for calculations).
-    public static final int    MAX_LEVEL = 100;
+    public static final int     MAX_LEVEL = 100;
     
     // The Body containing all the Parts that make up the Amalgamation.
     private final Body      body;
@@ -29,6 +29,8 @@ public class Amalgamation implements Serializable {
     private int             level;
     // The amount of experience the Amalgamation has,
     private int             experience;
+    // The amount of experience the Amalgamation needs to level up.
+    private int             targetExperience;
     // The randomized variance of all the stats.
     private final double    healthVariance;
     private final double    attackVariance;
@@ -65,7 +67,7 @@ public class Amalgamation implements Serializable {
         defenseVariance =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         
-        level           =   100;
+        level           =   5;
         calculateStats();
     }
     
@@ -85,6 +87,11 @@ public class Amalgamation implements Serializable {
         
         speed   = (int)(2 * ((double)level/(double)MAX_LEVEL) 
                 * body.totalBaseSpeed() * speedVariance) + 5;
+        
+        experience -= targetExperience;
+        
+        targetExperience = (int)(Math.pow(MAX_LEVEL, 2) / 
+                (1 + Math.pow( Math.E, (-0.08 * (level - 50)))));
     }
 
     /**
@@ -95,18 +102,27 @@ public class Amalgamation implements Serializable {
      */
     public void doDamage(int damage) { 
         currentHealth = currentHealth - damage;
-        
+        // Ensure the currentHealth does not fall below 0.
+        if (currentHealth < 0)
+            currentHealth = 0;
     }
 
     
     /**
      * Increases the current Amalgamation's experience total
      * 
-     * @param exp the amount of experience to add to the Amalgamation's total
+     * @param experience the amount of experience to add to the Amalgamation's total
      *            experience
      */
-    public void gainExp(double exp) {
+    public void gainExp(double experience) {
+        if (experience < 0)
+            return;
         
+        this.experience += experience;
+        
+        // Check if the Amalgamation can level up.
+        if (this.experience >= targetExperience)
+            levelUp();
     }
     
     /**
@@ -178,6 +194,18 @@ public class Amalgamation implements Serializable {
     }
     
     /**
+     * Returns the amount of experience earned from defeating this Amalgamation.
+     * 
+     * @return the amount of experience earned from defeating this Amalgamation
+     */
+    public int getDefeatedExperience() {
+        int baseStatsTotal = body.totalBaseHealth() + body.totalBaseAttack() 
+                + body.totalBaseDefense() + body.totalBaseSpeed();
+        return 10 * (int)Math.pow(
+                Math.log((baseStatsTotal * (level + 5)) / 100), 3);
+    }
+    
+    /**
      * Retrieves the defense stat of the Amalgamation.
      * 
      * @return the defense stat of the Amalgamation
@@ -246,10 +274,21 @@ public class Amalgamation implements Serializable {
     }
     
     /**
+     * Retrieves the experience needed for the Amalgamation to level up.
+     * 
+     * @return the experience needed for the Amalgamation to level up
+     */
+    public int getTargetExperience() {
+        return targetExperience;
+    }
+    
+    /**
      * Increases the current Amalgamation's level
      */
     public void levelUp() {
-        
+        level++;
+        // Recalculate the stats since the level has changed.
+        calculateStats();
     }
     
     /**
@@ -258,8 +297,12 @@ public class Amalgamation implements Serializable {
      * @param currentAttack the new value of set the currentAttack to
      */
     public void setCurrentAttack(int currentAttack){
-        this.currentAttack = currentAttack;
-        
+        // Ensure the current attack does not go above the normal health or
+        // below 5.
+        if (currentAttack < 5)
+            this.currentAttack = 5;
+        else
+            this.currentAttack = currentAttack;
     }
     
     /**
@@ -268,8 +311,12 @@ public class Amalgamation implements Serializable {
      * @param currentDefense the new value of set the currentAttack to
      */
     public void setCurrentDefense(int currentDefense){
-        this.currentDefense = currentDefense;
-        
+        // Ensure the current defense does not go above the normal health or
+        // below 5.
+        if (currentDefense < 5)
+            this.currentDefense = 5;
+        else
+            this.currentDefense = currentDefense;
     }
     
     /**
@@ -278,8 +325,14 @@ public class Amalgamation implements Serializable {
      * @param currentHealth the new value of set the currentAttack to
      */
     public void setCurrentHealth(int currentHealth){
-        this.currentHealth = currentHealth;
-        
+        // Ensure the current health does not go above the normal health or
+        // below 0.
+        if (currentHealth > health)
+            this.currentHealth = health;
+        else if (currentHealth < 0)
+            this.currentHealth = 0;
+        else
+            this.currentHealth = currentHealth;
     }
     
     /**
@@ -288,6 +341,11 @@ public class Amalgamation implements Serializable {
      * @param currentSpeed the new value of set the currentAttack to
      */
     public void setCurrentSpeed(int currentSpeed){
-        this.currentSpeed = currentSpeed;
+        // Ensure the current speed does not go above the normal health or
+        // below 5.
+        if (currentSpeed < 5)
+            this.currentSpeed = 5;
+        else
+            this.currentSpeed = currentSpeed;
     }
 }
