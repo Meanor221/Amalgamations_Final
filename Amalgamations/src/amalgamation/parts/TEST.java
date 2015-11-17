@@ -1,5 +1,7 @@
 package amalgamation.parts;
 
+import amalgamation.*;
+
 /**
  * Testing Parts functionality.
  * 
@@ -7,7 +9,7 @@ package amalgamation.parts;
  */
 public class TEST extends javax.swing.JFrame {
     // The body to test.
-    private Body body;
+    private Amalgamation test;
     // Image of the full body.
     private java.awt.Image image;
     // ImagePanel to draw the image.
@@ -20,30 +22,44 @@ public class TEST extends javax.swing.JFrame {
         initComponents();
         
         // Create the body.
-            body = (Body)Parts.load(Parts.TYPE_BODY, "Board");
-            // Load parts from files.
-            Arm redStick = (Arm)Parts.load(Parts.TYPE_ARM, "Red Stick");
-            Head greenCircle = (Head)Parts.load(Parts.TYPE_HEAD, "Green Circle");
-            Leg blueL = (Leg)Parts.load(Parts.TYPE_LEG, "Blue L");
+        Body body = (Body)Parts.load(Parts.TYPE_BODY, "Board");
+        // Load parts from files.
+        Arm redStick = (Arm)Parts.load(Parts.TYPE_ARM, "Red Stick");
+        Head greenCircle = (Head)Parts.load(Parts.TYPE_HEAD, "Green Circle");
+        Leg blueL = (Leg)Parts.load(Parts.TYPE_LEG, "Blue L");
+          
+        // Add parts to the slots.
+        body.getHeadSlots()[0].setPart(greenCircle);
+        body.getArmSlots()[0].setPart(redStick);
+        body.getArmSlots()[1].setPart(redStick);
+        body.getLegSlots()[0].setPart(blueL);
+        body.getLegSlots()[1].setPart(blueL);
+           
+        // Create the body's image.
+        image = body.fullImage();
+           
+        // Set the stats of the body.
+        HealthField.setText("" + body.totalBaseHealth());
+        AttackField.setText("" + body.totalBaseAttack());
+        DefenseField.setText("" + body.totalBaseDefense());
+        SpeedField.setText("" + body.totalBaseSpeed());
             
-            // Add parts to the slots.
-            body.getHeadSlots()[0].setPart(greenCircle);
-            body.getArmSlots()[0].setPart(redStick);
-            body.getArmSlots()[1].setPart(redStick);
-            body.getLegSlots()[0].setPart(blueL);
-            body.getLegSlots()[1].setPart(blueL);
+        // Add the image panel to the body panel.
+        BodyPanel.add(imagePanel);
             
-            // Create the body's image.
-            image = body.fullImage();
-            
-            // Set the stats of the body.
-            HealthField.setText("" + body.totalBaseHealth());
-            AttackField.setText("" + body.totalBaseAttack());
-            DefenseField.setText("" + body.totalBaseDefense());
-            SpeedField.setText("" + body.totalBaseSpeed());
-            
-            // Add the image panel to the body panel.
-            BodyPanel.add(imagePanel);
+        // Save the Amalgamation.
+        Amalgamations.save(body, "Ama Gam");        
+        
+        // Load the test Amalgamation.
+        test = Amalgamations.load("Ama Gam");
+        // Display the Amalgamation's body and stats.
+        image = test.getFullImage();
+        HealthField.setText("" + test.getHealth());
+        AttackField.setText("" + test.getAttack());
+        DefenseField.setText("" + test.getDefense());
+        SpeedField.setText("" + test.getSpeed());
+        
+        BodyPanel.add(imagePanel);
     }
 
     /**
@@ -160,9 +176,9 @@ public class TEST extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
-        for (Slot s : body.getSlots())
+        for (Slot s : test.getBody().getSlots())
             s.setRotationDegrees(jSlider1.getValue());
-        image = body.fullImage();
+        image = test.getFullUpdatedImage();
         repaint();
     }//GEN-LAST:event_jSlider1StateChanged
 
