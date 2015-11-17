@@ -51,7 +51,8 @@ public class Amalgamations {
      * @return the array of Amalgamation objects
      * @throws java.io.IOException 
      */
-    public static Amalgamation[] getAmalgamations(String dirPath) throws java.io.IOException {
+    public static Amalgamation[] getAmalgamations(String dirPath) 
+            throws java.io.IOException {
         // Load the directory.
         java.io.File directory = new java.io.File(dirPath);
         

@@ -2,6 +2,7 @@ package amalgamation.abilities;
 
 import amalgamation.Amalgamation;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -27,13 +28,29 @@ public class Attack extends Ability {
         this.damage = damage;
     }
     
+    @Override
+    public String[] affect(Amalgamation player, Amalgamation opponent) {
+        ArrayList<String> script = new ArrayList<>(
+                java.util.Arrays.asList(super.affect(player, opponent)));
+        
+        // Do damage to the opponent.
+        int damage = calculateDamage(player, opponent);
+        opponent.doDamage(damage);
+        script.add(String.format("%s took %d damage!", 
+                opponent.getName(), damage));
+        
+        return script.toArray(new String[0]);
+    }
+    
     // Calculates the damage done to the opponent.
     private int calculateDamage(Amalgamation user, Amalgamation target) {
         // Calculate damage variance.
         Random random = new Random();
         double damageVariance = random.nextDouble() % VARIANCE_RANGE + 0.85;
         
-        return 0;
+        int dmg=(int) ((damageVariance * damage)-target.getCurrentDefense()
+                +user.getCurrentAttack());
+        return dmg;
     }
     
     /**
