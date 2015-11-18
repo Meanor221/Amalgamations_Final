@@ -70,7 +70,8 @@ public class Amalgamation implements Serializable {
         defenseVariance =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         
-        level           =   5;
+        // Level up initially to start at Level 1.
+        levelUp();
         calculateStats();
     }
     
@@ -100,10 +101,10 @@ public class Amalgamation implements Serializable {
      * @return the Abilities the Amalgamation can learn at its current level
      */
     public Ability[] availableAbilities() {
-        return (Ability[])java.util.stream.Stream.of(body.allAbilities())
+        return java.util.stream.Stream.of(body.allAbilities())
                 // Filter out the Abilities that cannot be learned yet.
                 .filter(a -> level >= a.getLevel())
-                .toArray();
+                .toArray(Ability[]::new);
     }
     
     /**
@@ -346,8 +347,20 @@ public class Amalgamation implements Serializable {
      */
     public void levelUp() {
         level++;
+        
         // Recalculate the stats since the level has changed.
         calculateStats();
+        
+        // Iterate through each of the new Abilites the Amalgamation can learn.
+        for (Ability a : newAbilities()) {
+            // Try to add the Ability to the array.
+            if (addAbility(a))
+                javax.swing.JOptionPane.showMessageDialog(null, String.format(
+                        "%s learned the ability %s!", name, a.getName()));
+            else
+                // Show a dialog to learn the ability.
+                AbilityReplaceDialog.showAbilityReplaceDialog(null, this, a);
+        }
     }
     
     /**
@@ -358,10 +371,24 @@ public class Amalgamation implements Serializable {
      * at its current level
      */
     public Ability[] newAbilities() {
-        return (Ability[])java.util.stream.Stream.of(body.allAbilities())
+        return java.util.Arrays.stream(body.allAbilities())
                 // Filter out the Abilities that cannot be learned yet.
                 .filter(a -> level == a.getLevel())
-                .toArray();
+                .toArray(Ability[]::new);
+    }
+    
+    /**
+     * Replaces the Amalgamation's Ability at the given index with the given 
+     * Ability.
+     * 
+     * @param ability the Ability to replace the old Ability with
+     * @param index the index of the old Abiltiy
+     * @throws ArrayIndexOutOfBoundsException if the index is not in the valid
+     *                                        range (0 - 3)
+     */
+    public void replaceAbility(Ability ability, int index) 
+            throws ArrayIndexOutOfBoundsException {
+        abilities[index] = ability;
     }
     
     /**

@@ -97,12 +97,12 @@ public class AbilityPanel extends javax.swing.JPanel {
         NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         NameLabel.setText("Punch");
 
-        CooldownLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        CooldownLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 14)); // NOI18N
         CooldownLabel.setForeground(new java.awt.Color(96, 125, 139));
         CooldownLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CooldownLabel.setText("Cooldown: 3 Turns");
 
-        PowerAccuracyLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        PowerAccuracyLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 14)); // NOI18N
         PowerAccuracyLabel.setForeground(new java.awt.Color(97, 97, 97));
         PowerAccuracyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         PowerAccuracyLabel.setText("Power: 25    Accuracy: 100");
@@ -160,7 +160,7 @@ public class AbilityPanel extends javax.swing.JPanel {
     private void changePowerAccuracy(int power, int accuracy) {
         // Set up the text for the label.
         String text = ability instanceof Attack?
-                String.format("Attack: %d    ", power):
+                String.format("Power: %d    ", power):
                 "";
         text += String.format("Accuracy: %d%%", accuracy);
         
@@ -200,21 +200,7 @@ public class AbilityPanel extends javax.swing.JPanel {
      * 
      * @param clickAction the Runnable to run when the panel is clicked.
      */
-    private void setClickAction(Runnable clickAction) {
+    public void setClickAction(Runnable clickAction) {
         this.clickAction = clickAction;
-    }
-    
-    /**
-     * TESTING
-     */
-    public static void main(String[] args) {
-        javax.swing.JFrame window = new javax.swing.JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        AbilityPanel panel = new AbilityPanel(Abilities.load("For Glory"));
-        panel.setClickAction(() -> System.out.println("Clicked"));
-        window.add(panel);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
     }
 }
