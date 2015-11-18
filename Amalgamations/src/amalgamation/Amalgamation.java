@@ -272,6 +272,15 @@ public class Amalgamation implements Serializable {
     }
     
     /**
+     * Retrieves the Amalgamation's luck variance.
+     * 
+     * @return the Amalgamation's luck variance
+     */
+    public double getLuckVariance() {
+        return luckVariance;
+    }
+    
+    /**
      * Retrieves the speed stat of the Amalgamation.
      * 
      * @return the speed stat of the Amalgamation
