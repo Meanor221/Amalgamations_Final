@@ -3,6 +3,7 @@ package amalgamation.abilities;
 import amalgamation.Amalgamation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -83,27 +84,28 @@ public class StatModifier implements Serializable {
     }
     
     /**
-     * Retrieves the script for the StatModifier.
+     * Returns the script
      * 
-     * @param userName the name of the Amalgamation using the Ability
-     * @param targetName the name of the Amalgamation opposing the user
-     * @return the script for the StatModifier
+     * @return the script
      */
-    public String getScript(String userName, String targetName) {
-        // Return the script with the userName and targetName inserted.
-        String string = script.substring(0);
-        return string.replace("USER", userName).replace("TARGET", targetName);
+    public String getScript(){
+        return script;
     }
+     
+   
     
     /**
      * For a StatModifer object it determines which stat is being modified based
      * on the ability id number and then calculates a new current value for that
      * stat
+     * Retrieves the script for the StatModifier.
      * @param player the current user/Amalgamation of the ability
      * @param opponent the other Amalgamation that is opposing the current 
      * Amalgamation
+     
+     * @return the script of the flavor text
      */
-    public void statAdjuster(Amalgamation player, Amalgamation opponent) {
+    public String statAdjuster(Amalgamation player, Amalgamation opponent) {
         int calculatedModifier;
         
         switch(ability_id)
@@ -153,6 +155,11 @@ public class StatModifier implements Serializable {
             default:
                 throw new IllegalArgumentException(
                         "Invalid Ability ID: " + ability_id);
+     
         }
+        
+        String string = script.substring(0);
+        return string.replace("USER", player.getName())
+                .replace("TARGET", opponent.getName());
     }
 }
