@@ -54,6 +54,31 @@ public class Body extends Part {
     }
     
     /**
+     * Constructs a list of all Abilities contained in the Body and all of its
+     * contained Parts.
+     * 
+     * @return all Abilities contained in the Body and all of its contained 
+     *         Parts
+     */
+    public Ability[] allAbilities() {
+        ArrayList<Ability> abilities = new ArrayList<>(
+                Arrays.asList(getAbilities()));
+        
+        // Iterate through all of the Parts.
+        for (Slot s : getSlots())
+            // Ensure the Slot has a Part connected.
+            if (s.getPart() != null)
+                // Iterate through all of the Part's Abilities.
+                for (Ability a : s.getPart().getAbilities())
+                    // Ensure the Ability is not already in the list.
+                    if (!abilities.contains(a))
+                        // Add the Ability to the list.
+                        abilities.add(a);
+        
+        return abilities.toArray(new Ability[0]);
+    }
+    
+    /**
      * Generates the graphical representation of the body with all of the body
      * parts connected to its slots. 
      * 
