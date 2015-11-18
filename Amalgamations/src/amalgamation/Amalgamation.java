@@ -1,4 +1,5 @@
 package amalgamation;
+import amalgamation.abilities.Ability;
 import amalgamation.parts.Body;
 
 import java.awt.image.BufferedImage;
@@ -21,6 +22,8 @@ public class Amalgamation implements Serializable {
     
     // The Body containing all the Parts that make up the Amalgamation.
     private final Body      body;
+    // The Abilities the Amalgamation can use in battle.
+    private final Ability[] abilities = new Ability[4];
     // The name of the Amalgamation.
     private final String    name;
     // The graphical representation of the Amalgamation.
@@ -72,6 +75,38 @@ public class Amalgamation implements Serializable {
     }
     
     /**
+     * Attempts to add the given Ability to the Amalgamation's list of Abilities
+     * it can use in battle.
+     * 
+     * @param ability the Ability to attempt to add
+     * @return true if the Ability was successfully added; false otherwise
+     */
+    public boolean addAbility(Ability ability) {
+        for (int i = 0; i < abilities.length; i++) {
+            // If the spot in the array is empty, put the Ability there.
+            if (abilities[i] == null) {
+                abilities[i] = ability;
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Retrieves all of the Abilities the Amalgamation can learn at its current
+     * level based on its Parts.
+     * 
+     * @return the Abilities the Amalgamation can learn at its current level
+     */
+    public Ability[] availableAbilities() {
+        return (Ability[])java.util.stream.Stream.of(body.allAbilities())
+                // Filter out the Abilities that cannot be learned yet.
+                .filter(a -> level >= a.getLevel())
+                .toArray();
+    }
+    
+    /**
      * Calculates the stats of the Amalgamation based on current level
      */
     private void calculateStats() {
@@ -114,7 +149,6 @@ public class Amalgamation implements Serializable {
         return false;
     }
 
-    
     /**
      * Increases the current Amalgamation's experience total
      * 
@@ -130,6 +164,15 @@ public class Amalgamation implements Serializable {
         // Check if the Amalgamation can level up.
         if (this.experience >= targetExperience)
             levelUp();
+    }
+    
+    /**
+     * Retrieves the Amalgamation's list of Abilities.
+     * 
+     * @return the Amalgamation's list of Abilities
+     */
+    public Ability[] getAbilities() {
+        return abilities;
     }
     
     /**
@@ -305,6 +348,20 @@ public class Amalgamation implements Serializable {
         level++;
         // Recalculate the stats since the level has changed.
         calculateStats();
+    }
+    
+    /**
+     * Retrieves all of the new Abilities that the Amalgamation can only learn
+     * at its current level.
+     * 
+     * @return all of the new Abilities that the Amalgamation can only learn
+     * at its current level
+     */
+    public Ability[] newAbilities() {
+        return (Ability[])java.util.stream.Stream.of(body.allAbilities())
+                // Filter out the Abilities that cannot be learned yet.
+                .filter(a -> level == a.getLevel())
+                .toArray();
     }
     
     /**
