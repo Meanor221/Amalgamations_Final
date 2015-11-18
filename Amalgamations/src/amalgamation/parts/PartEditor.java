@@ -1313,7 +1313,7 @@ public class PartEditor extends javax.swing.JFrame {
         int x = (int)BodySlotTable.getValueAt(r, 0);
         int y = (int)BodySlotTable.getValueAt(r, 1);
         int z = (int)BodySlotTable.getValueAt(r, 2);
-        int rotation = (int)BodySlotTable.getValueAt(r, 3);
+        double rotation = Math.toRadians((int)BodySlotTable.getValueAt(r, 3));
         boolean flip = (boolean)BodySlotTable.getValueAt(r, 4);
         
         // Determine the type of the Slot object.
