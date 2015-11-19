@@ -13,6 +13,10 @@ import java.util.Arrays;
  * @author Caleb Rush, Adam Meanor
  */
 public class Body extends Part {
+    // The size of the full image.
+    public static final int FULL_IMAGE_WIDTH = 350;
+    public static final int FULL_IMAGE_HEIGHT = 350;
+    
     // The list of arm slots on the body.
     private final Slot<Arm>[] arms;
     // The list of head slots on the body.
@@ -92,14 +96,17 @@ public class Body extends Part {
      *         parts
      */
     public BufferedImage fullImage() {
-        // Create an image matching the size of the boy's image.
-        final BufferedImage fullImage = new BufferedImage(getImage().getWidth(), 
-                getImage().getHeight(), BufferedImage.TYPE_INT_ARGB);
+        // Create the full sized image.
+        final BufferedImage fullImage = new BufferedImage(FULL_IMAGE_WIDTH, 
+                FULL_IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         
         // Create an ArrayList to hold all of the slots.
         ArrayList<Slot> slots = new ArrayList<>(Arrays.asList(getSlots()));
         // Add a Slot containing the body so that it gets drawn properly.
-        slots.add(new Slot());
+        slots.add(new Slot(
+                // Set the pivot in the center of the image.
+                FULL_IMAGE_WIDTH / 2 - getImage().getWidth() / 2, 
+                FULL_IMAGE_HEIGHT / 2 - getImage().getHeight() / 2));
         slots.get(slots.size() - 1).setPart(this);
         
         // Retrieve a stream of the full list of slots.

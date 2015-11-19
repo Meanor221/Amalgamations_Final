@@ -1,7 +1,5 @@
 package amalgamation.parts;
 
-import java.awt.Color;
-
 /**
  * A PartListPanel is a modified JPanel intended to display a vertically 
  * scrollable list of PartPanels.
@@ -13,11 +11,23 @@ public class PartListPanel extends javax.swing.JPanel {
     private Part[] parts;
     // The PartChooseListener to set off whenever a Part is selected.
     private PartChooseListener listener;
+    // The RotationChangeListener to set off whenever the rotation changes.
+    private RotationChangeListener rotationListener;
+    
+    /**
+     * Creates a PartListPanel without a rotation slider.
+     */
+    public PartListPanel(int type) {
+        this(type, 0);
+        
+        remove(RotationPanel);
+        RotationPanel.setVisible(false);
+    }
     
     /**
      * Creates new form PartListPanel
      */
-    public PartListPanel(int type) {
+    public PartListPanel(int type, int initialRotation) {
         initComponents();
         
         // Retrieve the Part from the appropriate directory.
@@ -90,6 +100,9 @@ public class PartListPanel extends javax.swing.JPanel {
             // Add the panel to the list.
             ListPanel.add(panel);
         }
+        
+        // Set the slider's initial value.
+        RotationSlider.setValue(initialRotation);
     }
     
     /**
@@ -106,6 +119,18 @@ public class PartListPanel extends javax.swing.JPanel {
     public void setPartChangeListener(PartChooseListener listener) {
         this.listener = listener;
     }
+    
+    /**
+     * Adds the specified ChangeListener to the rotation slider.
+     * 
+     * This should be used to receive update events from the panel's rotation
+     * slider.
+     * 
+     * @param rotationListener the listener to add to the rotation slider
+     */
+    public void setSliderListener(RotationChangeListener rotationListener) {
+        this.rotationListener = rotationListener;
+    }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
     /**
@@ -119,46 +144,72 @@ public class PartListPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         ListPanel = new javax.swing.JPanel();
+        RotationPanel = new javax.swing.JPanel();
+        RotationSlider = new javax.swing.JSlider();
 
-        setMaximumSize(null);
-        setMinimumSize(null);
-        setPreferredSize(new java.awt.Dimension(220, 800));
+        setPreferredSize(new java.awt.Dimension(48, 342));
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setMaximumSize(null);
+        jScrollPane1.setMinimumSize(null);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(20);
 
         ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.PAGE_AXIS));
         jScrollPane1.setViewportView(ListPanel);
 
+        RotationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rotation"));
+
+        RotationSlider.setMaximum(360);
+        RotationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                RotationSliderStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout RotationPanelLayout = new javax.swing.GroupLayout(RotationPanel);
+        RotationPanel.setLayout(RotationPanelLayout);
+        RotationPanelLayout.setHorizontalGroup(
+            RotationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(RotationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+        );
+        RotationPanelLayout.setVerticalGroup(
+            RotationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RotationPanelLayout.createSequentialGroup()
+                .addComponent(RotationSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(RotationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(RotationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void RotationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RotationSliderStateChanged
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            if (rotationListener != null)
+                rotationListener.rotationChanged(RotationSlider.getValue());
+        }); 
+    }//GEN-LAST:event_RotationSliderStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ListPanel;
+    private javax.swing.JPanel RotationPanel;
+    private javax.swing.JSlider RotationSlider;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
-    
-    public static void main(String[] args) 
-    {
-        javax.swing.JFrame window = new javax.swing.JFrame("Testing");
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        
-        PartListPanel panel = new PartListPanel(Parts.TYPE_ARM);
-        panel.setPartChangeListener(part -> System.out.println(part.getName()));
-        window.add(panel);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-    }
     
     /**
      * A PartChooseListener can be used to perform an action with the selected
@@ -166,5 +217,13 @@ public class PartListPanel extends javax.swing.JPanel {
      */
     public static interface PartChooseListener {
         void partChosen(Part part);
+    }
+    
+    /**
+     * A RotationChangeListener can be used to perform an action when the
+     * rotation slider is modified.
+     */
+    public static interface RotationChangeListener {
+        void rotationChanged(int newRotation);
     }
 }

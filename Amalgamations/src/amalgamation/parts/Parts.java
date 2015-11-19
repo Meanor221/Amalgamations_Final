@@ -201,9 +201,9 @@ public class Parts {
      */
     public static Body[] getBodies(String dirPath) throws java.io.IOException {
         // Filter out the Arms from the list of Parts in this directory.
-        return (Body[])java.util.stream.Stream.of(getParts(dirPath))
+        return java.util.stream.Stream.of(getParts(dirPath))
                     .filter(part -> part instanceof Body)
-                    .toArray();
+                    .toArray(Body[]::new);
     }
     
     /**

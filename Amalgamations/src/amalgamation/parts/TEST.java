@@ -19,39 +19,10 @@ public class TEST extends javax.swing.JFrame {
      * Creates new form TEST
      */
     public TEST() {
-        initComponents();
-        
-        // Create the body.
-        Body body = (Body)Parts.load(Parts.TYPE_BODY, "Board");
-        // Load parts from files.
-        Arm redStick = (Arm)Parts.load(Parts.TYPE_ARM, "Red Stick");
-        Head greenCircle = (Head)Parts.load(Parts.TYPE_HEAD, "Green Circle");
-        Leg blueL = (Leg)Parts.load(Parts.TYPE_LEG, "Blue L");
-          
-        // Add parts to the slots.
-        body.getHeadSlots()[0].setPart(greenCircle);
-        body.getArmSlots()[0].setPart(redStick);
-        body.getArmSlots()[1].setPart(redStick);
-        body.getLegSlots()[0].setPart(blueL);
-        body.getLegSlots()[1].setPart(blueL);
-           
-        // Create the body's image.
-        image = body.fullImage();
-           
-        // Set the stats of the body.
-        HealthField.setText("" + body.totalBaseHealth());
-        AttackField.setText("" + body.totalBaseAttack());
-        DefenseField.setText("" + body.totalBaseDefense());
-        SpeedField.setText("" + body.totalBaseSpeed());
-            
-        // Add the image panel to the body panel.
-        BodyPanel.add(imagePanel);
-            
-        // Save the Amalgamation.
-        Amalgamations.save(body, "Ama Gam");        
+        initComponents();    
         
         // Load the test Amalgamation.
-        test = Amalgamations.load("Ama Gam");
+        test = Amalgamations.load("Bob");
         // Display the Amalgamation's body and stats.
         image = test.getFullImage();
         HealthField.setText("" + test.getHealth());
@@ -62,7 +33,8 @@ public class TEST extends javax.swing.JFrame {
         DefExpField.setText("" + test.getDefeatedExperience());
         // Display the Amaglamation's Abilities.
         for (amalgamation.abilities.Ability a : test.getAbilities())
-            AbilitiesPanel.add(new amalgamation.abilities.AbilityPanel(a));
+            if (a != null)
+                AbilitiesPanel.add(new amalgamation.abilities.AbilityPanel(a));
         
         BodyPanel.add(imagePanel);
     }
