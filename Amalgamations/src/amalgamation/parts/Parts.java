@@ -186,9 +186,9 @@ public class Parts {
      */
     public static Arm[] getArms(String dirPath) throws java.io.IOException {
         // Filter out the Arms from the list of Parts in this directory.
-        return (Arm[])java.util.stream.Stream.of(getParts(dirPath))
+        return java.util.stream.Stream.of(getParts(dirPath))
                     .filter(part -> part instanceof Arm)
-                    .toArray();
+                    .toArray(Arm[]::new);
     }
     
     /**
@@ -216,9 +216,9 @@ public class Parts {
      */
     public static Head[] getHeads(String dirPath) throws java.io.IOException {
         // Filter out the Arms from the list of Parts in this directory.
-        return (Head[])java.util.stream.Stream.of(getParts(dirPath))
+        return java.util.stream.Stream.of(getParts(dirPath))
                     .filter(part -> part instanceof Head)
-                    .toArray();
+                    .toArray(Head[]::new);
     }
     
     /**
@@ -231,9 +231,9 @@ public class Parts {
      */
     public static Leg[] getLegs(String dirPath) throws java.io.IOException {
         // Filter out the Arms from the list of Parts in this directory.
-        return (Leg[])java.util.stream.Stream.of(getParts(dirPath))
+        return java.util.stream.Stream.of(getParts(dirPath))
                     .filter(part -> part instanceof Leg)
-                    .toArray();
+                    .toArray(Leg[]::new);
     }
     
     /**

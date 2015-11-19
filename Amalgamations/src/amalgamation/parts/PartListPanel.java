@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package amalgamation.parts;
 
 /**
  *
- * @author aam5617
+ * @author Adam Meanor, Jordan LaRiccia, Caleb Rush
  */
 public class PartListPanel extends javax.swing.JPanel {
     private Part[] parts;
@@ -16,52 +11,70 @@ public class PartListPanel extends javax.swing.JPanel {
      */
     public PartListPanel(int type) {
         initComponents();
-        if (type == Parts.TYPE_ARM) {
-            try {
-                parts = amalgamation.parts.Parts.getArms(
-                        amalgamation.parts.Parts.PARTS_RES_DIR);
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            } 
+        
+        // Retrieve the Part from the appropriate directory.
+        switch (type) {
+            case Parts.TYPE_ARM:
+                try {
+                    parts = Parts.getArms(Parts.ARMS_RES_DIR);
+                } catch (java.io.IOException e) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "ERROR! The " + Parts.ARMS_RES_DIR + 
+                                    " directory could not be "
+                                    + "found! Please ensure it exists!",
+                            "Directory not found",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            
+            case Parts.TYPE_BODY:
+                try {
+                    parts = Parts.getBodies(Parts.BODIES_RES_DIR);
+                } catch (java.io.IOException e) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "ERROR! The " + Parts.BODIES_RES_DIR + 
+                                    " directory could not be "
+                                    + "found! Please ensure it exists!",
+                            "Directory not found",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            
+            case Parts.TYPE_HEAD:
+                try {
+                    parts = Parts.getHeads(Parts.HEADS_RES_DIR);
+                } catch (java.io.IOException e) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "ERROR! The " + Parts.HEADS_RES_DIR + 
+                                    " directory could not be "
+                                    + "found! Please ensure it exists!",
+                            "Directory not found",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+                
+            case Parts.TYPE_LEG:
+                try {
+                    parts = Parts.getLegs(Parts.LEGS_RES_DIR);
+                } catch (java.io.IOException e) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                            "ERROR! The " + Parts.LEGS_RES_DIR + 
+                                    " directory could not be "
+                                    + "found! Please ensure it exists!",
+                            "Directory not found",
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
         }
         
-        if (type == Parts.TYPE_BODY) {
-            try {
-                parts = amalgamation.parts.Parts.getBodies(
-                        amalgamation.parts.Parts.PARTS_RES_DIR);
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-        }
-            
-        if (type == Parts.TYPE_LEG) {
-            try {
-                parts = amalgamation.parts.Parts.getLegs(
-                        amalgamation.parts.Parts.PARTS_RES_DIR);
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-        }
-            
-            
-        if (type == Parts.TYPE_HEAD) {
-            try {
-                parts = amalgamation.parts.Parts.getHeads(
-                        amalgamation.parts.Parts.PARTS_RES_DIR);
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-        }
-            
-        PartPanel[] panels = new PartPanel[parts.length];
-            
-        for(int i = 0; i < parts.length; i++)
-        {
-            panels[i] = new PartPanel(parts[i]);
-            ListPanel.add(panels[i]);
-        }
+        // Set the number of rows in the grid.
+        //((java.awt.GridLayout)ListPanel.getLayout()).setRows(parts.length / 3 + 1);
+ 
+        // Create a PartPanel for each Part and add them to the panel.
+        for(Part p : parts)
+            ListPanel.add(new PartPanel(p));
     }
 
+    // <editor-fold desc="GUI Variables" defaultstate="collapsed">
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,37 +87,41 @@ public class PartListPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         ListPanel = new javax.swing.JPanel();
 
-        setMaximumSize(new java.awt.Dimension(220, 550));
-        setMinimumSize(new java.awt.Dimension(220, 550));
-        setPreferredSize(new java.awt.Dimension(220, 550));
+        setMaximumSize(null);
+        setMinimumSize(null);
+        setPreferredSize(new java.awt.Dimension(220, 800));
 
-        ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(10);
+
+        ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.PAGE_AXIS));
         jScrollPane1.setViewportView(ListPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    // </editor-fold>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ListPanel;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
-    public static void main(String[] args) {
-    javax.swing.JFrame window = new javax.swing.JFrame("Testing");
+    public static void main(String[] args) 
+    {
+        javax.swing.JFrame window = new javax.swing.JFrame("Testing");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        window.add(new PartListPanel(Parts.TYPE_HEAD));
+        window.add(new PartListPanel(Parts.TYPE_ARM));
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-}
+    }
 }

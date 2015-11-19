@@ -32,8 +32,10 @@ public class PartPanel extends javax.swing.JPanel {
 
         NameLabel = new javax.swing.JLabel();
 
-        setMaximumSize(new java.awt.Dimension(350, 350));
-        setMinimumSize(new java.awt.Dimension(350, 350));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 2, 2, new java.awt.Color(204, 204, 204)));
+        setMaximumSize(new java.awt.Dimension(200, 200));
+        setMinimumSize(new java.awt.Dimension(200, 200));
         setPreferredSize(new java.awt.Dimension(200, 200));
 
         NameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 28)); // NOI18N
@@ -47,13 +49,13 @@ public class PartPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(NameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                .addComponent(NameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(307, Short.MAX_VALUE)
+                .addContainerGap(154, Short.MAX_VALUE)
                 .addComponent(NameLabel)
                 .addContainerGap())
         );
