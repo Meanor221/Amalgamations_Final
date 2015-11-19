@@ -1,11 +1,19 @@
 package amalgamation.parts;
 
+import java.awt.Color;
+
 /**
- *
+ * A PartListPanel is a modified JPanel intended to display a vertically 
+ * scrollable list of PartPanels.
+ * 
  * @author Adam Meanor, Jordan LaRiccia, Caleb Rush
  */
 public class PartListPanel extends javax.swing.JPanel {
+    // The array of Parts displayed.
     private Part[] parts;
+    // The PartChooseListener to set off whenever a Part is selected.
+    private PartChooseListener listener;
+    
     /**
      * Creates new form PartListPanel
      */
@@ -65,13 +73,38 @@ public class PartListPanel extends javax.swing.JPanel {
                             javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
         }
-        
-        // Set the number of rows in the grid.
-        //((java.awt.GridLayout)ListPanel.getLayout()).setRows(parts.length / 3 + 1);
  
         // Create a PartPanel for each Part and add them to the panel.
-        for(Part p : parts)
-            ListPanel.add(new PartPanel(p));
+        for(int i = 0; i < parts.length; i++) {
+            // Create the new PartPanel.
+            PartPanel panel = new PartPanel(parts[i]);
+            
+            // Set the PartPanel's clickAction.
+            final int index = i;
+            panel.setClickAction(() -> {
+                // Call the listener.
+                if (listener != null)
+                    listener.partChosen(parts[index]);
+            });
+            
+            // Add the panel to the list.
+            ListPanel.add(panel);
+        }
+    }
+    
+    /**
+     * Sets the PartChooseListener that will have its method called whenever
+     * the selected Part is changed.
+     * 
+     * A PartChooseListener can easily be expressed with a lambda expression
+     * like so:
+     * 
+     * <code>part -> { ... }</code>
+     * 
+     * @param listener the new PartChooseListener.
+     */
+    public void setPartChangeListener(PartChooseListener listener) {
+        this.listener = listener;
     }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
@@ -92,7 +125,7 @@ public class PartListPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(220, 800));
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.getVerticalScrollBar().setUnitIncrement(10);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(20);
 
         ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.PAGE_AXIS));
         jScrollPane1.setViewportView(ListPanel);
@@ -108,20 +141,30 @@ public class PartListPanel extends javax.swing.JPanel {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-    // </editor-fold>
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ListPanel;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold>
     
     public static void main(String[] args) 
     {
         javax.swing.JFrame window = new javax.swing.JFrame("Testing");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        window.add(new PartListPanel(Parts.TYPE_ARM));
+        
+        PartListPanel panel = new PartListPanel(Parts.TYPE_ARM);
+        panel.setPartChangeListener(part -> System.out.println(part.getName()));
+        window.add(panel);
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+    }
+    
+    /**
+     * A PartChooseListener can be used to perform an action with the selected
+     * Part whenever the selection is changed.
+     */
+    public static interface PartChooseListener {
+        void partChosen(Part part);
     }
 }

@@ -1,16 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package amalgamation.parts;
 
 /**
- *
- * @author aam5617
+ * A PartPanel is a modified JPanel intended to display a specific Part.
+ * 
+ * @author Adam Meanor, Jordan LaRiccia, Caleb Rush
  */
 public class PartPanel extends javax.swing.JPanel {
+    // The color of the background under normal circumstances.
+    public static java.awt.Color BG_NORMAL = java.awt.Color.WHITE;
+    // The color of the background when the panel is highlighted.
+    public static java.awt.Color BG_HIGHLIGHT 
+            = new java.awt.Color(33, 150, 243);
+    
     private amalgamation.parts.Part part;
+    // The Runnable to be run when this panel is clicked.
+    private Runnable clickAction;
     
     /**
      * Creates new form PartPanel
@@ -21,6 +25,7 @@ public class PartPanel extends javax.swing.JPanel {
         NameLabel.setText(part.getName());
     }
 
+    // <editor-fold desc="GUI Variables" defaultstate="collapsed">
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,6 +42,17 @@ public class PartPanel extends javax.swing.JPanel {
         setMaximumSize(new java.awt.Dimension(200, 200));
         setMinimumSize(new java.awt.Dimension(200, 200));
         setPreferredSize(new java.awt.Dimension(200, 200));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                formMouseExited(evt);
+            }
+        });
 
         NameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 28)); // NOI18N
         NameLabel.setForeground(new java.awt.Color(0, 204, 0));
@@ -61,26 +77,54 @@ public class PartPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Change the cursor.
+            setCursor(java.awt.Cursor.getPredefinedCursor(
+                    java.awt.Cursor.HAND_CURSOR));
+            // Change the background color.
+            setBackground(BG_HIGHLIGHT);
+        });
+    }//GEN-LAST:event_formMouseEntered
+
+    private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            // Change the cursor.
+            setCursor(java.awt.Cursor.getDefaultCursor());
+            // Change the background color.
+            setBackground(BG_NORMAL);
+        });
+    }//GEN-LAST:event_formMouseExited
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            if (clickAction != null)
+                clickAction.run();
+        });
+    }//GEN-LAST:event_formMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NameLabel;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold>
+    
+    /**
+     * Sets the action to be performed when this Panel is clicked.
+     * 
+     * @param clickAction the Runnable to be run when the Panel is clicked.
+     */
+    public void setClickAction(Runnable clickAction) {
+        this.clickAction = clickAction;
+    }
     
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
+        // Draw the image centered on the panel.
         g.drawImage(part.getImage(), 
                 getWidth()/2 - part.getImage().getWidth()/2, 
                 getHeight()/2 - part.getImage().getHeight()/2,
                 null);
-    }
-    
-    public static void main(String[] args) {
-        javax.swing.JFrame window = new javax.swing.JFrame("Testing");
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        window.add(new PartPanel(amalgamation.parts.Parts.load(amalgamation.parts.Parts.TYPE_BODY, "Board")));
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
     }
 }
