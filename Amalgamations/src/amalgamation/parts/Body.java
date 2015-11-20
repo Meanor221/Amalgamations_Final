@@ -73,7 +73,7 @@ public class Body extends Part {
             // Ensure the Slot has a Part connected.
             if (s.getPart() != null)
                 // Iterate through all of the Part's Abilities.
-                for (Ability a : s.getPart().getAbilities())
+                for (Ability a : s.getPart().getAbilities()) 
                     // Ensure the Ability is not already in the list.
                     if (!abilities.contains(a))
                         // Add the Ability to the list.

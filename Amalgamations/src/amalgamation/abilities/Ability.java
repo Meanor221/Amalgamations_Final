@@ -6,6 +6,7 @@ import amalgamation.Amalgamation;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -74,6 +75,19 @@ public class Ability implements Serializable {
         }
         
         return script.toArray(new String[0]);
+    }
+    
+    @Override 
+    public boolean equals(Object object) {
+        return object instanceof Ability && 
+                ((Ability)object).getName().equals(name);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.name);
+        return hash;
     }
     
     /**

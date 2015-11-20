@@ -361,12 +361,14 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             }
         
         // Check the name.
-        if ("".equals(NameField.getText()))
+        if ("".equals(NameField.getText())) {
             // Display an error message.
             javax.swing.JOptionPane.showMessageDialog(
                     this,
                     "Your creation may want a name!"
             );
+            return false;
+        }
         
         return true;
     }
