@@ -83,7 +83,7 @@ public class PartListPanel extends javax.swing.JPanel {
                             javax.swing.JOptionPane.ERROR_MESSAGE);
                 }
         }
- 
+         
         // Create a PartPanel for each Part and add them to the panel.
         for(int i = 0; i < parts.length; i++) {
             // Create the new PartPanel.
@@ -154,7 +154,7 @@ public class PartListPanel extends javax.swing.JPanel {
         jScrollPane1.setMinimumSize(null);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(20);
 
-        ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane1.setViewportView(ListPanel);
 
         RotationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rotation"));
@@ -170,7 +170,7 @@ public class PartListPanel extends javax.swing.JPanel {
         RotationPanel.setLayout(RotationPanelLayout);
         RotationPanelLayout.setHorizontalGroup(
             RotationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(RotationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+            .addComponent(RotationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
         RotationPanelLayout.setVerticalGroup(
             RotationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,8 +183,8 @@ public class PartListPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(RotationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

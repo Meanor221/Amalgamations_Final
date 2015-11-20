@@ -121,10 +121,23 @@ public class PartPanel extends javax.swing.JPanel {
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
-        // Draw the image centered on the panel.
+        // Draw the image scaled to the size of the panel.
+        int width, height;
+        if (part.getImage().getWidth() >= part.getImage().getHeight()) {
+            width = getWidth();
+            height = part.getImage().getHeight() 
+                    * width / part.getImage().getWidth();
+        }
+        else {
+            height = getHeight();
+            width = part.getImage().getWidth() 
+                    * height / part.getImage().getHeight();
+        }
         g.drawImage(part.getImage(), 
-                getWidth()/2 - part.getImage().getWidth()/2, 
-                getHeight()/2 - part.getImage().getHeight()/2,
+                getWidth() / 2 - width / 2, 
+                getHeight() / 2 - height / 2,
+                width,
+                height,
                 null);
     }
 }

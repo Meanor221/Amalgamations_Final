@@ -22,7 +22,7 @@ public class TEST extends javax.swing.JFrame {
         initComponents();    
         
         // Load the test Amalgamation.
-        test = Amalgamations.load("Bob");
+        test = Amalgamations.load("Charles");
         // Display the Amalgamation's body and stats.
         image = test.getFullImage();
         HealthField.setText("" + test.getHealth());

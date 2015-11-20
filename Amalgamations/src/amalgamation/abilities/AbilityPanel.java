@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package amalgamation.abilities;
 
 /**
- *
- * @author cir5274
+ * An AbilityPanel is a GUI component that can be used to visualize and display
+ * an Ability.
+ * 
+ * @author Caleb Rush
  */
 public class AbilityPanel extends javax.swing.JPanel {
     // The color of the background when the Ability is unusable.
@@ -50,6 +47,7 @@ public class AbilityPanel extends javax.swing.JPanel {
                 ((Attack)ability).getDamage() : 0,
                 ability.getAccuracy());
         if (ability.isUsable()) {
+            changeCooldown(ability.getCooldown());
             setBackground(BG_ENABLED);
             NameLabel.setForeground(ability instanceof Attack?
                     NAME_ATTACK : NAME_ABILITY);
@@ -57,6 +55,7 @@ public class AbilityPanel extends javax.swing.JPanel {
             CooldownLabel.setForeground(TEXT_ENABLED);
         }
         else {
+            changeCooldown(ability.getCurrentCooldown());
             setBackground(BG_DISABLED);
             NameLabel.setForeground(TEXT_DISABLED);
             PowerAccuracyLabel.setForeground(TEXT_DISABLED);
