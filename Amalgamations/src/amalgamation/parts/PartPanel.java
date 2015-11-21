@@ -5,7 +5,7 @@ package amalgamation.parts;
  * 
  * @author Adam Meanor, Jordan LaRiccia, Caleb Rush
  */
-public class PartPanel extends javax.swing.JPanel {
+public class PartPanel extends acomponent.AComponent {
     // The color of the background under normal circumstances.
     public static java.awt.Color BG_NORMAL = java.awt.Color.WHITE;
     // The color of the background when the panel is highlighted.
@@ -23,6 +23,7 @@ public class PartPanel extends javax.swing.JPanel {
         initComponents();
         this.part = part;
         NameLabel.setText(part.getName());
+        setHighlightColor(BG_HIGHLIGHT);
     }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
@@ -82,8 +83,9 @@ public class PartPanel extends javax.swing.JPanel {
             // Change the cursor.
             setCursor(java.awt.Cursor.getPredefinedCursor(
                     java.awt.Cursor.HAND_CURSOR));
-            // Change the background color.
-            setBackground(BG_HIGHLIGHT);
+            stopAnimations();
+            //highlight(evt.getX(), evt.getY(), 10);
+            highlight(getWidth() / 2, getHeight() / 2, 10);
         });
     }//GEN-LAST:event_formMouseEntered
 
@@ -91,8 +93,8 @@ public class PartPanel extends javax.swing.JPanel {
         javax.swing.SwingUtilities.invokeLater(() -> {
             // Change the cursor.
             setCursor(java.awt.Cursor.getDefaultCursor());
-            // Change the background color.
-            setBackground(BG_NORMAL);
+            stopAnimations();
+            dehighlight(getWidth() / 2, getHeight() / 2, 0);
         });
     }//GEN-LAST:event_formMouseExited
 

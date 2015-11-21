@@ -6,7 +6,7 @@ package amalgamation.abilities;
  * 
  * @author Caleb Rush
  */
-public class AbilityPanel extends javax.swing.JPanel {
+public class AbilityPanel extends acomponent.AComponent {
     // The color of the background when the Ability is unusable.
     private final static java.awt.Color BG_DISABLED 
             = new java.awt.Color(189, 189, 189);
@@ -42,6 +42,7 @@ public class AbilityPanel extends javax.swing.JPanel {
         
         // Set the ability.
         this.ability = ability;
+        setHighlightColor(BG_HOVERED);
         NameLabel.setText(ability.getName());
         changePowerAccuracy(ability instanceof Attack? 
                 ((Attack)ability).getDamage() : 0,
@@ -132,11 +133,11 @@ public class AbilityPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
-        javax.swing.SwingUtilities.invokeLater(this::exited);
+        exited(evt.getX(), evt.getY());
     }//GEN-LAST:event_formMouseExited
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-        javax.swing.SwingUtilities.invokeLater(this::entered);
+        entered(evt.getX(), evt.getY());
     }//GEN-LAST:event_formMouseEntered
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -174,18 +175,20 @@ public class AbilityPanel extends javax.swing.JPanel {
     }
     
     // Changes the mouse icon and changes the background.
-    private void entered() {
+    private void entered(int x, int y) {
         if (ability.isUsable()) {
-            setBackground(BG_HOVERED);
+            stopAnimations();
+            highlight(x, y, 10);
             setCursor(java.awt.Cursor.getPredefinedCursor(
                     java.awt.Cursor.HAND_CURSOR));
         }
     }
     
     // Changes the mouse icon and changes the background.
-    private void exited() {
+    private void exited(int x, int y) {
         if (ability.isUsable()) {
-            setBackground(BG_ENABLED);
+            stopAnimations();
+            dehighlight(x, y, 0);
             setCursor(java.awt.Cursor.getDefaultCursor());
         }
     }

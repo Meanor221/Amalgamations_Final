@@ -38,8 +38,8 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         NameLabel = new javax.swing.JLabel();
         NameField = new javax.swing.JTextField();
         DisplayPanel = new javax.swing.JPanel();
+        SaveButton = new acomponent.AButton();
         PartsPane = new javax.swing.JTabbedPane();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -58,7 +58,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             // Set the body as the selected part.
             changeBody((amalgamation.parts.Body)part);
         });
-        BodyPanel.setLayout(new java.awt.GridLayout());
+        BodyPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         NameLabel.setFont(new java.awt.Font("Berlin Sans FB", 1, 14)); // NOI18N
         NameLabel.setForeground(new java.awt.Color(51, 153, 255));
@@ -66,43 +66,64 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
 
         NameField.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 14)); // NOI18N
         NameField.setForeground(new java.awt.Color(255, 0, 0));
+        NameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NameFieldActionPerformed(evt);
+            }
+        });
 
         DisplayPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         DisplayPanel.add(new DisplayPanel());
-        DisplayPanel.setLayout(new java.awt.GridLayout());
+        DisplayPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        SaveButton.setForeground(new java.awt.Color(255, 0, 0));
+        SaveButton.setActionListener(e -> save());
+        SaveButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 14)); // NOI18N
+        SaveButton.setHighlightColor(new java.awt.Color(255, 0, 0));
+        SaveButton.setText("Finish");
+
+        javax.swing.GroupLayout SaveButtonLayout = new javax.swing.GroupLayout(SaveButton);
+        SaveButton.setLayout(SaveButtonLayout);
+        SaveButtonLayout.setHorizontalGroup(
+            SaveButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        SaveButtonLayout.setVerticalGroup(
+            SaveButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 23, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout NamePanelLayout = new javax.swing.GroupLayout(NamePanel);
         NamePanel.setLayout(NamePanelLayout);
         NamePanelLayout.setHorizontalGroup(
             NamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(DisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(NamePanelLayout.createSequentialGroup()
                 .addComponent(NameLabel)
-                .addGap(0, 366, Short.MAX_VALUE))
-            .addComponent(DisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(NameField)
+                .addGap(0, 315, Short.MAX_VALUE))
+            .addGroup(NamePanelLayout.createSequentialGroup()
+                .addComponent(NameField, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SaveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         NamePanelLayout.setVerticalGroup(
             NamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(NamePanelLayout.createSequentialGroup()
                 .addComponent(NameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(NameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addGroup(NamePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(NamePanelLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(NameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NamePanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(DisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         PartsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Parts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 14), new java.awt.Color(51, 153, 255))); // NOI18N
         PartsPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        jButton1.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("Finish");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,19 +132,14 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(InstructionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 908, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(InstructionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(PartsPane)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42))))
+                        .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PartsPane)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,18 +150,15 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PartsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap())
+                    .addComponent(PartsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        javax.swing.SwingUtilities.invokeLater(this::save);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void NameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameFieldActionPerformed
+        SaveButton.doClick();
+    }//GEN-LAST:event_NameFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,7 +188,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
     private javax.swing.JLabel NameLabel;
     private javax.swing.JPanel NamePanel;
     private javax.swing.JTabbedPane PartsPane;
-    private javax.swing.JButton jButton1;
+    private acomponent.AButton SaveButton;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 

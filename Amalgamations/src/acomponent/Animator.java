@@ -22,26 +22,32 @@ public class Animator {
     
     // Whether or not the Animator should continue running.
     private boolean running = false;
+    // The list of keys to identify each value.
+    private final Vector<String> keys;
     // The list of values to be animated.
-    private Vector<Double> values;
+    private final Vector<Double> values;
     // The list of ending values.
-    private Vector<Double> endValues;
+    private final Vector<Double> endValues;
     // The list of velocities.
-    private Vector<Double> velocities;
+    private final Vector<Double> velocities;
     // The list of accelerations.
-    private Vector<Double> accelerations;
+    private final Vector<Double> accelerations;
     // The list of FrameListeners.
-    private Vector<FrameListener> frameListeners;
+    private final Vector<FrameListener> frameListeners;
+    // The list of AnimationEndListeners.
+    private final Vector<AnimationEndListener> animationEndListeners;
     
     // Private constructor to prevent outside classes from running 
     // unsynchronized Animators.
     private Animator() {
         // Initialize vectors.
+        keys = new Vector<>();
         values = new Vector<>();
         endValues = new Vector<>();
         velocities = new Vector<>();
         accelerations = new Vector<>();
         frameListeners = new Vector<>();
+        animationEndListeners = new Vector<>();
     }
     
     // Begins the animator.
@@ -60,15 +66,24 @@ public class Animator {
                     e.printStackTrace();
                 }
                 
-                // Iterate through each value being tracked by the Animator.
-                for (int i = 0; i < values.size(); i++) {
-                    incrementVelocity(i);
-                    incrementValue(i);
-                    if (!notifyFrameListener(i) || valueAtEnd(i)) {
-                        removeValue(i);
-                        // Decrement the loop counter so that the next element
-                        // does not get skipped.
-                        i--;
+                synchronized (keys) {
+                    // Iterate through each value being tracked by the Animator.
+                    for (int i = 0; i < values.size(); i++) {
+                        incrementVelocity(i);
+                        incrementValue(i);
+                        notifyFrameListener(i);
+                        if (valueAtEnd(i)) {
+                            // Notify the frame listener one last time.
+                            frameListeners.get(i).frameIncremented(
+                                    endValues.get(i).intValue());
+                            // Alert the end listener.
+                            if (animationEndListeners.get(i) != null)
+                                animationEndListeners.get(i).animationEnded();
+                            removeValue(i);
+                            // Decrement the loop counter so that the next element
+                            // does not get skipped.
+                            i--;
+                        }
                     }
                 }
                 
@@ -87,10 +102,22 @@ public class Animator {
      * @param velocity the initial amount the value should increment each frame
      * @param frameListener the listener to update every time the frame is
      *                      incremented.
+     * @param animationEndListener the listener to update once the animation
+     *                             is ended
+     * @return the identifier String that can be used to directly modify the
+     *         animation later.
      */
-    public static void animateValue(double value, double endValue, 
-            double velocity, FrameListener frameListener) {
-        animateValue(value, endValue, velocity, 0.0, frameListener);
+    public static String animateValue(double value, double endValue, 
+            double velocity, FrameListener frameListener, 
+            AnimationEndListener animationEndListener) {
+        // Calculate the acceleration.
+        int frames = (int)((endValue - value) / velocity);
+        double acceleration = frames == 0?
+                0:
+                2 * (((endValue - value) / Math.pow(frames, 2)) 
+                        - (velocity / frames));
+        return animateValue(value, endValue, velocity, acceleration, 
+                frameListener, animationEndListener);
     }
     
     /**
@@ -104,10 +131,16 @@ public class Animator {
      *                     limited by the length of a frame).
      * @param frameListener the listener to update every time the frame is
      *                      incremented.
+     * @param animationEndListener the listener to update once the animation
+     *                             is ended
+     * @return the identifier String that can be used to directly modify the
+     *         animation later.
      */
-    public static void animateValue(double value, double endValue, 
-            int milliseconds, FrameListener frameListener) {
-        animateValue(value, endValue, 0, milliseconds, frameListener);
+    public static String animateValue(double value, double endValue, 
+            int milliseconds, FrameListener frameListener, 
+            AnimationEndListener animationEndListener) {
+        return animateValue(value, endValue, 0, milliseconds, frameListener,
+                animationEndListener);
     }
     
     /**
@@ -122,10 +155,15 @@ public class Animator {
      *                     limited by the length of a frame).
      * @param frameListener the listener to update every time the frame is
      *                      incremented.
+     * @param animationEndListener the listener to update once the animation
+     *                             is ended
+     * @return the identifier String that can be used to directly modify the
+     *         animation later.
      */
-    public static void animateValue(double value, double endValue, 
+    public static String animateValue(double value, double endValue, 
             double acceleration, int milliseconds, 
-            FrameListener frameListener) {
+            FrameListener frameListener, 
+            AnimationEndListener animationEndListener) {
         // Determine the number of frames that the animation will last.
         int frames = toFrames(milliseconds);
         // Calculate the velocity.
@@ -133,7 +171,8 @@ public class Animator {
                 (endValue - value) / frames - (acceleration * frames):
                 endValue - value;
         
-        animateValue(value, endValue, velocity, acceleration, frameListener);
+        return animateValue(value, endValue, velocity, acceleration, 
+                frameListener, animationEndListener);
     }
     
     /**
@@ -145,23 +184,34 @@ public class Animator {
      * @param acceleration the amount the velocity should change each frame
      * @param frameListener the listener to update every time the frame is
      *                      incremented.
+     * @param animationEndListener the listener to update once the animation
+     *                             is ended
+     * @return the identifier String that can be used to directly modify the
+     *         animation later.
      */
-    public static void animateValue(double value, double endValue, 
-            double velocity, double acceleration, FrameListener frameListener) {
+    public static String animateValue(double value, double endValue, 
+            double velocity, double acceleration, FrameListener frameListener,
+            AnimationEndListener animationEndListener) {
         // Check if the universal animator has been created yet.
         if (animator == null)
             animator = new Animator();
         
         // Add the value to the animator.
+        animator.keys.add(String.format("%f%f%f%f%s%d", value, endValue, velocity, 
+                acceleration, frameListener.toString(), animator.values.size()));
         animator.values.add(value);
         animator.endValues.add(endValue);
         animator.velocities.add(velocity);
         animator.accelerations.add(acceleration);
         animator.frameListeners.add(frameListener);
+        animator.animationEndListeners.add(animationEndListener);
         
         // Start the animator if it is stopped.
         if (!animator.running)
             animator.animate();
+        
+        // Return an identifier String.
+        return animator.keys.lastElement();
     }
     
     // Increments the value at the given index.
@@ -175,17 +225,42 @@ public class Animator {
     }
     
     // Notifies the frame listener at the given index of a change in value.
-    private boolean notifyFrameListener(int i) {
-        return frameListeners.get(i).frameIncremented(values.get(i).intValue());
+    private void notifyFrameListener(int i) {
+        frameListeners.get(i).frameIncremented(values.get(i).intValue());
     }
 
     // Remove the value at the given index.
     private void removeValue(int i) {
-        values.remove(i);
-        endValues.remove(i);
-        velocities.remove(i);
-        accelerations.remove(i);
-        frameListeners.remove(i);
+        synchronized (keys) {   
+            // Remove the value's properties frome each vector.
+            keys.remove(i);
+            values.remove(i);
+            endValues.remove(i);
+            velocities.remove(i);
+            accelerations.remove(i);
+            frameListeners.remove(i);
+            animationEndListeners.remove(i);
+        }
+    }
+    
+    /**
+     * Stops the animation with the specified key.
+     * 
+     * @param key the identifier String of the value animation to stop
+     * @return true if the animation was successfully stopped, false otherwise
+     */
+    public static boolean stopAnimation(String key) {
+        // Retrieve the index for the key.
+        int i = animator.keys.indexOf(key);
+        
+        // Check if the key existed.
+        if (i != -1) {
+            // Remove the value.
+            animator.removeValue(i);
+            return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -221,8 +296,23 @@ public class Animator {
          * updated and needs to redraw).
          * 
          * @param value the incremented value.
-         * @return false if the animation should stop, or true to continue
          */
-        boolean frameIncremented(int value);
+        void frameIncremented(int value);
+    }
+    
+    /**
+     * An AnimationEndListener should be used by anything utilizing an Animator
+     * to alert itself when the animation has ended.
+     */
+    public static interface AnimationEndListener {
+        /**
+         * Called when the animation has ended. This should be used when an 
+         * action needs to be performed only after an animation ends.
+         * 
+         * If the animation is ended prematurely 
+         * (through the Animator::stopAnimation method), this method will not
+         * be called.
+         */
+        void animationEnded();
     }
 }

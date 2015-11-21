@@ -21,8 +21,9 @@ public class TEST extends javax.swing.JFrame {
     public TEST() {
         initComponents();    
         
+        
         // Load the test Amalgamation.
-        test = Amalgamations.load("Charles");
+        test = Amalgamations.load("Cthulu");
         // Display the Amalgamation's body and stats.
         image = test.getFullImage();
         HealthField.setText("" + test.getHealth());
