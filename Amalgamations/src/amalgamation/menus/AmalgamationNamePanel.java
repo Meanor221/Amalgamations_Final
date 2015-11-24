@@ -29,7 +29,7 @@ public class AmalgamationNamePanel extends acomponent.AComponent {
         // Get rid of the border on the amalPanel.
         amalPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         // Create a border around the full panel.
-        setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 2, 
+        setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 2, 2, 
                 Color.LIGHT_GRAY));
         // Set the background.
         setBackground(new java.awt.Color(244, 67, 54));
@@ -42,7 +42,7 @@ public class AmalgamationNamePanel extends acomponent.AComponent {
         nameLabel = new javax.swing.JLabel(
                 amalPanel.getAmalgamation().getName());
         nameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 
-                java.awt.Font.BOLD, 28));
+                java.awt.Font.BOLD, 18));
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         add(nameLabel, java.awt.BorderLayout.SOUTH);
@@ -53,12 +53,28 @@ public class AmalgamationNamePanel extends acomponent.AComponent {
         super.paintComponent(g);
     }
     
+    /**
+     * Sets the Runnable to be run when this panel is clicked.
+     * 
+     * @param clickAction the Runnable to be run when this panel is clicked
+     */
+    public void setClickAction(Runnable clickAction) {
+        amalPanel.setClickAction(clickAction);
+    }
+    
+    @Override
+    public void setHighlightColor(java.awt.Color highlightColor) {
+        amalPanel.setHighlightColor(highlightColor);
+        setBackground(highlightColor);
+    }
+    
     public static void main(String[] args) {
         javax.swing.JFrame window = new javax.swing.JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         
         AmalgamationNamePanel panel = new AmalgamationNamePanel(
                 amalgamation.Amalgamations.load("Davy Jones"));
+        panel.setHighlightColor(Color.GREEN);
         window.add(panel);
         
         window.pack();

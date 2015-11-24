@@ -24,7 +24,8 @@ public class AmalgamationPanel extends acomponent.AComponent {
     public AmalgamationPanel(Amalgamation amal) {
         initComponents();
         this.amal = amal;
-        // Set the highlight color to a pleasant shade red.
+        setBackground(Color.WHITE);
+        // Set the highlight color to a pleasant shade of red.
         setHighlightColor(new java.awt.Color(244, 67, 54));
         // Initialize the mouse listener.
         initMouseListener();
@@ -78,7 +79,7 @@ public class AmalgamationPanel extends acomponent.AComponent {
         super.paintComponent(g);
         // Draw the image scaled to the size of the panel.
         int width, height;
-        if (amal.getFullImage().getWidth() >= amal.getFullImage().getHeight()) {
+        if (getWidth() <= getHeight()) {
             width = getWidth();
             height = amal.getFullImage().getHeight() 
                     * width / amal.getFullImage().getWidth();
@@ -115,9 +116,9 @@ public class AmalgamationPanel extends acomponent.AComponent {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setMaximumSize(new java.awt.Dimension(350, 350));
-        setMinimumSize(new java.awt.Dimension(350, 350));
-        setPreferredSize(new java.awt.Dimension(350, 350));
+        setMaximumSize(null);
+        setMinimumSize(null);
+        setPreferredSize(null);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
