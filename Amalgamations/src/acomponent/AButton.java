@@ -31,8 +31,9 @@ public class AButton extends AComponent {
      */
     public AButton() {
         text = "Button";
-        setBackground(Color.WHITE);
-        setHighlightColor(Color.BLUE);
+        setBackground(Color.BLUE);
+        setHighlightColor(Color.WHITE);
+        setForeground(Color.WHITE);
         setSize(100, 40);
         setBorder(
                 BorderFactory.createMatteBorder(0, 0, 2, 2, Color.LIGHT_GRAY));
@@ -92,7 +93,7 @@ public class AButton extends AComponent {
         
         // Set the text color to white.
         textColor = getForeground();
-        setForeground(Color.WHITE);
+        setForeground(getBackground());
     }
     
     // Initializes the mouse listener for the button.

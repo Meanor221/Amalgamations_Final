@@ -157,12 +157,13 @@ public class AComponent extends JPanel {
                     repaint();
                 },
                 // Set the highlight in the center at the end of the animation.
-                () -> {
-                    highlightX = getWidth() / 2;
-                    highlightY = getHeight() / 2;
-                    highlightRadius = highlightRadius(highlightX, highlightY);
-                    repaint();
-                }
+//                () -> {
+//                    highlightX = getWidth() / 2;
+//                    highlightY = getHeight() / 2;
+//                    highlightRadius = highlightRadius(highlightX, highlightY);
+//                    repaint();
+//                }
+                null
         ));
     }
     
@@ -187,7 +188,7 @@ public class AComponent extends JPanel {
                     // Bottom right corner
                     Math.sqrt(Math.pow(getWidth() - x, 2) 
                             + Math.pow(getHeight() - y, 2))
-                ).max(Double::compare).get().intValue();
+                ).max(Double::compare).get().intValue() + 1;
     }
     
     @Override
