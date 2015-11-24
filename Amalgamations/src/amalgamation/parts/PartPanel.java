@@ -55,7 +55,7 @@ public class PartPanel extends acomponent.AComponent {
             }
         });
 
-        NameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 28)); // NOI18N
+        NameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 14)); // NOI18N
         NameLabel.setForeground(new java.awt.Color(0, 204, 0));
         NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         NameLabel.setText("jLabel1");
@@ -72,7 +72,7 @@ public class PartPanel extends acomponent.AComponent {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(154, Short.MAX_VALUE)
+                .addContainerGap(170, Short.MAX_VALUE)
                 .addComponent(NameLabel)
                 .addContainerGap())
         );

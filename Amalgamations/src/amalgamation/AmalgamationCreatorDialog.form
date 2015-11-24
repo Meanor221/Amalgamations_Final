@@ -3,6 +3,13 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Create an Amalgmation"/>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+    </Property>
+    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -26,7 +33,7 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="InstructionsLabel" pref="908" max="32767" attributes="0"/>
+                  <Component id="InstructionsLabel" pref="1000" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="BodyPanel" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -44,11 +51,19 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="InstructionsLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="BodyPanel" max="32767" attributes="0"/>
-                  <Component id="NamePanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="PartsPane" alignment="0" pref="630" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="NamePanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="PartsPane" alignment="0" max="32767" attributes="0"/>
+                          <Component id="BodyPanel" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
       </Group>
@@ -61,24 +76,30 @@
           <Font name="Berlin Sans FB Demi" size="14" style="0"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="ff" type="rgb"/>
+          <Color blue="36" green="43" red="f4" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Design an Amalgamation by choosing all of the parts that will make it up. Changing the body type will change the type of other body parts that are available."/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="BodyPanel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="f3" green="96" red="1e" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Body Type">
-              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                <EtchetBorder/>
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2">
+                  <Color PropertyName="color" blue="f3" green="96" red="1e" type="rgb"/>
+                </LineBorder>
               </Border>
               <Font PropertyName="font" name="Berlin Sans FB Demi" size="14" style="1"/>
-              <Color PropertyName="color" blue="ff" green="99" red="33" type="rgb"/>
+              <Color PropertyName="color" blue="f3" green="96" red="1e" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>
+        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="// Add the list of Bodies to the BodyPanel.&#xa;amalgamation.parts.PartListPanel BodyList&#xa;        = new amalgamation.parts.PartListPanel(&#xa;                amalgamation.parts.Parts.TYPE_BODY);&#xa;BodyPanel.add(BodyList);&#xa;// Set the PartChangeListener for the BodyListPanel.&#xa;BodyList.setPartChangeListener(part -&gt; {&#xa;    // Set the body as the selected part.&#xa;    changeBody((amalgamation.parts.Body)part);&#xa;});"/>
@@ -90,6 +111,9 @@
       </Layout>
     </Container>
     <Container class="javax.swing.JPanel" name="NamePanel">
+      <Properties>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -120,7 +144,7 @@
                           <Component id="SaveButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="DisplayPanel" pref="400" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -134,18 +158,39 @@
               <Font name="Berlin Sans FB" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="99" red="33" type="rgb"/>
+              <Color blue="36" green="43" red="f4" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Name:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="NameField">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="f0" green="f0" red="f0" type="rgb"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Berlin Sans FB Demi" size="14" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="ff" type="rgb"/>
+              <Color blue="36" green="43" red="f4" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
+                <MatteColorBorder bottom="2" left="0" right="0" top="0">
+                  <Color PropertyName="color" blue="36" green="43" red="f4" type="rgb"/>
+                </MatteColorBorder>
+              </Border>
+            </Property>
+            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="36" green="43" red="f4" type="rgb"/>
+            </Property>
+            <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fe" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="selectionColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="36" green="43" red="f4" type="rgb"/>
             </Property>
           </Properties>
           <Events>
@@ -154,14 +199,19 @@
         </Component>
         <Container class="javax.swing.JPanel" name="DisplayPanel">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                <EtchetBorder/>
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2">
+                  <Color PropertyName="color" blue="36" green="43" red="f4" type="rgb"/>
+                </LineBorder>
               </Border>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DisplayPanel.add(new DisplayPanel());&#xd;&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DisplayPanel d = new DisplayPanel();&#xa;d.setOpaque(false);&#xa;DisplayPanel.add(d);"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
@@ -171,17 +221,14 @@
         </Container>
         <Container class="acomponent.AButton" name="SaveButton">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="ff" type="rgb"/>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="36" green="43" red="f4" type="rgb"/>
             </Property>
             <Property name="actionListener" type="java.awt.event.ActionListener" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="e -&gt; save()" type="code"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Berlin Sans FB Demi" size="14" style="0"/>
-            </Property>
-            <Property name="highlightColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Finish"/>
           </Properties>
@@ -203,18 +250,30 @@
     </Container>
     <Container class="javax.swing.JTabbedPane" name="PartsPane">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="f3" green="96" red="1e" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Parts">
-              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-                <EtchetBorder/>
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder thickness="2">
+                  <Color PropertyName="color" blue="f3" green="96" red="1e" type="rgb"/>
+                </LineBorder>
               </Border>
               <Font PropertyName="font" name="Berlin Sans FB Demi" size="14" style="1"/>
-              <Color PropertyName="color" blue="ff" green="99" red="33" type="rgb"/>
+              <Color PropertyName="color" blue="f3" green="96" red="1e" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="tabLayoutPolicy" type="int" value="1"/>
+        <Property name="tabPlacement" type="int" value="4"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Default Cursor"/>
+        </Property>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>

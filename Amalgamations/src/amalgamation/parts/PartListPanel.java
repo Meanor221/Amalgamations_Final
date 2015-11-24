@@ -7,6 +7,9 @@ package amalgamation.parts;
  * @author Adam Meanor, Jordan LaRiccia, Caleb Rush
  */
 public class PartListPanel extends javax.swing.JPanel {
+    // The number of columns in the GridBagLayout.
+    private static final int COLUMNS = 2;
+    
     // The array of Parts displayed.
     private Part[] parts;
     // The PartChooseListener to set off whenever a Part is selected.
@@ -88,6 +91,10 @@ public class PartListPanel extends javax.swing.JPanel {
         for(int i = 0; i < parts.length; i++) {
             // Create the new PartPanel.
             PartPanel panel = new PartPanel(parts[i]);
+            panel.setPreferredSize(new java.awt.Dimension(
+                    ListPanel.getWidth() / COLUMNS, 
+                    150
+            ));
             
             // Set the PartPanel's clickAction.
             final int index = i;
@@ -98,7 +105,14 @@ public class PartListPanel extends javax.swing.JPanel {
             });
             
             // Add the panel to the list.
-            ListPanel.add(panel);
+            java.awt.GridBagConstraints constraints = 
+                    new java.awt.GridBagConstraints();
+            constraints.gridx = i % COLUMNS;
+            constraints.gridy = i / COLUMNS;
+            constraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+            constraints.weightx = 1.0;
+            //constraints.weighty = 1.0;
+            ListPanel.add(panel, constraints);
         }
         
         // Set the slider's initial value.
@@ -149,17 +163,23 @@ public class PartListPanel extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(48, 342));
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(30, 150, 243), 2));
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setMaximumSize(null);
-        jScrollPane1.setMinimumSize(null);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(20);
 
-        ListPanel.setLayout(new javax.swing.BoxLayout(ListPanel, javax.swing.BoxLayout.Y_AXIS));
+        ListPanel.setBackground(new java.awt.Color(255, 255, 255));
+        ListPanel.setLayout(new java.awt.GridBagLayout());
         jScrollPane1.setViewportView(ListPanel);
 
-        RotationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rotation"));
+        RotationPanel.setBackground(new java.awt.Color(255, 255, 255));
+        RotationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Rotation", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 12), new java.awt.Color(30, 150, 243))); // NOI18N
 
+        RotationSlider.setBackground(new java.awt.Color(255, 255, 255));
+        RotationSlider.setForeground(new java.awt.Color(30, 150, 243));
         RotationSlider.setMaximum(360);
+        RotationSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         RotationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 RotationSliderStateChanged(evt);
@@ -170,7 +190,7 @@ public class PartListPanel extends javax.swing.JPanel {
         RotationPanel.setLayout(RotationPanelLayout);
         RotationPanelLayout.setHorizontalGroup(
             RotationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(RotationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+            .addComponent(RotationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
         );
         RotationPanelLayout.setVerticalGroup(
             RotationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,7 +209,7 @@ public class PartListPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(RotationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))

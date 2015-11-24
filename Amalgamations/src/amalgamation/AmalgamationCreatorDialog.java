@@ -1,5 +1,7 @@
 package amalgamation;
 
+import java.awt.Color;
+
 /**
  * The AmalgamationCreatorDialog allows the user to construct an Amalgamation
  * using all of the available Part resources. The Amalgamations created are
@@ -16,6 +18,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
      */
     private AmalgamationCreatorDialog(java.awt.Frame parent) {
         super(parent, true);
+        getContentPane().setBackground(Color.WHITE);
         initComponents();
         // Center the dialog on the parent.
         setLocationRelativeTo(parent);
@@ -42,12 +45,17 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         PartsPane = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Create an Amalgmation");
+        setBackground(new java.awt.Color(255, 255, 255));
+        setForeground(java.awt.Color.white);
 
         InstructionsLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 14)); // NOI18N
-        InstructionsLabel.setForeground(new java.awt.Color(255, 0, 0));
+        InstructionsLabel.setForeground(new java.awt.Color(244, 67, 54));
         InstructionsLabel.setText("Design an Amalgamation by choosing all of the parts that will make it up. Changing the body type will change the type of other body parts that are available.");
 
-        BodyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Body Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 14), new java.awt.Color(51, 153, 255))); // NOI18N
+        BodyPanel.setBackground(new java.awt.Color(30, 150, 243));
+        BodyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(30, 150, 243), 2), "Body Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 14), new java.awt.Color(30, 150, 243))); // NOI18N
+        BodyPanel.setOpaque(false);
         // Add the list of Bodies to the BodyPanel.
         amalgamation.parts.PartListPanel BodyList
         = new amalgamation.parts.PartListPanel(
@@ -60,26 +68,37 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         });
         BodyPanel.setLayout(new java.awt.GridLayout(1, 0));
 
+        NamePanel.setOpaque(false);
+
         NameLabel.setFont(new java.awt.Font("Berlin Sans FB", 1, 14)); // NOI18N
-        NameLabel.setForeground(new java.awt.Color(51, 153, 255));
+        NameLabel.setForeground(new java.awt.Color(244, 67, 54));
         NameLabel.setText("Name:");
 
+        NameField.setBackground(new java.awt.Color(240, 240, 240));
         NameField.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 14)); // NOI18N
-        NameField.setForeground(new java.awt.Color(255, 0, 0));
+        NameField.setForeground(new java.awt.Color(244, 67, 54));
+        NameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        NameField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(244, 67, 54)));
+        NameField.setCaretColor(new java.awt.Color(244, 67, 54));
+        NameField.setDisabledTextColor(new java.awt.Color(255, 255, 254));
+        NameField.setOpaque(false);
+        NameField.setSelectionColor(new java.awt.Color(244, 67, 54));
         NameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NameFieldActionPerformed(evt);
             }
         });
 
-        DisplayPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        DisplayPanel.add(new DisplayPanel());
+        DisplayPanel.setBackground(new java.awt.Color(255, 255, 255));
+        DisplayPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(244, 67, 54), 2));
+        DisplayPanel d = new DisplayPanel();
+        d.setOpaque(false);
+        DisplayPanel.add(d);
         DisplayPanel.setLayout(new java.awt.GridLayout(1, 0));
 
-        SaveButton.setForeground(new java.awt.Color(255, 0, 0));
+        SaveButton.setBackground(new java.awt.Color(244, 67, 54));
         SaveButton.setActionListener(e -> save());
         SaveButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 14)); // NOI18N
-        SaveButton.setHighlightColor(new java.awt.Color(255, 0, 0));
         SaveButton.setText("Finish");
 
         javax.swing.GroupLayout SaveButtonLayout = new javax.swing.GroupLayout(SaveButton);
@@ -122,8 +141,12 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        PartsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Parts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 14), new java.awt.Color(51, 153, 255))); // NOI18N
+        PartsPane.setBackground(new java.awt.Color(30, 150, 243));
+        PartsPane.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(30, 150, 243), 2), "Parts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 14), new java.awt.Color(30, 150, 243))); // NOI18N
+        PartsPane.setForeground(new java.awt.Color(255, 255, 255));
         PartsPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        PartsPane.setTabPlacement(javax.swing.JTabbedPane.RIGHT);
+        PartsPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,7 +155,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(InstructionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 908, Short.MAX_VALUE)
+                    .addComponent(InstructionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,11 +169,16 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(InstructionsLabel)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PartsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PartsPane)
+                            .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
 
         pack();
