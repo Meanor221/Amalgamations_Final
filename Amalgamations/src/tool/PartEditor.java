@@ -1047,7 +1047,7 @@ public class PartEditor extends javax.swing.JFrame {
     // their selections to the list of abilities.
     private void addAbilities() {
         // Retrieve the list of ability names to add from the user.
-        String[] abilities = amalgamation.menus.components.AbilitiesDialog
+        String[] abilities = menus.components.AbilitiesDialog
                 .showAbilitiesDialog(this);
         // Ensure the user made a selection.
         if (abilities == null)

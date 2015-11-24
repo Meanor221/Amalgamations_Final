@@ -36,7 +36,7 @@ public class TEST extends javax.swing.JFrame {
         // Display the Amaglamation's Abilities.
         for (amalgamation.abilities.Ability a : test.getAbilities())
             if (a != null)
-                AbilitiesPanel.add(new amalgamation.menus.components.AbilityPanel(a));
+                AbilitiesPanel.add(new menus.components.AbilityPanel(a));
         
         BodyPanel.add(imagePanel);
     }
