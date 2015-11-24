@@ -1,4 +1,9 @@
-package amalgamation.abilities;
+package tool;
+
+import util.Abilities;
+import amalgamation.abilities.Ability;
+import amalgamation.abilities.Attack;
+import amalgamation.abilities.StatModifier;
 
 /**
  * A tool to create and edit Abilities and manage all of the stored Ability

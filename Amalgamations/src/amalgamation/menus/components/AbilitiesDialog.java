@@ -1,4 +1,6 @@
-package amalgamation.abilities;
+package amalgamation.menus.components;
+
+import util.Abilities;
 
 /**
  * A dialog for selecting an array of Abilities from the full list of Abilities.

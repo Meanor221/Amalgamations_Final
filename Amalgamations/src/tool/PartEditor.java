@@ -1,5 +1,12 @@
-package amalgamation.parts;
+package tool;
 
+import amalgamation.parts.Arm;
+import amalgamation.parts.Body;
+import amalgamation.parts.Head;
+import amalgamation.parts.Leg;
+import amalgamation.parts.Part;
+import util.Parts;
+import amalgamation.parts.Slot;
 import java.awt.GraphicsConfiguration;
 
 /**
@@ -1040,7 +1047,7 @@ public class PartEditor extends javax.swing.JFrame {
     // their selections to the list of abilities.
     private void addAbilities() {
         // Retrieve the list of ability names to add from the user.
-        String[] abilities = amalgamation.abilities.AbilitiesDialog
+        String[] abilities = amalgamation.menus.components.AbilitiesDialog
                 .showAbilitiesDialog(this);
         // Ensure the user made a selection.
         if (abilities == null)
@@ -1301,7 +1308,7 @@ public class PartEditor extends javax.swing.JFrame {
         // Retrieve each Ability name from the model.
         for (int i = 0; i < model.getSize(); i++)
             // Load each Ability.
-            abilities[i] = amalgamation.abilities.Abilities.load(
+            abilities[i] = util.Abilities.load(
                     model.getElementAt(i));
         
         return abilities;

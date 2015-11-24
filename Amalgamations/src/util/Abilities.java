@@ -1,5 +1,8 @@
-package amalgamation.abilities;
+package util;
 
+import amalgamation.abilities.Ability;
+import amalgamation.abilities.Attack;
+import amalgamation.abilities.StatModifier;
 import java.io.Serializable;
 
 /**

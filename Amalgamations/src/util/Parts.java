@@ -1,6 +1,12 @@
-package amalgamation.parts;
+package util;
 
 import amalgamation.abilities.Ability;
+import amalgamation.parts.Arm;
+import amalgamation.parts.Body;
+import amalgamation.parts.Head;
+import amalgamation.parts.Leg;
+import amalgamation.parts.Part;
+import amalgamation.parts.Slot;
 /**
  * Parts is a utility class that contains useful Part related functions and
  * constants.

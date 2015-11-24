@@ -1,5 +1,6 @@
 package amalgamation.parts;
 
+import util.Amalgamations;
 import amalgamation.*;
 
 /**
@@ -23,7 +24,7 @@ public class TEST extends javax.swing.JFrame {
         
         
         // Load the test Amalgamation.
-        test = Amalgamations.load("Cthulu");
+        test = Amalgamations.load("Davy Jones");
         // Display the Amalgamation's body and stats.
         image = test.getFullImage();
         HealthField.setText("" + test.getHealth());
@@ -35,7 +36,7 @@ public class TEST extends javax.swing.JFrame {
         // Display the Amaglamation's Abilities.
         for (amalgamation.abilities.Ability a : test.getAbilities())
             if (a != null)
-                AbilitiesPanel.add(new amalgamation.abilities.AbilityPanel(a));
+                AbilitiesPanel.add(new amalgamation.menus.components.AbilityPanel(a));
         
         BodyPanel.add(imagePanel);
     }

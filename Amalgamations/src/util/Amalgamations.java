@@ -1,5 +1,6 @@
-package amalgamation;
+package util;
 
+import amalgamation.Amalgamation;
 import amalgamation.parts.Body;
 
 /**

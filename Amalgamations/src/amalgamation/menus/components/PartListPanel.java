@@ -1,4 +1,7 @@
-package amalgamation.parts;
+package amalgamation.menus.components;
+
+import amalgamation.parts.Part;
+import util.Parts;
 
 /**
  * A PartListPanel is a modified JPanel intended to display a vertically 

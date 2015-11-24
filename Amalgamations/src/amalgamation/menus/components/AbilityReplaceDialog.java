@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package amalgamation;
+package amalgamation.menus.components;
+import util.Abilities;
+import amalgamation.Amalgamation;
+import util.Amalgamations;
+import amalgamation.menus.components.AbilityPanel;
 import amalgamation.abilities.*;
 
 /**
@@ -53,15 +57,15 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
 
         Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Click the Ability you would like to remove"));
 
-        Move1Panel.setLayout(new java.awt.GridLayout());
+        Move1Panel.setLayout(new java.awt.GridLayout(1, 0));
 
-        Move2Panel.setLayout(new java.awt.GridLayout());
+        Move2Panel.setLayout(new java.awt.GridLayout(1, 0));
 
-        Move3Panel.setLayout(new java.awt.GridLayout());
+        Move3Panel.setLayout(new java.awt.GridLayout(1, 0));
 
-        NewMovePanel.setLayout(new java.awt.GridLayout());
+        NewMovePanel.setLayout(new java.awt.GridLayout(1, 0));
 
-        Move4Panel.setLayout(new java.awt.GridLayout());
+        Move4Panel.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
         Panel.setLayout(PanelLayout);
@@ -131,7 +135,7 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
     // Creates all of the AbilityPanels from the Abilities.
     private void initLayout() {
         if (amalgamation.getAbilities()[0] != null) {
-            AbilityPanel panel = new amalgamation.abilities.AbilityPanel(
+            AbilityPanel panel = new amalgamation.menus.components.AbilityPanel(
                             amalgamation.getAbilities()[0]);
             panel.setClickAction(() -> {
                 amalgamation.replaceAbility(ability, 0);
@@ -141,7 +145,7 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
         }
         
         if (amalgamation.getAbilities()[1] != null) {
-            AbilityPanel panel = new amalgamation.abilities.AbilityPanel(
+            AbilityPanel panel = new amalgamation.menus.components.AbilityPanel(
                             amalgamation.getAbilities()[1]);
             panel.setClickAction(() -> {
                 amalgamation.replaceAbility(ability, 1);
@@ -151,7 +155,7 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
         }
         
         if (amalgamation.getAbilities()[2] != null) {
-            AbilityPanel panel = new amalgamation.abilities.AbilityPanel(
+            AbilityPanel panel = new amalgamation.menus.components.AbilityPanel(
                             amalgamation.getAbilities()[2]);
             panel.setClickAction(() -> {
                 amalgamation.replaceAbility(ability, 2);
@@ -161,7 +165,7 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
         }
         
         if (amalgamation.getAbilities()[3] != null) {
-            AbilityPanel panel = new amalgamation.abilities.AbilityPanel(
+            AbilityPanel panel = new amalgamation.menus.components.AbilityPanel(
                             amalgamation.getAbilities()[3]);
             panel.setClickAction(() -> {
                 amalgamation.replaceAbility(ability, 3);
@@ -171,7 +175,7 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
         }
         
         if (ability != null) {
-            AbilityPanel panel = new amalgamation.abilities.AbilityPanel(
+            AbilityPanel panel = new amalgamation.menus.components.AbilityPanel(
                             ability);
             panel.setClickAction(() -> setVisible(false));
             NewMovePanel.add(panel);

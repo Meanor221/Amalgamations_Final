@@ -102,7 +102,7 @@
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="// Add the list of Bodies to the BodyPanel.&#xa;amalgamation.parts.PartListPanel BodyList&#xa;        = new amalgamation.parts.PartListPanel(&#xa;                amalgamation.parts.Parts.TYPE_BODY);&#xa;BodyPanel.add(BodyList);&#xa;// Set the PartChangeListener for the BodyListPanel.&#xa;BodyList.setPartChangeListener(part -&gt; {&#xa;    // Set the body as the selected part.&#xa;    changeBody((amalgamation.parts.Body)part);&#xa;});"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="// Add the list of Bodies to the BodyPanel.&#xa;amalgamation.menus.components.PartListPanel BodyList&#xa;        = new amalgamation.menus.components.PartListPanel(&#xa;                util.Parts.TYPE_BODY);&#xa;BodyPanel.add(BodyList);&#xa;// Set the PartChangeListener for the BodyListPanel.&#xa;BodyList.setPartChangeListener(part -&gt; {&#xa;    // Set the body as the selected part.&#xa;    changeBody((amalgamation.parts.Body)part);&#xa;});"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">

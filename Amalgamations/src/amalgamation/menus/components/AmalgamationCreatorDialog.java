@@ -1,5 +1,6 @@
-package amalgamation;
+package amalgamation.menus.components;
 
+import util.Amalgamations;
 import java.awt.Color;
 
 /**
@@ -57,9 +58,9 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         BodyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(30, 150, 243), 2), "Body Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Berlin Sans FB Demi", 1, 14), new java.awt.Color(30, 150, 243))); // NOI18N
         BodyPanel.setOpaque(false);
         // Add the list of Bodies to the BodyPanel.
-        amalgamation.parts.PartListPanel BodyList
-        = new amalgamation.parts.PartListPanel(
-            amalgamation.parts.Parts.TYPE_BODY);
+        amalgamation.menus.components.PartListPanel BodyList
+        = new amalgamation.menus.components.PartListPanel(
+            util.Parts.TYPE_BODY);
         BodyPanel.add(BodyList);
         // Set the PartChangeListener for the BodyListPanel.
         BodyList.setPartChangeListener(part -> {
@@ -246,9 +247,9 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         // Set up the new tabs for the PartListPanels.
         for (int i = 0; i < body.getArmSlots().length; i++) {
             // Create a new tab containing the PartListPanel.
-            amalgamation.parts.PartListPanel panel 
-                    = new amalgamation.parts.PartListPanel(
-                            amalgamation.parts.Parts.TYPE_ARM,
+            amalgamation.menus.components.PartListPanel panel 
+                    = new amalgamation.menus.components.PartListPanel(
+                            util.Parts.TYPE_ARM,
                             (int)body.getArmSlots()[i].getRotationDegrees());
             PartsPane.addTab("Arm " + (i + 1), panel);
             
@@ -271,9 +272,9 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         // Set up the new tabs for the PartListPanels.
         for (int i = 0; i < body.getHeadSlots().length; i++) {
             // Create a new tab containing the PartListPanel.
-            amalgamation.parts.PartListPanel panel 
-                    = new amalgamation.parts.PartListPanel(
-                            amalgamation.parts.Parts.TYPE_HEAD,
+            amalgamation.menus.components.PartListPanel panel 
+                    = new amalgamation.menus.components.PartListPanel(
+                            util.Parts.TYPE_HEAD,
                             (int)body.getHeadSlots()[i].getRotationDegrees());
             PartsPane.addTab("Head " + (i + 1), panel);
             
@@ -297,9 +298,9 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         // Set up the new tabs for the PartListPanels.
         for (int i = 0; i < body.getLegSlots().length; i++) {
             // Create a new tab containing the PartListPanel.
-            amalgamation.parts.PartListPanel panel 
-                    = new amalgamation.parts.PartListPanel(
-                            amalgamation.parts.Parts.TYPE_LEG,
+            amalgamation.menus.components.PartListPanel panel 
+                    = new amalgamation.menus.components.PartListPanel(
+                            util.Parts.TYPE_LEG,
                             (int)body.getLegSlots()[i].getRotationDegrees());
             PartsPane.addTab("Leg " + (i + 1), panel);
             

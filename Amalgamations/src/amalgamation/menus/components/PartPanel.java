@@ -1,4 +1,6 @@
-package amalgamation.parts;
+package amalgamation.menus.components;
+
+import amalgamation.parts.Part;
 
 /**
  * A PartPanel is a modified JPanel intended to display a specific Part.

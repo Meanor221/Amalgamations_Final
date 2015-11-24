@@ -1,4 +1,7 @@
-package amalgamation.abilities;
+package amalgamation.menus.components;
+
+import amalgamation.abilities.Ability;
+import amalgamation.abilities.Attack;
 
 /**
  * An AbilityPanel is a GUI component that can be used to visualize and display

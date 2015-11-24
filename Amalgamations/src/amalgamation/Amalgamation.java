@@ -1,4 +1,5 @@
 package amalgamation;
+import amalgamation.menus.components.AbilityReplaceDialog;
 import amalgamation.abilities.Ability;
 import amalgamation.parts.Body;
 
