@@ -21,8 +21,8 @@ public class AmalgamationDialog extends javax.swing.JDialog {
     private AmalgamationDialog(javax.swing.JFrame parent) 
             throws java.io.IOException {
         super(parent, true);
-        setLocationRelativeTo(parent);
         initLayout();
+        setLocationRelativeTo(parent);
     }
     
     // <editor-fold desc="GUI Layout Init"> defaultstate="collapsed">
