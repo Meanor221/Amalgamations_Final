@@ -125,7 +125,7 @@ public class PartPanel extends acomponent.AComponent {
         super.paintComponent(g);
         // Draw the image scaled to the size of the panel.
         int width, height;
-        if (getWidth() <= getHeight()) {
+        if (part.getImage().getWidth() >= part.getImage().getHeight()) {
             width = getWidth();
             height = part.getImage().getHeight() 
                     * width / part.getImage().getWidth();

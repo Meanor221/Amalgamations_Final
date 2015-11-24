@@ -1,9 +1,12 @@
 package amalgamation.menus;
 
 import amalgamation.Amalgamation;
+import java.awt.Color;
 
 /**
- *
+ * An AmalgamationPanel is a GUI element that can be used to display the image
+ * of an Amalgamation.
+ * 
  * @author Jordan LaRiccia, Caleb Rush
  */
 public class AmalgamationPanel extends acomponent.AComponent {
@@ -13,7 +16,10 @@ public class AmalgamationPanel extends acomponent.AComponent {
     private Runnable clickAction;
 
     /**
-     * Creates new form AmalgamationPanel
+     * Creates a new AmalgamationPanel that displays the image of the given
+     * Amalgamation.
+     * 
+     * @param amal the Amalgamation to be displayed by the created panel
      */
     public AmalgamationPanel(Amalgamation amal) {
         initComponents();
@@ -22,6 +28,18 @@ public class AmalgamationPanel extends acomponent.AComponent {
         setHighlightColor(new java.awt.Color(244, 67, 54));
         // Initialize the mouse listener.
         initMouseListener();
+        // Set the border.
+        setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 2, 
+                Color.LIGHT_GRAY));
+    }
+    
+    /**
+     * Retrieves the Amalgamation being displayed by this panel.
+     * 
+     * @return the Amalgamation being displayed by this panel
+     */
+    public Amalgamation getAmalgamation() {
+        return amal;
     }
     
     // Initializes the mouse listener.
@@ -60,7 +78,7 @@ public class AmalgamationPanel extends acomponent.AComponent {
         super.paintComponent(g);
         // Draw the image scaled to the size of the panel.
         int width, height;
-        if (getWidth() <= getHeight()) {
+        if (amal.getFullImage().getWidth() >= amal.getFullImage().getHeight()) {
             width = getWidth();
             height = amal.getFullImage().getHeight() 
                     * width / amal.getFullImage().getWidth();
@@ -123,7 +141,6 @@ public class AmalgamationPanel extends acomponent.AComponent {
         window.setLocationRelativeTo(null);
         
         AmalgamationPanel panel = new AmalgamationPanel(amalgamation.Amalgamations.load("Davy Jones"));
-        //panel.setClickAction(() -> System.out.println("Hello!"));
         window.add(panel);
         
         window.setVisible(true);
