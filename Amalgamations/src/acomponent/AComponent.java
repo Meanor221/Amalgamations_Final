@@ -2,6 +2,7 @@ package acomponent;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import java.util.Vector;
 
@@ -19,6 +20,10 @@ import javax.swing.JPanel;
 public class AComponent extends JPanel {
     // The list of animations currently being run.
     private Vector<String> animations;
+    // The image to be drawn.
+    private Image image;
+    // Whether or not to stretch the image when drawing it.
+    private boolean stretchImage;
     // The color of the background (overriden from JPanel due to needing to
     // keep the component opaque.
     private Color background;
@@ -133,6 +138,15 @@ public class AComponent extends JPanel {
     }
     
     /**
+     * Retrieves the image to be displayed by this AComponent.
+     * 
+     * @return the image to be displayed by this AComponent
+     */
+    public Image getImage() {
+        return image;
+    }
+    
+    /**
      * Animates a circle that fills up the component with the highlight color
      * starting with the given radius and centered at the given point.
      * 
@@ -157,13 +171,13 @@ public class AComponent extends JPanel {
                     repaint();
                 },
                 // Set the highlight in the center at the end of the animation.
-//                () -> {
-//                    highlightX = getWidth() / 2;
-//                    highlightY = getHeight() / 2;
-//                    highlightRadius = highlightRadius(highlightX, highlightY);
-//                    repaint();
-//                }
-                null
+                () -> {
+                    highlightX = getWidth() / 2;
+                    highlightY = getHeight() / 2;
+                    highlightRadius = highlightRadius(highlightX, highlightY);
+                    repaint();
+                }
+//                null
         ));
     }
     
@@ -191,6 +205,16 @@ public class AComponent extends JPanel {
                 ).max(Double::compare).get().intValue() + 1;
     }
     
+    /**
+     * Returns whether or not any image being drawn by this component should be
+     * stretched to fit the size of the component.
+     * 
+     * @return true if the image will be stretched, false if not
+     */
+    public boolean isStretchImage() {
+        return stretchImage;
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         // Draw the background.
@@ -207,6 +231,13 @@ public class AComponent extends JPanel {
                 2 * highlightRadius,
                 2 * highlightRadius
         );
+        
+        // Draw the image.
+        if (image != null)
+            if (stretchImage)
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            else
+                g.drawImage(image, 0, 0, this);
         
         // Draw everything else.
         super.paintComponent(g);
@@ -227,12 +258,41 @@ public class AComponent extends JPanel {
     }
     
     /**
+     * Sets the image to be displayed by the AComponent.
+     * 
+     * @param image the image to be displayed by the AComponent.
+     */
+    public void setImage(Image image) {
+        this.image = image;
+    }
+    
+    public void setImage(String imageFilePath) throws IllegalArgumentException {
+        try {
+            setImage(javax.imageio.ImageIO.read(
+                    new java.io.File(imageFilePath)));
+        } catch (java.io.IOException e) {
+            throw new IllegalArgumentException("Image file " + imageFilePath + 
+                    " does not exist.");
+        }
+    }
+    
+    /**
+     * Sets whether or not any image drawn by this component should be stretched
+     * to fit the size of the component.
+     * 
+     * @param stretchImage true if the image should be stretched, false if not
+     */
+    public void setStretchImage(boolean stretchImage) {
+        this.stretchImage = stretchImage;
+    }
+    
+    /**
      * Stops all currently running animations.
      */
     public void stopAnimations() {
-        for (int i = 0; i < animations.size(); i++) {
-            Animator.stopAnimation(animations.get(i));
-            animations.remove(animations.get(i));
+        while (!animations.isEmpty()) {
+            Animator.stopAnimation(animations.get(0));
+            animations.remove(animations.get(0));
         }
     }
     
