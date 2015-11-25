@@ -36,7 +36,7 @@ public class ADialog extends javax.swing.JDialog {
      * @param parent the parent of this dialog
      * @param modal true if the dialog is modal, false otherwise
      */
-    public ADialog(javax.swing.JFrame parent, boolean modal) {
+    public ADialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         // Make the dialog have no title bar.
         setUndecorated(true);
@@ -193,7 +193,7 @@ public class ADialog extends javax.swing.JDialog {
      * @param message the message to display to the user
      * @return the created dialog
      */
-    public static AConfirmDialog createConfirmDialog(javax.swing.JFrame parent,
+    public static AConfirmDialog createConfirmDialog(java.awt.Frame parent,
             String message) {
         return new AConfirmDialog(parent, message, "Yes", "No");
     }
@@ -210,7 +210,7 @@ public class ADialog extends javax.swing.JDialog {
      * @param cancelText the text for the cancel button
      * @return the created dialog
      */
-    public static AConfirmDialog createConfirmDialog(javax.swing.JFrame parent,
+    public static AConfirmDialog createConfirmDialog(java.awt.Frame parent,
             String message, String confirmText, String cancelText) {
         return new AConfirmDialog(parent, message, confirmText, cancelText);
     }
@@ -223,7 +223,7 @@ public class ADialog extends javax.swing.JDialog {
      * @param message the message to be displayed in the dialog
      * @return the created dialog
      */
-    public static AMessageDialog createMessageDialog(javax.swing.JFrame parent,
+    public static AMessageDialog createMessageDialog(java.awt.Frame parent,
             String message) {
         return createMessageDialog(parent, message, "OK");
     }
@@ -237,9 +237,10 @@ public class ADialog extends javax.swing.JDialog {
      * @param buttonText the text of the "OK" button
      * @return the created dialog
      */
-    public static AMessageDialog createMessageDialog(javax.swing.JFrame parent,
+    public static AMessageDialog createMessageDialog(java.awt.Frame parent,
             String message, String buttonText) {
-        return createMessageDialog(parent, message, buttonText, Color.GREEN);
+        return createMessageDialog(parent, message, buttonText, 
+                new java.awt.Color(76, 175, 80));
     }
     
     /**
@@ -253,7 +254,7 @@ public class ADialog extends javax.swing.JDialog {
      *                    button
      * @return the created dialog
      */
-    public static AMessageDialog createMessageDialog(javax.swing.JFrame parent,
+    public static AMessageDialog createMessageDialog(java.awt.Frame parent,
             String message, String buttonText, Color buttonColor) {
         return createMessageDialog(parent, message, Color.BLACK, buttonText, 
                 buttonColor);
@@ -271,7 +272,7 @@ public class ADialog extends javax.swing.JDialog {
      *                    button
      * @return the created dialog
      */
-    public static AMessageDialog createMessageDialog(javax.swing.JFrame parent, 
+    public static AMessageDialog createMessageDialog(java.awt.Frame parent, 
             String message, Color textColor, String buttonText, 
             Color buttonColor) {
         return new AMessageDialog(parent, message, textColor, buttonText, 
@@ -615,7 +616,7 @@ public class ADialog extends javax.swing.JDialog {
     public static class AConfirmDialog extends ADialog {
         private boolean confirm;
         
-        public AConfirmDialog(javax.swing.JFrame parent, String message,
+        public AConfirmDialog(java.awt.Frame parent, String message,
                 String confirmText, String cancelText) {
             super(parent, true);
             addText(message);
@@ -659,7 +660,7 @@ public class ADialog extends javax.swing.JDialog {
      * single button that closes the dialog.
      */
     public static class AMessageDialog extends ADialog {
-        public AMessageDialog(javax.swing.JFrame parent, String message, 
+        public AMessageDialog(java.awt.Frame parent, String message, 
                 Color textColor, String buttonText, Color buttonColor) {
             super(parent, true);
             addText(message, textColor);

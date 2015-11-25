@@ -94,6 +94,18 @@ public class MainMenu extends javax.swing.JPanel {
     );
 
     CampaignButton.setBackground(new java.awt.Color(33, 150, 243));
+    CampaignButton.setActionListener(e -> {
+        acomponent.ADialog.createMessageDialog(
+            null,
+            "The Campaign mode has not been created yet.",
+            "Curses!"
+        ).showDialog(
+            (int)CampaignButton.getLocationOnScreen().getX() +
+            CampaignButton.getWidth() / 2,
+            (int)CampaignButton.getLocationOnScreen().getY() +
+            CampaignButton.getHeight() / 2
+        );
+    });
     CampaignButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
     CampaignButton.setText("Campaign");
 
@@ -109,6 +121,18 @@ public class MainMenu extends javax.swing.JPanel {
     );
 
     NetworkButton.setBackground(new java.awt.Color(66, 66, 66));
+    NetworkButton.setActionListener(e -> {
+        acomponent.ADialog.createMessageDialog(
+            null,
+            "The Network mode has not been created yet.",
+            "Curses!"
+        ).showDialog(
+            (int)NetworkButton.getLocationOnScreen().getX() +
+            NetworkButton.getWidth() / 2,
+            (int)NetworkButton.getLocationOnScreen().getY() +
+            NetworkButton.getHeight() / 2
+        );
+    });
     NetworkButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
     NetworkButton.setText("Network");
 
