@@ -30,7 +30,7 @@ public class AmalgamationPanel extends acomponent.AComponent {
         // Initialize the mouse listener.
         initMouseListener();
         // Set the border.
-        setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 2, 
+        setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 2, 2, 
                 Color.LIGHT_GRAY));
     }
     

@@ -33,10 +33,8 @@ public class Test extends javax.swing.JFrame {
 
         aButton2.setBackground(new java.awt.Color(255, 51, 0));
         aButton2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 2, new java.awt.Color(204, 204, 204)));
-        aButton2.setForeground(new java.awt.Color(255, 255, 255));
         aButton2.setToolTipText("");
         aButton2.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 24)); // NOI18N
-        aButton2.setHighlightColor(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout aButton2Layout = new javax.swing.GroupLayout(aButton2);
         aButton2.setLayout(aButton2Layout);
@@ -50,9 +48,7 @@ public class Test extends javax.swing.JFrame {
         );
 
         aButton3.setBackground(new java.awt.Color(204, 0, 204));
-        aButton3.setForeground(new java.awt.Color(255, 255, 255));
         aButton3.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
-        aButton3.setHighlightColor(new java.awt.Color(255, 255, 255));
         aButton3.setText("NewButton");
 
         javax.swing.GroupLayout aButton3Layout = new javax.swing.GroupLayout(aButton3);
@@ -67,9 +63,7 @@ public class Test extends javax.swing.JFrame {
         );
 
         aButton1.setBackground(new java.awt.Color(0, 153, 0));
-        aButton1.setForeground(new java.awt.Color(255, 255, 255));
         aButton1.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
-        aButton1.setHighlightColor(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout aButton1Layout = new javax.swing.GroupLayout(aButton1);
         aButton1.setLayout(aButton1Layout);
@@ -83,7 +77,6 @@ public class Test extends javax.swing.JFrame {
         );
 
         aButton4.setBackground(new java.awt.Color(0, 0, 204));
-        aButton4.setForeground(new java.awt.Color(255, 255, 255));
         aButton4.setActionListener(e -> {
             aButton5.enter(
                 aButton5.getX(),
@@ -93,7 +86,6 @@ public class Test extends javax.swing.JFrame {
             );
         });
         aButton4.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
-        aButton4.setHighlightColor(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout aButton4Layout = new javax.swing.GroupLayout(aButton4);
         aButton4.setLayout(aButton4Layout);
@@ -107,8 +99,11 @@ public class Test extends javax.swing.JFrame {
         );
 
         aButton5.setBackground(new java.awt.Color(255, 255, 51));
-        aButton5.setForeground(new java.awt.Color(255, 255, 255));
-        aButton5.setActionListener(e -> aButton5.exit());
+        aButton5.setActionListener(e -> {
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                aButton5.exit().then(aButton4::exit);
+            });
+        });
         aButton5.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
 
         javax.swing.GroupLayout aButton5Layout = new javax.swing.GroupLayout(aButton5);
@@ -128,12 +123,13 @@ public class Test extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(139, 139, 139)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(aButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(aButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(aButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(aButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(aButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(aButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(aButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(aButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(aButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(aButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(174, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -147,9 +143,9 @@ public class Test extends javax.swing.JFrame {
                 .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(aButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(aButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();

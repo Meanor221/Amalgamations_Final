@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  */
 public class AComponent extends JPanel {
     // The list of animations currently being run.
-    private Vector<String> animations;
+    private final Vector<String> animations;
     // The image to be drawn.
     private Image image;
     // Whether or not to stretch the image when drawing it.
@@ -63,8 +63,10 @@ public class AComponent extends JPanel {
      * @param x the X position of the center point of the highlight
      * @param y the X position of the center point of the highlight
      * @param radius the final radius of the highlight
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void dehighlight(int x, int y, int radius) {
+    public AComponent dehighlight(int x, int y, int radius) {
         // Determine the velocity based on the size of the component.
         double velocity = getWidth() > getHeight()?
                 getWidth() / 100 + 10:
@@ -91,6 +93,35 @@ public class AComponent extends JPanel {
                     repaint();
                 }
         ));
+        
+        return this;
+    }
+    
+    /**
+     * Stops the thread until the most recently started animation finishes.
+     * 
+     * This method should never be called on the event thread (a.k.a inside
+     * a Listener) as doing so will pause the event thread and prevent any
+     * further events from being processed. Not only will this freeze the UI, any
+     * animation done on this component will require the event thread to
+     * modify the UI to make the animation visible, meaning the animation will
+     * freeze until it finishes.
+     * 
+     * If an action must be performed after an animation and you are inside the
+     * event thread, use the <code>then</code> method instead.
+     * 
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
+     * @see AComponent#then
+     */
+    public AComponent await() {
+        synchronized(animations) {
+            // Ensure there is an animation to wait for.
+            if (!animations.isEmpty())
+                Animator.waitFor(animations.lastElement());
+        }
+        
+        return this;
     }
     
     /**
@@ -103,12 +134,16 @@ public class AComponent extends JPanel {
      * @param y the Y position the component animates towards
      * @param width the Width the component animates towards
      * @param height the Height the component animates towards
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void enter(int x, int y, int width, int height) {
+    public AComponent enter(int x, int y, int width, int height) {
         // Prepare the component to animate in.
         setBounds(x + width / 2, y + height / 2, 0, 0);
         // Animate in.
         transformCentered(width, height, 250);
+        
+        return this;
     }
     
     /**
@@ -117,10 +152,15 @@ public class AComponent extends JPanel {
      * The animation performed by this method is the reverse of the one
      * performed by enter. The animation shrinks towards the center until it
      * has no width or height.
+     * 
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void exit() {
+    public AComponent exit() {
         // Animate out.
         transformCentered(0, 0, 250);
+        
+        return this;
     }
     
     @Override
@@ -153,8 +193,10 @@ public class AComponent extends JPanel {
      * @param x the X position of the center point of the highlight
      * @param y the X position of the center point of the highlight
      * @param radius the initial radius of the highlight
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void highlight(int x, int y, int radius) {
+    public AComponent highlight(int x, int y, int radius) {
         // Calculate the end value of the highlight radius.
         int endRadius = highlightRadius(x, y);
         // Determine the velocity based on the size of the component.
@@ -179,6 +221,8 @@ public class AComponent extends JPanel {
                 }
 //                null
         ));
+        
+        return this;
     }
     
     /**
@@ -290,10 +334,32 @@ public class AComponent extends JPanel {
      * Stops all currently running animations.
      */
     public void stopAnimations() {
-        while (!animations.isEmpty()) {
-            Animator.stopAnimation(animations.get(0));
-            animations.remove(animations.get(0));
+        synchronized(animations) {
+            while (!animations.isEmpty()) {
+                Animator.stopAnimation(animations.get(0));
+                animations.remove(animations.get(0));
+            }
         }
+    }
+    
+    /**
+     * Performs the requested action when the most recently started animation
+     * finishes.
+     * 
+     * @param action a Runnable that will be run when the most recently started
+     *               animation ends
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
+     */
+    public AComponent then(Runnable action) {
+        // Set the AnimationEndListener for the most previously added
+        // animation.
+        synchronized(animations) {
+            Animator.setAnimationEndListener(animations.lastElement(), 
+                    action::run);
+        }
+        
+        return this;
     }
     
     /**
@@ -302,8 +368,10 @@ public class AComponent extends JPanel {
      * @param width the width to animate the AComponent towards
      * @param height the height to animate the AComponent towards
      * @param milliseconds the time in milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void transform(int width, int height, int milliseconds) {
+    public AComponent transform(int width, int height, int milliseconds) {
         animations.add(
             Animator.animateValue(getWidth(), width, milliseconds, value -> {
                 setSize(value, getHeight());
@@ -312,6 +380,8 @@ public class AComponent extends JPanel {
             Animator.animateValue(getHeight(), height, milliseconds, value -> {
                 setSize(getWidth(), value);
         }, null));
+        
+        return this;
     }
     
     /**
@@ -320,8 +390,10 @@ public class AComponent extends JPanel {
      * @param width the width to animate the AComponent towards
      * @param height the height to animate the AComponent towards
      * @param velocity the rate that the size should change
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void transform(int width, int height, double velocity) {
+    public AComponent transform(int width, int height, double velocity) {
         // Calculate the width and height velocities.
         double angle = width == 0?
                 Math.PI:
@@ -337,6 +409,8 @@ public class AComponent extends JPanel {
             Animator.animateValue(getHeight(), height, hVelocity, value -> {
                 setSize(getWidth(), value);
         }, null));
+        
+        return this;
     }
     
     /**
@@ -346,11 +420,15 @@ public class AComponent extends JPanel {
      * @param width the width to animate the AComponent towards
      * @param height the height to animate the AComponent towards
      * @param milliseconds the time in milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void transformCentered(int width, int height, int milliseconds) {
+    public AComponent transformCentered(int width, int height, int milliseconds) {
         translate(getX() - (width - getWidth()) / 2,
                 getY() - (height - getHeight()) / 2, milliseconds);
         transform(width, height, milliseconds);
+        
+        return this;
     }
     
     /**
@@ -360,11 +438,15 @@ public class AComponent extends JPanel {
      * @param width the width to animate the AComponent towards
      * @param height the height to animate the AComponent towards
      * @param velocity the rate at which the size should change
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void transformCentered(int width, int height, double velocity) {
+    public AComponent transformCentered(int width, int height, double velocity) {
         translate(getX() - (width - getWidth()) / 2,
                 getY() - (height - getHeight()) / 2, -velocity / 2);
         transform(width, height, velocity);
+        
+        return this;
     }
     
     /**
@@ -373,8 +455,10 @@ public class AComponent extends JPanel {
      * @param x the X position to animate the AComponent towards
      * @param y the Y position to animate the AComponent towards
      * @param milliseconds the time in milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void translate(int x, int y, int milliseconds) {
+    public AComponent translate(int x, int y, int milliseconds) {
         animations.add(
             Animator.animateValue(getX(), x, milliseconds, value -> {
                 setLocation(value, getY());
@@ -383,6 +467,8 @@ public class AComponent extends JPanel {
             Animator.animateValue(getY(), y, milliseconds, value -> {
                 setLocation(getX(), value);
         }, null));
+        
+        return this;
     }
     
     /**
@@ -392,8 +478,10 @@ public class AComponent extends JPanel {
      * @param y the Y position to animate the AComponent towards
      * @param velocity the amount the panel's position should increment each 
      *                 frame
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void translate(int x, int y, double velocity) {
+    public AComponent translate(int x, int y, double velocity) {
         // Calculate the x and y velocities.
         double angle = y == 0?
                 Math.PI:
@@ -409,6 +497,8 @@ public class AComponent extends JPanel {
             Animator.animateValue(getY(), y, yVelocity, value -> {
                 setLocation(getX(), (int)value);
             }, null));
+        
+        return this;
     }
     
     /**
@@ -419,8 +509,10 @@ public class AComponent extends JPanel {
      * @param y the Y position to animate the AComponent towards
      * @param acceleration the acceleration the panel should have when moving
      * @param milliseconds the time in milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
      */
-    public void translate(int x, int y, double acceleration, int milliseconds) {
+    public AComponent translate(int x, int y, double acceleration, int milliseconds) {
         // Calculate the x and y velocities.
         double angle = x == 0?
                 Math.PI:
@@ -436,5 +528,7 @@ public class AComponent extends JPanel {
             Animator.animateValue(getY(), y, yAcceleration, milliseconds, value -> {
                 setLocation(getX(), (int)value);
         }, null));
+        
+        return this;
     }
 }

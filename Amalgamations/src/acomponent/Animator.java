@@ -17,6 +17,8 @@ import java.util.Vector;
 public class Animator {
     // The number of frames to be advanced in a second.
     private static int fps = 60;
+    // Whether or not to wait for an animation to finish.
+    private static boolean wait;
     // The universal Animator instance to be used.
     private static Animator animator;
     
@@ -244,6 +246,34 @@ public class Animator {
     }
     
     /**
+     * Sets the AnimationEndListener for the specified animation.
+     * 
+     * @param key the identifying key of the animation to be changed. This key
+     *            was returned when the animateValue method was called.
+     * @param animationEndListener the AnimationEndListener to set for the 
+     *                             specified animation
+     * @return true if the listener was successfully set, false otherwise
+     */
+    public static boolean setAnimationEndListener(String key, 
+            AnimationEndListener animationEndListener) {
+        if (animator != null) {
+            synchronized(animator.keys) {
+                // Find the index of the given key.
+                int index = animator.keys.indexOf(key);
+                // Check if the key was found.
+                if (index != -1) {
+                    // Add the listener at the index.
+                    animator.animationEndListeners.set(index, 
+                            animationEndListener);
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Stops the animation with the specified key.
      * 
      * @param key the identifier String of the value animation to stop
@@ -282,6 +312,48 @@ public class Animator {
         else
             return values.get(i) <= endValues.get(i);
 //        return endValues.get(i).intValue() == values.get(i).intValue();
+    }
+    
+    /**
+     * Causes the current thread to sleep until the specified animation
+     * finishes.
+     * 
+     * If the specified key does not correspond to a running animation, the 
+     * thread will continue immediately.
+     * 
+     * This method should never be called from the event thread, as stopping
+     * the event thread will prevent all events from being processed until
+     * the animation is complete. In most applications of an animation, this
+     * will mean that any modifications to the GUI will not appear until after
+     * the animation, meaning the animation will not work.
+     * 
+     * @param key the identifier of the animation to wait for. This was returned
+     *            when the animateValue method was called.
+     */
+    public static void waitFor(String key) {     
+        if (animator == null)
+            return;
+        
+        // Add an AnimationEndListener to the animation.
+        synchronized (animator.keys) {
+            int index = animator.keys.indexOf(key);
+            if (index == -1)
+                return;
+            
+            animator.animationEndListeners.set(index, 
+                    () -> wait = false);
+        }
+        
+        // Sleep until the key is no longer found.
+        wait = true;
+        while (wait) {
+            // Sleep for the specified framerate.
+            try {
+                Thread.sleep(1000/fps);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
     }
     
     /**
