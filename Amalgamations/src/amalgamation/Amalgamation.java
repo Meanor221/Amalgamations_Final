@@ -356,8 +356,9 @@ public class Amalgamation implements Serializable {
         for (Ability a : newAbilities()) {
             // Try to add the Ability to the array.
             if (addAbility(a))
-                javax.swing.JOptionPane.showMessageDialog(null, String.format(
-                        "%s learned the ability %s!", name, a.getName()));
+                acomponent.ADialog.createMessageDialog(null, String.format(
+                        "%s learned the ability %s!", name, a.getName()),
+                        "Huzzah!").showDialog();
             else
                 // Show a dialog to learn the ability.
                 AbilityReplaceDialog.showAbilityReplaceDialog(null, this, a);
