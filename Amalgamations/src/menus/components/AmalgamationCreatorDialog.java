@@ -10,20 +10,21 @@ import java.awt.Color;
  * 
  * @author Caleb Rush
  */
-public class AmalgamationCreatorDialog extends javax.swing.JDialog {
+public class AmalgamationCreatorDialog extends acomponent.ADialog {
     // The Body being constructed in he Dialog.
     private amalgamation.parts.Body body;
     
     /**
      * Creates new form AmalgamationCreatorDialog
      */
-    private AmalgamationCreatorDialog(java.awt.Frame parent) {
+    private AmalgamationCreatorDialog(javax.swing.JFrame parent) {
         super(parent, true);
+        // Give the dialog a title bar.
+        setUndecorated(false);
         getContentPane().setBackground(Color.WHITE);
         initComponents();
         // Center the dialog on the parent.
         setLocationRelativeTo(parent);
-        
     }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
@@ -339,7 +340,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
      *               closed.
      */
     public static void create(javax.swing.JFrame parent) {
-        new AmalgamationCreatorDialog(parent).setVisible(true);
+        new AmalgamationCreatorDialog(parent).showDialog();
     }
     
     // Attmepts to save the creation.
@@ -349,7 +350,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             // Save the creation to a file.
             Amalgamations.save(body, NameField.getText());
             // Close the dialog.
-            setVisible(false);
+            hideDialog();
         }
        
     }
