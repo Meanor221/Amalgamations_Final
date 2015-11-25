@@ -75,12 +75,16 @@ public class Animator {
                         incrementValue(i);
                         notifyFrameListener(i);
                         if (valueAtEnd(i)) {
+                            FrameListener l = frameListeners.get(i);
+                            int value = endValues.get(i).intValue();
                             // Notify the frame listener one last time.
-                            frameListeners.get(i).frameIncremented(
-                                    endValues.get(i).intValue());
+                            javax.swing.SwingUtilities.invokeLater(() -> {
+                                l.frameIncremented(value);
+                            });
                             // Alert the end listener.
                             if (animationEndListeners.get(i) != null)
-                                animationEndListeners.get(i).animationEnded();
+                                javax.swing.SwingUtilities.invokeLater(
+                                        animationEndListeners.get(i)::animationEnded);
                             removeValue(i);
                             // Decrement the loop counter so that the next element
                             // does not get skipped.
@@ -234,7 +238,11 @@ public class Animator {
     
     // Notifies the frame listener at the given index of a change in value.
     private void notifyFrameListener(int i) {
-        frameListeners.get(i).frameIncremented(values.get(i).intValue());
+        FrameListener l = frameListeners.get(i);
+        int value = values.get(i).intValue();
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            l.frameIncremented(value);
+        });
     }
 
     // Remove the value at the given index.
