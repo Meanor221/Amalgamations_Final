@@ -49,6 +49,7 @@ public class AButton extends AComponent {
     public AButton(int width, int height) {
         this();
         setSize(width, height);
+        setPreferredSize(new java.awt.Dimension(width, height));
     }
     
     @Override

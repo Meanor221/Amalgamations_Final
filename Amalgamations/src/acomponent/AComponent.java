@@ -57,6 +57,33 @@ public class AComponent extends JPanel {
     }
     
     /**
+     * Stops the thread until the most recently started animation finishes.
+     * 
+     * This method should never be called on the event thread (a.k.a inside
+     * a Listener) as doing so will pause the event thread and prevent any
+     * further events from being processed. Not only will this freeze the UI, any
+     * animation done on this component will require the event thread to
+     * modify the UI to make the animation visible, meaning the animation will
+     * freeze until it finishes.
+     * 
+     * If an action must be performed after an animation and you are inside the
+     * event thread, use the <code>then</code> method instead.
+     * 
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
+     * @see AComponent#then
+     */
+    public AComponent await() {
+        synchronized(animations) {
+            // Ensure there is an animation to wait for.
+            if (!animations.isEmpty())
+                Animator.waitFor(animations.lastElement());
+        }
+        
+        return this;
+    }
+    
+    /**
      * Creates the reverse animation of the animation produced by the highlight
      * method.
      * 
@@ -93,33 +120,6 @@ public class AComponent extends JPanel {
                     repaint();
                 }
         ));
-        
-        return this;
-    }
-    
-    /**
-     * Stops the thread until the most recently started animation finishes.
-     * 
-     * This method should never be called on the event thread (a.k.a inside
-     * a Listener) as doing so will pause the event thread and prevent any
-     * further events from being processed. Not only will this freeze the UI, any
-     * animation done on this component will require the event thread to
-     * modify the UI to make the animation visible, meaning the animation will
-     * freeze until it finishes.
-     * 
-     * If an action must be performed after an animation and you are inside the
-     * event thread, use the <code>then</code> method instead.
-     * 
-     * @return this instance of the AComponent to be used with chaining
-     *         animation method calls together
-     * @see AComponent#then
-     */
-    public AComponent await() {
-        synchronized(animations) {
-            // Ensure there is an animation to wait for.
-            if (!animations.isEmpty())
-                Animator.waitFor(animations.lastElement());
-        }
         
         return this;
     }
@@ -513,7 +513,7 @@ public class AComponent extends JPanel {
      *         animation method calls together
      */
     public AComponent translate(int x, int y, double acceleration, int milliseconds) {
-        // Calculate the x and y velocities.
+        // Calculate the x and y accelerations.
         double angle = x == 0?
                 Math.PI:
                 Math.atan((double)y / (double)x);
