@@ -87,11 +87,11 @@ public class Animator {
                             i--;
                         }
                     }
-                }
                 
-                // Check if there are any values left to animate.
-                if (values.isEmpty()) 
-                    running = false;
+                    // Check if there are any values left to animate.
+                    if (values.isEmpty()) 
+                        running = false;
+                }
             }
         }).start();
     }
@@ -194,26 +194,32 @@ public class Animator {
     public static String animateValue(double value, double endValue, 
             double velocity, double acceleration, FrameListener frameListener,
             AnimationEndListener animationEndListener) {
+        // Ensure the value and end value are not the same.
+        if (value == endValue)
+            return "";
+        
         // Check if the universal animator has been created yet.
         if (animator == null)
             animator = new Animator();
         
-        // Add the value to the animator.
-        animator.keys.add(String.format("%f%f%f%f%s%d", value, endValue, velocity, 
-                acceleration, frameListener.toString(), animator.values.size()));
-        animator.values.add(value);
-        animator.endValues.add(endValue);
-        animator.velocities.add(velocity);
-        animator.accelerations.add(acceleration);
-        animator.frameListeners.add(frameListener);
-        animator.animationEndListeners.add(animationEndListener);
+        synchronized(animator.keys) {
+            // Add the value to the animator.
+            animator.keys.add(String.format("%f%f%f%f%s%d", value, endValue, velocity, 
+                    acceleration, frameListener.toString(), animator.values.size()));
+            animator.values.add(value);
+            animator.endValues.add(endValue);
+            animator.velocities.add(velocity);
+            animator.accelerations.add(acceleration);
+            animator.frameListeners.add(frameListener);
+            animator.animationEndListeners.add(animationEndListener);
         
-        // Start the animator if it is stopped.
-        if (!animator.running)
-            animator.animate();
-        
-        // Return an identifier String.
-        return animator.keys.lastElement();
+            // Start the animator if it is stopped.
+            if (!animator.running)
+                animator.animate();
+
+            // Return an identifier String.
+            return animator.keys.lastElement();
+        }
     }
     
     // Increments the value at the given index.
@@ -280,14 +286,16 @@ public class Animator {
      * @return true if the animation was successfully stopped, false otherwise
      */
     public static boolean stopAnimation(String key) {
-        // Retrieve the index for the key.
-        int i = animator.keys.indexOf(key);
-        
-        // Check if the key existed.
-        if (i != -1) {
-            // Remove the value.
-            animator.removeValue(i);
-            return true;
+        synchronized(animator.keys) {
+            // Retrieve the index for the key.
+            int i = animator.keys.indexOf(key);
+
+            // Check if the key existed.
+            if (i != -1) {
+                // Remove the value.
+                animator.removeValue(i);
+                return true;
+            }
         }
         
         return false;

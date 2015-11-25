@@ -210,6 +210,62 @@ public class MainMenu extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 
+    // Deletes the currently selected Amalgamation.
+    public void delete(int x, int y) {
+        // Make sure the user is really sure of their decision.
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Are you sure you would like to release " 
+                        + amalgamation.getAmalgamation().getName() + "?"
+            ).confirmed(x, y))
+            return;
+        
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Are you <i>really</i> sure you would like to release " 
+                        + amalgamation.getAmalgamation().getName() + "?"
+                + "\n\nYou will <i>never</i> get it back!"
+            ).confirmed(x, y))
+            return;
+        
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Hold on a moment. Like, this is some really heavy stuff here.\n\n"
+                + "You're talking about releasing " + amalgamation.getAmalgamation().getName() 
+                + " into the cold harsh world!\nIt doesn't have any skills or special talents "
+                + "that can help it get a job and make a living!\nFor all you know it may not"
+                + " even be able to survive out there!\n\nKnowing this, do you <i>still</i> want "
+                + "to release " + amalgamation.getAmalgamation().getName() + "?",
+                "Yes, I get it", "No"
+            ).confirmed(x, y))
+            return;
+        
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Okay, think about it. You created " + amalgamation.getAmalgamation().getName()
+                + ", so in a way, you're like its parent.\nThis thing probably won't last long"
+                + ", probably get immediately mauled by a pack of wolves.\nBy releasing it"
+                + ", you're basically performing an abortion.\n\n" + "Are you sure you "
+                + "can live with yourself?",
+                "Yes, I am a sociopath who doesn't care about the well being of others",
+                "No, I have a heart"
+            ).confirmed(x, y))
+            return;
+        
+        // Delete the Amalgamation.
+        util.Amalgamations.delete(amalgamation.getAmalgamation().getName());
+        
+        // Animate the Amalgamation out.
+        amalgamation.exit().then(() -> {            
+            remove(amalgamation);
+            amalgamation = null;
+        });
+        
+        acomponent.ADialog.createMessageDialog(null, 
+                amalgamation.getAmalgamation().getName() + " is gone forever."
+                + " Hope you're happy.", "I am. Mwahaha").showDialog();
+    }
+    
     // Animates the components into the panel.
     public void enter() {       
         // Relocate the components to animate them back in.
@@ -249,6 +305,12 @@ public class MainMenu extends javax.swing.JPanel {
         
         // Create a new panel for the amalagamation.
         amalgamation = new menus.components.AmalgamationPanel(amal);
+        amalgamation.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                delete(e.getXOnScreen(), e.getYOnScreen());
+            }
+        });
         // Add the new panel.
         add(amalgamation);
         amalgamation.enter(AmalPanel.getX(), AmalPanel.getY(), 

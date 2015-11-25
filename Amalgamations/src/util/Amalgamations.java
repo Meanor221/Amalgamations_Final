@@ -15,6 +15,21 @@ public class Amalgamations {
     public static final String  AMAL_RES_DIR   = "res/amal/";
     
     /**
+     * Deletes the Amal file with the specified name.
+     * 
+     * This delete operation cannot be reversed and does not prompt the user,
+     * so be sure to warn the user before performing this operation.
+     * 
+     * @param amalFileName the name of the Amal file to delete (should not
+     *                        include file extension or path)
+     */
+    public static void delete(String amalFileName) {
+        // Delete the file.
+        new java.io.File(AMAL_RES_DIR + amalFileName + AMAL_FILE_EXT)
+                .delete();
+    }
+    
+    /**
      * Attempts to load an Amalgamation file
      * @param amalFileName
      * @return null and an error message if the load fails,
