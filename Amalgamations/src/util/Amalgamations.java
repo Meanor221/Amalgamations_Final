@@ -115,4 +115,22 @@ public class Amalgamations {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Saves the given Amalgamation to a file.
+     * 
+     * @param amal the Amalgamation to save to a file.
+     */
+    public static void save(Amalgamation amal) {
+        System.out.println(amal.getTargetExperience());
+         // Attempt to create the resource file.
+        try (java.io.ObjectOutputStream out = new java.io.ObjectOutputStream(
+                    new java.io.FileOutputStream(
+                            AMAL_RES_DIR + amal.getName() + AMAL_FILE_EXT))) {
+            // Write the created Part to the file.
+            out.writeObject(amal);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
