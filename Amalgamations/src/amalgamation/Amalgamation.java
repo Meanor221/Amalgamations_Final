@@ -69,7 +69,7 @@ public class Amalgamation implements Serializable {
         speedVariance   =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         attackVariance  =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         defenseVariance =   random.nextDouble() % VARIANCE_RANGE + 0.85;
-        luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 0.85;
+        luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 1.0;
         
         // Level up initially to start at Level 1.
         levelUp();
@@ -129,6 +129,8 @@ public class Amalgamation implements Serializable {
         
         targetExperience = (int)(Math.pow(MAX_LEVEL, 2) / 
                 (1 + Math.pow( Math.E, (-0.08 * (level - 50)))));
+        
+        resetCurrentStats();
     }
 
     /**
