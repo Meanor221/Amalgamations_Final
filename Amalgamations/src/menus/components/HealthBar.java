@@ -124,7 +124,7 @@ public class HealthBar extends acomponent.AComponent {
     
     // Calculates the bar length at the for the given current health.
     private int barLength(int currentHealth) {
-        return currentHealth == 0?
+        return maxHealth == 0?
                     0:
                     (int)((double)currentHealth * (double)getWidth() 
                             / (double)maxHealth);
@@ -217,7 +217,7 @@ public class HealthBar extends acomponent.AComponent {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
         if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
+            setCurrentHealth(maxHealth);
     }
     
     @Override
