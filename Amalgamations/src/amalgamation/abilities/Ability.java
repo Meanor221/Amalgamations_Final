@@ -11,7 +11,8 @@ import java.util.Random;
 
 /**
  * The Ability that an Amalgamation can use in combat
- * @author Jordan LaRiccia
+ * 
+ * @author Jordan LaRiccia, Caleb Rush
  */
 public class Ability implements Serializable {
     private final String name;
@@ -161,12 +162,13 @@ public class Ability implements Serializable {
      * Decrements the Ability's current cooldown by 1.
      */
     public void iterateCooldown() {
-        if (currentCooldown > 0)
+        currentCooldown--;
+        if (currentCooldown < 0)
             currentCooldown = 0;
     }
     
     // Generates a random value to see if the Ability missed or hit.
     private boolean miss(double luckVariance) {
-        return new Random().nextInt(100) + 1 <= accuracy * luckVariance;
+        return new Random().nextInt(100) + 1 > accuracy * luckVariance;
     }
 }
