@@ -28,7 +28,7 @@ public class Amalgamation implements Serializable {
     // The name of the Amalgamation.
     private final String    name;
     // The graphical representation of the Amalgamation.
-    private BufferedImage   fullImage;
+    private transient BufferedImage   fullImage;
     // The level of the Amalgamation.
     private int             level;
     // The amount of experience the Amalgamation has,
@@ -112,7 +112,6 @@ public class Amalgamation implements Serializable {
      * Calculates the stats of the Amalgamation based on current level
      */
     private void calculateStats() {
-        System.out.println(healthVariance);
         health  = (int)(10 * ((double)level/(double)MAX_LEVEL) 
                 * body.totalBaseHealth() * healthVariance) + 20;
         
@@ -351,6 +350,12 @@ public class Amalgamation implements Serializable {
     public void levelUp() {
         level++;
         
+        acomponent.ADialog.createMessageDialog(
+                null, 
+                name + " grew to level " + level + "!", 
+                "Sweet!"
+        ).showDialog();
+        
         // Recalculate the stats since the level has changed.
         calculateStats();
         
@@ -403,6 +408,10 @@ public class Amalgamation implements Serializable {
         currentAttack = attack;
         currentDefense = defense;
         currentSpeed = speed;
+        // Reset Ability cooldowns.
+        for (Ability a : abilities)
+            if (a != null)
+                a.resetCurrentCooldown();
     }
     
     /**

@@ -184,4 +184,11 @@ public class Ability implements Serializable {
     private boolean miss(double luckVariance) {
         return new Random().nextInt(100) + 1 > accuracy * luckVariance;
     }
+    
+    /**
+     * Resets the current cooldown to its default value.
+     */
+    public void resetCurrentCooldown() {
+        currentCooldown = 0;
+    }
 }
