@@ -132,6 +132,41 @@ public class Abilities implements Serializable {
     }
     
     /**
+     * Interprets a section of battle script and returns the amount the given
+     * Amalgamation's health changed.
+     * 
+     * @param script the section of battle script to interpret
+     * @param amalName the name of the Amalgamation to search for
+     * @return the amount the Amalgamation's health changed in the script
+     */
+    public static int healthChanged(String script, String amalName) {
+        // Check if the script contains an appropriate delimeter.
+        int index = script.indexOf(StatModifier.HEALTH_CHANGE_DELIM);
+        if (index == -1) 
+            return 0;
+        
+        // Check if the Amalgamation's name is in the script.
+        if (!script.contains(amalName)) 
+            return 0;
+        
+        // Attempt to parse the change in health.
+        index = script.indexOf(StatModifier.HEALTH_CHANGE_DELIM, index + 1);
+        if (index == -1)
+            return 0;
+        
+        int next = script.indexOf(StatModifier.HEALTH_CHANGE_DELIM, index + 1);
+        if (next == -1)
+            return 0;
+        
+        try {
+            return Integer.parseInt(script.substring(index + 1, next));
+        } catch (NumberFormatException e) {
+            System.out.println("Parse");
+            return 0;
+        }
+    }
+    
+    /**
      * Saves the Ability to a file with the given name.
      * 
      * @param type the type of Ability to save. The type should be one of the

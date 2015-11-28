@@ -33,8 +33,10 @@ public class Attack extends Ability {
         // Do damage to the opponent.
         int damage = calculateDamage(player, opponent);
         opponent.doDamage(damage);
-        return String.format("%s took %d damage!", 
-                opponent.getName(), damage);
+        return String.format("%s took %d damage!%c1%c%d%c", 
+                opponent.getName(), damage, StatModifier.HEALTH_CHANGE_DELIM,
+                StatModifier.HEALTH_CHANGE_DELIM, -damage, 
+                StatModifier.HEALTH_CHANGE_DELIM);
     }
     
     // Calculates the damage done to the opponent.
