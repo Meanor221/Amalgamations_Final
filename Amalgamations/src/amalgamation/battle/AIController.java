@@ -29,5 +29,9 @@ public class AIController implements Controller {
     }
     
     @Override
+    public void readScript(Amalgamation player, Amalgamation opponent,
+            String[] script) {}
+    
+    @Override
     public void startBattle(Amalgamation player, Amalgamation opponent) {}
 }

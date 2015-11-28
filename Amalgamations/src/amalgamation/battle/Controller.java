@@ -42,6 +42,22 @@ public interface Controller {
     void endBattle(Amalgamation player, Amalgamation opponent, String[] script);
     
     /**
+     * Called just before chooseMove each turn.
+     * 
+     * When this method is called, it will be run on a separate thread,
+     * meaning that the chooseMove method will also be able to run concurrently
+     * with this method. The reason for this is to allow for both Controllers
+     * in a Battle to view the previous turn's script simultaneously instead
+     * of one having to wait for the other to finish.
+     * 
+     * @param player the Amalgamation being controlled by the Controller
+     * @param opponent the Amalgamation opposing the player.
+     * @param script the script for the most recent turn. This can be scanned
+     *               to make more complex decisions on the move to be made
+     */
+    void readScript(Amalgamation player, Amalgamation opponent, String[] script);
+    
+    /**
      * Called at the start of the Battle. This is used to make any preparations
      * for the Battle that must be made at the start.
      * 

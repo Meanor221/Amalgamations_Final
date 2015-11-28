@@ -12,6 +12,13 @@ import menus.components.AmalgamationPanel;
 public class Test extends javax.swing.JFrame implements Controller {
     // The move that is currently selected.
     private int moveSelected;
+    
+    // The bounds for each of the AbilityPanels.
+    private java.awt.Rectangle bounds1;
+    private java.awt.Rectangle bounds2;
+    private java.awt.Rectangle bounds3;
+    private java.awt.Rectangle bounds4;
+    
 
     // <editor-fold desc="GUI Code" defaultstate="collapsed">
     /**
@@ -40,8 +47,10 @@ public class Test extends javax.swing.JFrame implements Controller {
         PlayerPanel = new menus.components.AmalgamationPanel();
         AbilPanel4 = new menus.components.AbilityPanel();
         OpponentPanel = new menus.components.AmalgamationPanel();
-        PlayerHealthLabel = new javax.swing.JLabel();
-        OpponentHealthLabel = new javax.swing.JLabel();
+        aButton1 = new acomponent.AButton();
+        aButton2 = new acomponent.AButton();
+        OpponentHealthBar = new menus.components.HealthBar();
+        PlayerHealthBar = new menus.components.HealthBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,7 +66,7 @@ public class Test extends javax.swing.JFrame implements Controller {
         PlayerPanel.setLayout(PlayerPanelLayout);
         PlayerPanelLayout.setHorizontalGroup(
             PlayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 297, Short.MAX_VALUE)
         );
         PlayerPanelLayout.setVerticalGroup(
             PlayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,16 +79,69 @@ public class Test extends javax.swing.JFrame implements Controller {
         OpponentPanel.setLayout(OpponentPanelLayout);
         OpponentPanelLayout.setHorizontalGroup(
             OpponentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 301, Short.MAX_VALUE)
         );
         OpponentPanelLayout.setVerticalGroup(
             OpponentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 207, Short.MAX_VALUE)
         );
 
-        PlayerHealthLabel.setText("Health: ");
+        aButton1.setActionListener(e -> moveSelected = MOVE_DO_NOTHING);
+        aButton1.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        aButton1.setText("Do Nothing");
 
-        OpponentHealthLabel.setText("Health:");
+        javax.swing.GroupLayout aButton1Layout = new javax.swing.GroupLayout(aButton1);
+        aButton1.setLayout(aButton1Layout);
+        aButton1Layout.setHorizontalGroup(
+            aButton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 118, Short.MAX_VALUE)
+        );
+        aButton1Layout.setVerticalGroup(
+            aButton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        aButton2.setBackground(new java.awt.Color(255, 0, 0));
+        aButton2.setActionListener(e -> moveSelected = MOVE_FORFEIT);
+        aButton2.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 18)); // NOI18N
+        aButton2.setText("Forfeit");
+
+        javax.swing.GroupLayout aButton2Layout = new javax.swing.GroupLayout(aButton2);
+        aButton2.setLayout(aButton2Layout);
+        aButton2Layout.setHorizontalGroup(
+            aButton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 98, Short.MAX_VALUE)
+        );
+        aButton2Layout.setVerticalGroup(
+            aButton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout OpponentHealthBarLayout = new javax.swing.GroupLayout(OpponentHealthBar);
+        OpponentHealthBar.setLayout(OpponentHealthBarLayout);
+        OpponentHealthBarLayout.setHorizontalGroup(
+            OpponentHealthBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 297, Short.MAX_VALUE)
+        );
+        OpponentHealthBarLayout.setVerticalGroup(
+            OpponentHealthBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 17, Short.MAX_VALUE)
+        );
+
+        PlayerHealthBar.setDisplayNumbers(true);
+        PlayerHealthBar.setFocusable(false);
+        PlayerHealthBar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+
+        javax.swing.GroupLayout PlayerHealthBarLayout = new javax.swing.GroupLayout(PlayerHealthBar);
+        PlayerHealthBar.setLayout(PlayerHealthBarLayout);
+        PlayerHealthBarLayout.setHorizontalGroup(
+            PlayerHealthBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 297, Short.MAX_VALUE)
+        );
+        PlayerHealthBarLayout.setVerticalGroup(
+            PlayerHealthBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 17, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,27 +151,33 @@ public class Test extends javax.swing.JFrame implements Controller {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(AbilPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AbilPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AbilPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AbilPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(PlayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PlayerHealthBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(OpponentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(OpponentHealthBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PlayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(PlayerHealthLabel)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(AbilPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(AbilPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(400, 400, 400)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(OpponentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(OpponentHealthLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(aButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(AbilPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(AbilPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -118,21 +186,27 @@ public class Test extends javax.swing.JFrame implements Controller {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(OpponentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(PlayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(PlayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(OpponentHealthLabel)
-                            .addComponent(PlayerHealthLabel, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(PlayerHealthBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(OpponentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(OpponentHealthBar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 5, Short.MAX_VALUE)))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(AbilPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AbilPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AbilPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AbilPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -150,7 +224,7 @@ public class Test extends javax.swing.JFrame implements Controller {
                 test.setVisible(true);
                 Battle battle = new Battle(
                         util.Amalgamations.load("Horsey"),
-                        util.Amalgamations.load("Horsey"),
+                        util.Amalgamations.load("Cross"),
                         test, new AIController()
                 );
             }
@@ -162,11 +236,15 @@ public class Test extends javax.swing.JFrame implements Controller {
     private menus.components.AbilityPanel AbilPanel2;
     private menus.components.AbilityPanel AbilPanel3;
     private menus.components.AbilityPanel AbilPanel4;
-    private javax.swing.JLabel OpponentHealthLabel;
+    private menus.components.HealthBar OpponentHealthBar;
     private menus.components.AmalgamationPanel OpponentPanel;
-    private javax.swing.JLabel PlayerHealthLabel;
+    private menus.components.HealthBar PlayerHealthBar;
     private menus.components.AmalgamationPanel PlayerPanel;
     private javax.swing.JList<String> ScriptList;
+    private acomponent.AButton aButton1;
+    private acomponent.AButton aButton2;
+    private menus.components.HealthBar healthBar3;
+    private menus.components.HealthBar healthBar4;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
@@ -178,23 +256,50 @@ public class Test extends javax.swing.JFrame implements Controller {
         OpponentPanel.setAmalgamation(opponent);
         // Display the player's Abilities in their panels.
         AbilPanel1.setAbility(player.getAbilities()[0]);
+        if (AbilPanel1.getAbility() == null)
+            remove(AbilPanel1);
         AbilPanel2.setAbility(player.getAbilities()[1]);
+        if (AbilPanel2.getAbility() == null)
+            remove(AbilPanel2);
         AbilPanel3.setAbility(player.getAbilities()[2]);
+        if (AbilPanel3.getAbility() == null)
+            remove(AbilPanel3);
         AbilPanel4.setAbility(player.getAbilities()[3]);
+        if (AbilPanel4.getAbility() == null)
+            remove(AbilPanel4);
+        bounds1 = AbilPanel1.getBounds();
+        bounds2 = AbilPanel2.getBounds();
+        bounds3 = AbilPanel3.getBounds();
+        bounds4 = AbilPanel4.getBounds();
+        // Set the health bars's max health.
+        PlayerHealthBar.setMaxHealth(player.getHealth());
+        OpponentHealthBar.setMaxHealth(opponent.getHealth());
         pack();
         setLocationRelativeTo(null);
         repaint();
     }
     
     @Override
-    public int chooseMove(Amalgamation player, Amalgamation opponent,
+    public void readScript(Amalgamation player, Amalgamation opponent,
             String[] script) {
+        for (String s : script) {
+            int pHealthChange = util.Abilities.healthChanged(s, player.getName());
+            int oHealthChange = util.Abilities.healthChanged(s, opponent.getName());
+            if (pHealthChange != 0) {
+                PlayerPanel.highlight(PlayerPanel.getWidth() / 2, PlayerPanel.getHeight() / 2, 50).await();
+                PlayerHealthBar.animateHealth(PlayerHealthBar.getCurrentHealth() + pHealthChange).await();
+                PlayerPanel.stopAnimations();
+                PlayerPanel.dehighlight(PlayerPanel.getWidth() / 2, PlayerPanel.getHeight() / 2, 0).await();
+            }
+            if (oHealthChange != 0) {
+                OpponentPanel.highlight(OpponentPanel.getWidth() / 2, OpponentPanel.getHeight() / 2, 50).await();
+                OpponentHealthBar.animateHealth(OpponentHealthBar.getCurrentHealth() + oHealthChange).await();
+                OpponentPanel.stopAnimations();
+                OpponentPanel.dehighlight(OpponentPanel.getWidth() / 2, OpponentPanel.getHeight() / 2, 0).await();
+            }
+        }
         // Update the script.
         ScriptList.setListData(script);
-        
-        // Set the Amalgamations' Health Labels.
-        PlayerHealthLabel.setText("Health: " + player.getCurrentHealth());
-        OpponentHealthLabel.setText("Health: " + opponent.getCurrentHealth());
         
         // Update the AbilPanels.
         AbilPanel1.updateView();
@@ -202,8 +307,16 @@ public class Test extends javax.swing.JFrame implements Controller {
         AbilPanel3.updateView();
         AbilPanel4.updateView();
         
-        repaint();
-        
+        // Animate the AbilPanels in.
+        AbilPanel1.enter(bounds1);
+        AbilPanel2.enter(bounds2);
+        AbilPanel3.enter(bounds3);
+        AbilPanel4.enter(bounds4);
+    }
+    
+    @Override
+    public int chooseMove(Amalgamation player, Amalgamation opponent,
+            String[] script) {
         // Wait for a panel to be clicked.
         moveSelected = 4;
         while (moveSelected == 4)
@@ -213,6 +326,16 @@ public class Test extends javax.swing.JFrame implements Controller {
             } catch (Exception e) { e.printStackTrace(); }
         }
         
+        // Animate the AbilPanels out.
+        bounds1 = AbilPanel1.getBounds();
+        bounds2 = AbilPanel2.getBounds();
+        bounds3 = AbilPanel3.getBounds();
+        bounds4 = AbilPanel4.getBounds();
+        AbilPanel1.exit();
+        AbilPanel2.exit();
+        AbilPanel3.exit();
+        AbilPanel4.exit();
+        
         return moveSelected;
     }
     
@@ -220,6 +343,9 @@ public class Test extends javax.swing.JFrame implements Controller {
     public void endBattle(Amalgamation player, Amalgamation opponent, 
             String[] script) {
         ScriptList.setListData(script);
+        // Set the Amalgamations' health.
+        PlayerHealthBar.animateHealth(player.getCurrentHealth());
+        OpponentHealthBar.animateHealth(opponent.getCurrentHealth());
         // Update the AbilPanels.
         AbilPanel1.updateView();
         AbilPanel2.updateView();
@@ -227,5 +353,4 @@ public class Test extends javax.swing.JFrame implements Controller {
         AbilPanel4.updateView();
         repaint();
     }
-    
 }

@@ -54,9 +54,9 @@ public class Battle {
      */
     public boolean checkEndCondition() {
         // Check if the player's health has been depleted.
-        opponentWon = playerAmalgamation.getCurrentHealth() == 0;
+        opponentWon = opponentWon || playerAmalgamation.getCurrentHealth() == 0;
         // Check if the opponent's health has been depleted.
-        playerWon = opponentAmalgamation.getCurrentHealth() == 0;
+        playerWon = playerWon || opponentAmalgamation.getCurrentHealth() == 0;
             
         return playerWon || opponentWon;
     }
@@ -73,10 +73,14 @@ public class Battle {
         if (move == Controller.MOVE_FORFEIT) {
             // Check if the player or opponent forfeited.
             if (user == playerAmalgamation) {
+                script.add(String.format("%s forfeited the match!", 
+                        playerAmalgamation.getName()));
                 opponentWon = true;
                 return;
             }
             
+            script.add(String.format("%s forfeited the match!", 
+                        opponentAmalgamation.getName()));
             playerWon = true;
             return;
         }
@@ -100,6 +104,12 @@ public class Battle {
      * Retrieves the moves from the Controllers and enacts the moves.
      */
     public void doTurn() {
+        // Send the script to each controller on separate threads to allow
+        // them to display it concurrently.
+        new Thread(() -> player.readScript(playerAmalgamation, 
+                opponentAmalgamation, script.toArray(new String[0]))).start();
+        new Thread(() -> opponent.readScript(opponentAmalgamation, 
+                playerAmalgamation, script.toArray(new String[0]))).start();
         // Retrieve the moves from the controllers.
         int playerMove = player.chooseMove(playerAmalgamation, 
                 opponentAmalgamation, script.toArray(new String[0]));
@@ -143,11 +153,11 @@ public class Battle {
         // Cool down the amalgamations' moves.
         for (int i = 0; i < playerAmalgamation.getAbilities().length; i++)
             // Check if the Ability was just used.
-            if (i != playerMove)
+            if (i != playerMove && playerAmalgamation.getAbilities()[i] != null)
                 playerAmalgamation.getAbilities()[i].iterateCooldown();
         for (int i = 0; i < opponentAmalgamation.getAbilities().length; i++)
             // Check if the Ability was just used.
-            if (i != opponentMove)
+            if (i != opponentMove && opponentAmalgamation.getAbilities()[i] != null)
                 opponentAmalgamation.getAbilities()[i].iterateCooldown();
         
         // Check the win condition.
