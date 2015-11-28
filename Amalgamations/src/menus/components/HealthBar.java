@@ -66,7 +66,7 @@ public class HealthBar extends acomponent.AComponent {
                 acomponent.Animator.animateValue(
                         barLength(currentHealth), 
                         barLength(health), 
-                        500,
+                        2000,
                         newBarLength -> {
                             setBarLength((int)newBarLength);
                             repaint();
@@ -77,7 +77,7 @@ public class HealthBar extends acomponent.AComponent {
                 acomponent.Animator.animateValue(
                         currentHealth, 
                         health, 
-                        500, 
+                        2000, 
                         newHealth -> currentHealth = (int)newHealth, 
                         null
                 )
