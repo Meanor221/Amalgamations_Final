@@ -445,7 +445,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getWidth(), width, milliseconds, 
                         newWidth -> {
-                            setSize(newWidth, getHeight());
+                            setSize((int)newWidth, getHeight());
                             repaint();
                         }, 
                         null
@@ -455,7 +455,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getHeight(), height, milliseconds, 
                         newHeight -> {
-                            setSize(getWidth(), newHeight);
+                            setSize(getWidth(), (int)newHeight);
                             repaint();
                         }, 
                         null
@@ -498,7 +498,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getX(), x, milliseconds, 
                         newX -> {
-                            setLocation(newX, getY());
+                            setLocation((int)newX, getY());
                             repaint();
                         }, 
                         null
@@ -508,7 +508,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getY(), y, milliseconds, 
                         newY -> {
-                            setLocation(getX(), newY);
+                            setLocation(getX(), (int)newY);
                             repaint();
                         }, 
                         null
@@ -542,7 +542,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getX(), x, xVelocity, 
                         newX -> {
-                            setLocation(newX, getY());
+                            setLocation((int)newX, getY());
                             repaint();
                         }, 
                         null
@@ -552,7 +552,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getY(), y, yVelocity, 
                         newY -> {
-                            setLocation(getX(), newY);
+                            setLocation(getX(), (int)newY);
                             repaint();
                         }, 
                         null
@@ -588,7 +588,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getX(), x, xAcceleration, milliseconds,
                         newX -> {
-                            setLocation(newX, getY());
+                            setLocation((int)newX, getY());
                             repaint();
                         }, 
                         null
@@ -598,7 +598,7 @@ public class ADialog extends javax.swing.JDialog {
                 Animator.animateValue(
                         getY(), y, yAcceleration, milliseconds,
                         newY -> {
-                            setLocation(getX(), newY);
+                            setLocation(getX(), (int)newY);
                             repaint();
                         }, 
                         null

@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  */
 public class AComponent extends JPanel {
     // The list of animations currently being run.
-    private final Vector<String> animations;
+    protected final Vector<String> animations;
     // The image to be drawn.
     private Image image;
     // Whether or not to stretch the image when drawing it.
@@ -111,7 +111,7 @@ public class AComponent extends JPanel {
         
         animations.add(Animator.animateValue(startRadius, radius, -velocity, 
                 value -> {
-                    highlightRadius = value;
+                    highlightRadius = (int)value;
                     repaint();
                 },
                 // Erase the highlight completely at the end of the animation.
@@ -144,6 +144,20 @@ public class AComponent extends JPanel {
         transformCentered(width, height, 250);
         
         return this;
+    }
+    
+    /**
+     * Animates the component expanding into the given bounds.
+     * 
+     * The component starts the animation at the center of the bounds with no
+     * width or height and expands to fit the bounds.
+     * 
+     * @param bounds the bounds to enter the component in
+     * @return 
+     */
+    public AComponent enter(java.awt.Rectangle bounds) {
+        return enter((int)bounds.getX(), (int)bounds.getY(), 
+                (int)bounds.getWidth(), (int)bounds.getHeight());
     }
     
     /**
@@ -209,7 +223,7 @@ public class AComponent extends JPanel {
         
         animations.add(Animator.animateValue(radius, endRadius, velocity, 
                 value -> {
-                    highlightRadius = value;
+                    highlightRadius = (int)value;
                     repaint();
                 },
                 // Set the highlight in the center at the end of the animation.
@@ -374,11 +388,11 @@ public class AComponent extends JPanel {
     public AComponent transform(int width, int height, int milliseconds) {
         animations.add(
             Animator.animateValue(getWidth(), width, milliseconds, value -> {
-                setSize(value, getHeight());
+                setSize((int)value, getHeight());
         }, null));
         animations.add(
             Animator.animateValue(getHeight(), height, milliseconds, value -> {
-                setSize(getWidth(), value);
+                setSize(getWidth(), (int)value);
         }, null));
         
         return this;
@@ -403,11 +417,11 @@ public class AComponent extends JPanel {
         
         animations.add(
             Animator.animateValue(getWidth(), width, wVelocity, value -> {
-                setSize(value, getHeight());
+                setSize((int)value, getHeight());
         }, null));
         animations.add(
             Animator.animateValue(getHeight(), height, hVelocity, value -> {
-                setSize(getWidth(), value);
+                setSize(getWidth(), (int)value);
         }, null));
         
         return this;
@@ -461,11 +475,11 @@ public class AComponent extends JPanel {
     public AComponent translate(int x, int y, int milliseconds) {
         animations.add(
             Animator.animateValue(getX(), x, milliseconds, value -> {
-                setLocation(value, getY());
+                setLocation((int)value, getY());
         }, null));
         animations.add(
             Animator.animateValue(getY(), y, milliseconds, value -> {
-                setLocation(getX(), value);
+                setLocation(getX(), (int)value);
         }, null));
         
         return this;

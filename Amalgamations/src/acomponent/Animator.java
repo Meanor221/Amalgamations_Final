@@ -76,7 +76,7 @@ public class Animator {
                         notifyFrameListener(i);
                         if (valueAtEnd(i)) {
                             FrameListener l = frameListeners.get(i);
-                            int value = endValues.get(i).intValue();
+                            double value = endValues.get(i);
                             // Notify the frame listener one last time.
                             javax.swing.SwingUtilities.invokeLater(() -> {
                                 l.frameIncremented(value);
@@ -385,7 +385,7 @@ public class Animator {
          * 
          * @param value the incremented value.
          */
-        void frameIncremented(int value);
+        void frameIncremented(double value);
     }
     
     /**
