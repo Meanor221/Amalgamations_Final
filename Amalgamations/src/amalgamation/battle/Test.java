@@ -222,9 +222,10 @@ public class Test extends javax.swing.JFrame implements Controller {
             public void run() {
                 Test test = new Test();
                 test.setVisible(true);
+                Amalgamation a = util.Amalgamations.load("Huff");
                 Battle battle = new Battle(
-                        util.Amalgamations.load("Horsey"),
-                        util.Amalgamations.load("Cross"),
+                        a,
+                        util.Amalgamations.load("Bowleg"),
                         test, new AIController()
                 );
             }
@@ -274,6 +275,8 @@ public class Test extends javax.swing.JFrame implements Controller {
         // Set the health bars's max health.
         PlayerHealthBar.setMaxHealth(player.getHealth());
         OpponentHealthBar.setMaxHealth(opponent.getHealth());
+        PlayerHealthBar.setCurrentHealth(player.getCurrentHealth());
+        OpponentHealthBar.setCurrentHealth(opponent.getCurrentHealth());
         pack();
         setLocationRelativeTo(null);
         repaint();

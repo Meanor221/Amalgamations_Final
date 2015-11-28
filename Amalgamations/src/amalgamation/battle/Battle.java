@@ -180,9 +180,6 @@ public class Battle {
         else if (playerWon) {
             script.add(String.format("%s was defeated!", 
                     opponentAmalgamation.getName()));
-            // Raise the player's experience.
-            playerAmalgamation.gainExp(
-                    opponentAmalgamation.getDefeatedExperience());
             script.add(String.format("%s gained %d EXP!", 
                     playerAmalgamation.getName(), 
                     opponentAmalgamation.getDefeatedExperience()));
@@ -198,9 +195,17 @@ public class Battle {
         opponent.endBattle(opponentAmalgamation, playerAmalgamation, 
                 script.toArray(new String[0]));
         
+        if (playerWon)
+            // Raise the player's experience.
+            playerAmalgamation.gainExp(
+                    opponentAmalgamation.getDefeatedExperience());
+        
         // Reset the amalgamations current stats.
         playerAmalgamation.resetCurrentStats();
         opponentAmalgamation.resetCurrentStats();
+        
+        // Save the player Amalgamation.
+        util.Amalgamations.save(playerAmalgamation);
     }
     
     /**
