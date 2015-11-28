@@ -54,7 +54,7 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Click the Ability you would like to remove"));
+        Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Click the Ability you would like to remove (Right click to see a description of the move)"));
         Panel.setOpaque(false);
 
         Move1Panel.setLayout(new java.awt.GridLayout(1, 0));
