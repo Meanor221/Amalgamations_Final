@@ -1,5 +1,6 @@
 package amalgamation.battle;
 
+import amalgamation.abilities.Ability;
 import amalgamation.Amalgamation;
 
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class Battle {
         this.player = player;
         this.opponent = opponent;
         script = new ArrayList<>();
+        
+        // Start the battle on  new thread.
+        new Thread(this::startBattle).start();
     }
     
     /**
@@ -49,6 +53,11 @@ public class Battle {
      * @return whether or not the Battle should end.
      */
     public boolean checkEndCondition() {
+        // Check if the player's health has been depleted.
+        opponentWon = playerAmalgamation.getCurrentHealth() == 0;
+        // Check if the opponent's health has been depleted.
+        playerWon = opponentAmalgamation.getCurrentHealth() == 0;
+            
         return playerWon || opponentWon;
     }
     
@@ -102,7 +111,7 @@ public class Battle {
         
         // Determine which Amalgamation is faster.
         if (playerAmalgamation.getCurrentSpeed() 
-                > opponentAmalgamation.getCurrentSpeed()) {
+                >= opponentAmalgamation.getCurrentSpeed()) {
             // Do the player's move first.
             doMove(playerAmalgamation, opponentAmalgamation, playerMove);
             
@@ -131,8 +140,21 @@ public class Battle {
             doMove(playerAmalgamation, opponentAmalgamation, playerMove);
         }
         
+        // Cool down the amalgamations' moves.
+        for (int i = 0; i < playerAmalgamation.getAbilities().length; i++)
+            // Check if the Ability was just used.
+            if (i != playerMove)
+                playerAmalgamation.getAbilities()[i].iterateCooldown();
+        for (int i = 0; i < opponentAmalgamation.getAbilities().length; i++)
+            // Check if the Ability was just used.
+            if (i != opponentMove)
+                opponentAmalgamation.getAbilities()[i].iterateCooldown();
+        
         // Check the win condition.
-        if (!checkEndCondition())
+        if (checkEndCondition())
+            // End the Battle.
+            endBattle();
+        else
             // Do another turn.
             doTurn();
     }
@@ -143,7 +165,9 @@ public class Battle {
      */
     public void endBattle() {
         // Check who won.
-        if (playerWon) {
+        if (playerWon && opponentWon)
+            script.add("It's a tie!");
+        else if (playerWon) {
             script.add(String.format("%s was defeated!", 
                     opponentAmalgamation.getName()));
             // Raise the player's experience.
@@ -163,6 +187,10 @@ public class Battle {
                 script.toArray(new String[0]));
         opponent.endBattle(opponentAmalgamation, playerAmalgamation, 
                 script.toArray(new String[0]));
+        
+        // Reset the amalgamations current stats.
+        playerAmalgamation.resetCurrentStats();
+        opponentAmalgamation.resetCurrentStats();
     }
     
     /**
