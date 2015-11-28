@@ -138,6 +138,17 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[0]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 0);
                 hideDialog();
             });
@@ -148,6 +159,17 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[1]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 1);
                 hideDialog();
             });
@@ -158,6 +180,17 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[2]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 2);
                 hideDialog();
             });
@@ -168,6 +201,17 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[3]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 3);
                 hideDialog();
             });
@@ -177,7 +221,19 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
         if (ability != null) {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             ability);
-            panel.setClickAction(() -> hideDialog());
+            panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null, 
+                        amalgamation.getName() + " did not learn the ability "
+                        + ability.getName() + ".",
+                        "Good"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
+                hideDialog();
+            });
             NewMovePanel.add(panel);
         }
     }
@@ -207,11 +263,11 @@ public class AbilityReplaceDialog extends acomponent.ADialog {
     }
     
     public static void main(String[] args) {
-        Amalgamation a = Amalgamations.load("Ama Gam");
+        Amalgamation a = Amalgamations.load("BOO");
         a.addAbility(Abilities.load("Kick"));
         a.addAbility(Abilities.load("Punch"));
-        //a.addAbility(Abilities.load("Trip"));
-        a.addAbility(Abilities.load("Leg"));
+        a.addAbility(Abilities.load("Trip"));
+        a.addAbility(Abilities.load("Derp"));
         showAbilityReplaceDialog(null, a, Abilities.load("For Glory"));
     }
 }
