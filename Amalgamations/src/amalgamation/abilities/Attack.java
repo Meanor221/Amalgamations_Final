@@ -20,10 +20,12 @@ public class Attack extends Ability {
      * @param level the level when this move is learned
      * @param damage the damage that the Attack does to the opponent
      * @param modifiers the list of stat modifiers for the ability
+     * @param description a basic description of the Ability to be displayed
+      *                     to the user. This can use endline characters.
      */
     public Attack(String name, int cooldown, int accuracy, int level, 
-            int damage, StatModifier[] modifiers) {
-        super(name, cooldown, accuracy, level, modifiers);
+            int damage, StatModifier[] modifiers, String description) {
+        super(name, cooldown, accuracy, level, modifiers, description);
         this.damage = damage;
     }
     
@@ -41,8 +43,8 @@ public class Attack extends Ability {
         Random random = new Random();
         double damageVariance = random.nextDouble() % VARIANCE_RANGE + 0.85;
         
-        int dmg=(int) ((damageVariance * damage)-target.getCurrentDefense()
-                +user.getCurrentAttack());
+        int dmg = (int)(damageVariance * damage * 
+                user.getCurrentAttack() / target.getCurrentDefense());
         return dmg;
     }
     

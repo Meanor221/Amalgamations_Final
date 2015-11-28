@@ -139,24 +139,27 @@ public class Abilities implements Serializable {
      * @param name the name of the Ability to save
      * @param cooldown the number of turns the Ability should need to cool down
      * @param accuracy the accuracy of the move (out of 100)
+     * @param level the level at which this Ability can be learned
      * @param damage the base damage of the move. This will only be used if the 
      *               type is TYPE_ATTACk.
      * @param modifiers an array of StatModifiers (should not be null)
+     * @param description a basic description of the Ability to be displayed
+      *                     to the user. This can use endline characters.
      * @throws IllegalArgumentException if the type is an invalid type
      */
     public static void save(int type, String name, int cooldown, int accuracy, 
-            int level, int damage, StatModifier[] modifiers) 
+            int level, int damage, StatModifier[] modifiers, String description) 
             throws IllegalArgumentException {
         // Create the Ability object.
         Ability ability = null;
         switch(type) {
             case TYPE_ABILITY:
                 ability = new Ability(name, cooldown, accuracy, level, 
-                        modifiers);
+                        modifiers, description);
                 break;
             case TYPE_ATTACK:
                 ability = new Attack(name, cooldown, accuracy, level, damage, 
-                        modifiers);
+                        modifiers, description);
         }
         
         // Attempt to save the Ability to the specified file.

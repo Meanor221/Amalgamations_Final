@@ -65,6 +65,9 @@ public class AbilityEditor extends javax.swing.JFrame {
         LevelPanel = new javax.swing.JPanel();
         LevelLabel = new javax.swing.JLabel();
         LevelField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        DescriptionField = new javax.swing.JTextArea();
         NewButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -297,6 +300,12 @@ public class AbilityEditor extends javax.swing.JFrame {
                 .addComponent(LevelField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jLabel1.setText("Description: (Supports HTML tags such as <i></i>)");
+
+        DescriptionField.setColumns(20);
+        DescriptionField.setRows(5);
+        jScrollPane1.setViewportView(DescriptionField);
+
         javax.swing.GroupLayout EditPanelLayout = new javax.swing.GroupLayout(EditPanel);
         EditPanel.setLayout(EditPanelLayout);
         EditPanelLayout.setHorizontalGroup(
@@ -306,23 +315,24 @@ public class AbilityEditor extends javax.swing.JFrame {
                 .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(AddModifierButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(EditPanelLayout.createSequentialGroup()
-                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(EditPanelLayout.createSequentialGroup()
-                                .addComponent(ModifierLabel)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(EditPanelLayout.createSequentialGroup()
-                                .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(CooldownPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(AccuracyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(LevelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(PowerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CooldownPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(AccuracyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(LevelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(PowerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SaveButton))
-                    .addComponent(ModifierTableScrollPane))
+                    .addComponent(ModifierTableScrollPane)
+                    .addGroup(EditPanelLayout.createSequentialGroup()
+                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(ModifierLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         EditPanelLayout.setVerticalGroup(
@@ -337,10 +347,14 @@ public class AbilityEditor extends javax.swing.JFrame {
                     .addComponent(SaveButton, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(LevelPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ModifierLabel)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ModifierTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ModifierLabel)
+                .addGap(3, 3, 3)
+                .addComponent(ModifierTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(AddModifierButton)
                 .addContainerGap())
         );
@@ -476,6 +490,7 @@ public class AbilityEditor extends javax.swing.JFrame {
     private javax.swing.JTextField CooldownField;
     private javax.swing.JLabel CooldownLabel;
     private javax.swing.JPanel CooldownPanel;
+    private javax.swing.JTextArea DescriptionField;
     private javax.swing.JPanel EditPanel;
     private javax.swing.JTextField LevelField;
     private javax.swing.JLabel LevelLabel;
@@ -491,6 +506,8 @@ public class AbilityEditor extends javax.swing.JFrame {
     private javax.swing.JLabel PowerLabel;
     private javax.swing.JPanel PowerPanel;
     private javax.swing.JButton SaveButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
     
@@ -577,6 +594,15 @@ public class AbilityEditor extends javax.swing.JFrame {
                 return false;
             }
         }
+        // Check description field.
+        if ("".equals(DescriptionField.getText())) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "The bility must have a description.",
+                    "No Description",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return false;
+        }
         
         return true;
     }
@@ -623,6 +649,8 @@ public class AbilityEditor extends javax.swing.JFrame {
         PowerField.setEnabled(false);
         PowerField.setText("");
         SaveButton.setEnabled(false);
+        DescriptionField.setText("");
+        DescriptionField.setEnabled(false);
         AddModifierButton.setEnabled(false);
         ((javax.swing.table.DefaultTableModel)ModifierTable.getModel())
                 .setNumRows(0);
@@ -636,6 +664,7 @@ public class AbilityEditor extends javax.swing.JFrame {
         LevelField.setEnabled(true);
         PowerField.setEnabled(true);
         SaveButton.setEnabled(true);
+        DescriptionField.setEnabled(true);
         AddModifierButton.setEnabled(true);
     }
     
@@ -720,6 +749,7 @@ public class AbilityEditor extends javax.swing.JFrame {
             PowerField.setText("" + ((Attack)ability).getDamage());
         else
             PowerField.setText("");
+        DescriptionField.setText(ability.getDescription());
         
         // Load the modifiers into the table.
         for (StatModifier m : ability.getModifiers()) {
@@ -748,7 +778,8 @@ public class AbilityEditor extends javax.swing.JFrame {
                     Integer.parseInt(AccuracyField.getText()),
                     Integer.parseInt(LevelField.getText()),
                     0,
-                    getModifiers()
+                    getModifiers(),
+                    DescriptionField.getText()
             );
         else
             Abilities.save(Abilities.TYPE_ATTACK,
@@ -757,7 +788,8 @@ public class AbilityEditor extends javax.swing.JFrame {
                     Integer.parseInt(AccuracyField.getText()),
                     Integer.parseInt(LevelField.getText()),
                     Integer.parseInt(PowerField.getText()),
-                    getModifiers()
+                    getModifiers(),
+                    DescriptionField.getText()
             );
         
         // Inform the user that the save was successful.

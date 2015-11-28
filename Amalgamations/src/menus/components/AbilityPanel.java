@@ -127,7 +127,11 @@ public class AbilityPanel extends acomponent.AComponent {
     }//GEN-LAST:event_formMouseEntered
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        clicked();
+        // Check if the click was a left or right click.
+        if (javax.swing.SwingUtilities.isLeftMouseButton(evt))
+            clicked();
+        else if (javax.swing.SwingUtilities.isRightMouseButton(evt))
+            showDescription();
     }//GEN-LAST:event_formMouseClicked
 
 
@@ -165,7 +169,7 @@ public class AbilityPanel extends acomponent.AComponent {
     
     // Changes the mouse icon and changes the background.
     private void entered() {
-        if (ability.isUsable()) {
+        if (ability != null && ability.isUsable()) {
             stopAnimations();
             highlight(getWidth() / 2, getHeight() / 2, 10);
             setCursor(java.awt.Cursor.getPredefinedCursor(
@@ -193,7 +197,7 @@ public class AbilityPanel extends acomponent.AComponent {
     
     // Changes the mouse icon and changes the background.
     private void exited() {
-        if (ability.isUsable()) {
+        if (ability != null && ability.isUsable()) {
             stopAnimations();
             dehighlight(getWidth() / 2, getHeight() / 2, 0);
             setCursor(java.awt.Cursor.getDefaultCursor());
@@ -224,25 +228,38 @@ public class AbilityPanel extends acomponent.AComponent {
     }
     
     public void updateView() {
-        setHighlightColor(BG_HOVERED);
-        NameLabel.setText(ability.getName());
-        changePowerAccuracy(ability instanceof Attack? 
-                ((Attack)ability).getDamage() : 0,
-                ability.getAccuracy());
-        if (ability.isUsable()) {
-            changeCooldown(ability.getCooldown());
-            setBackground(BG_ENABLED);
-            NameLabel.setForeground(ability instanceof Attack?
-                    NAME_ATTACK : NAME_ABILITY);
-            PowerAccuracyLabel.setForeground(TEXT_ENABLED);
-            CooldownLabel.setForeground(TEXT_ENABLED);
+        if (ability != null) {
+            setHighlightColor(BG_HOVERED);
+            NameLabel.setText(ability.getName());
+            changePowerAccuracy(ability instanceof Attack? 
+                    ((Attack)ability).getDamage() : 0,
+                    ability.getAccuracy());
+            if (ability.isUsable()) {
+                changeCooldown(ability.getCooldown());
+                setBackground(BG_ENABLED);
+                NameLabel.setForeground(ability instanceof Attack?
+                        NAME_ATTACK : NAME_ABILITY);
+                PowerAccuracyLabel.setForeground(TEXT_ENABLED);
+                CooldownLabel.setForeground(TEXT_ENABLED);
+            }
+            else {
+                changeCooldown(ability.getCurrentCooldown());
+                setBackground(BG_DISABLED);
+                NameLabel.setForeground(TEXT_DISABLED);
+                PowerAccuracyLabel.setForeground(TEXT_DISABLED);
+                CooldownLabel.setForeground(TEXT_DISABLED);
+            }
         }
-        else {
-            changeCooldown(ability.getCurrentCooldown());
-            setBackground(BG_DISABLED);
-            NameLabel.setForeground(TEXT_DISABLED);
-            PowerAccuracyLabel.setForeground(TEXT_DISABLED);
-            CooldownLabel.setForeground(TEXT_DISABLED);
-        }
+    }
+    
+    // Shows the description of the Ability in a dialog box.
+    private void showDescription() {
+        acomponent.ADialog.createMessageDialog(
+                null,
+                ability.getDescription()
+        ).showDialog(
+                (int)getLocationOnScreen().getX() + getWidth() / 2,
+                (int)getLocationOnScreen().getY() + getHeight() / 2
+        );
     }
 }

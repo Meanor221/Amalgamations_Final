@@ -16,6 +16,7 @@ import java.util.Random;
  */
 public class Ability implements Serializable {
     private final String name;
+    private final String description;
     private final int cooldown;
     private int currentCooldown;
     private final int accuracy;
@@ -29,14 +30,17 @@ public class Ability implements Serializable {
       * @param accuracy the accuracy value of the ability
       * @param level the level when this move is learned
       * @param modifiers the list of stat modifiers for the ability
+      * @param description a basic description of the Ability to be displayed
+      *                     to the user. This can use endline characters.
       */
     public Ability(String name, int cooldown, int accuracy, int level, 
-            StatModifier[] modifiers){
+            StatModifier[] modifiers, String description){
         this.name = name;
         this.accuracy = accuracy;
         this.cooldown = cooldown;
         this.level = level;
         this.modifiers = modifiers;
+        this.description = description;
     }
     
     /**
@@ -118,6 +122,15 @@ public class Ability implements Serializable {
      */
     public int getCurrentCooldown() {
         return currentCooldown;
+    }
+    
+    /**
+     * Returns a basic description of the Ability.
+     * 
+     * @return a basic description of the Ability.
+     */
+    public String getDescription() {
+        return description;
     }
     
     /**

@@ -113,8 +113,8 @@ public class Amalgamation implements Serializable {
      */
     private void calculateStats() {
         System.out.println(healthVariance);
-        health  = (int)(2 * ((double)level/(double)MAX_LEVEL) 
-                * body.totalBaseHealth() * healthVariance) + 5;
+        health  = (int)(10 * ((double)level/(double)MAX_LEVEL) 
+                * body.totalBaseHealth() * healthVariance) + 20;
         
         attack  = (int)(2 * ((double)level/(double)MAX_LEVEL) 
                 * body.totalBaseAttack() * attackVariance) + 5;
