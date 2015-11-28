@@ -13,6 +13,8 @@ public class HealthBar extends acomponent.AComponent {
     private int maxHealth;
     // The current health value.
     private int currentHealth;
+    // The length of the bar.
+    private int barLength;
     // The color of the bar.
     private Color barColor;
     // Whether or not the actual numbers of the health should be displayed.
@@ -61,13 +63,25 @@ public class HealthBar extends acomponent.AComponent {
      */
     public HealthBar animateHealth(int health) {
         animations.add(
-                acomponent.Animator.animateValue(currentHealth, health, 500,
-                    newHealth -> {
-                        setCurrentHealth((int)newHealth);
-                        repaint();
-                    }, 
-                    null
+                acomponent.Animator.animateValue(
+                        barLength(currentHealth), 
+                        barLength(health), 
+                        500,
+                        newBarLength -> {
+                            setBarLength((int)newBarLength);
+                            repaint();
+                        }, 
+                        null
         ));
+        animations.add(
+                acomponent.Animator.animateValue(
+                        currentHealth, 
+                        health, 
+                        500, 
+                        newHealth -> currentHealth = (int)newHealth, 
+                        null
+                )
+        );
         
         return this;
     }
@@ -106,6 +120,14 @@ public class HealthBar extends acomponent.AComponent {
             b = 0;
         
         return new Color(r, g, b);
+    }
+    
+    // Calculates the bar length at the for the given current health.
+    private int barLength(int currentHealth) {
+        return currentHealth == 0?
+                    0:
+                    (int)((double)currentHealth * (double)getWidth() 
+                            / (double)maxHealth);
     }
     
     /**
@@ -153,6 +175,11 @@ public class HealthBar extends acomponent.AComponent {
         this.barColor = barColor;
     }
     
+    // Sets the barLength and calculates the currentHealth.
+    private void setBarLength(int barLength) {
+        this.barLength = barLength;
+    }
+    
     /**
      * Sets the actual health.
      * 
@@ -162,8 +189,10 @@ public class HealthBar extends acomponent.AComponent {
      * @param currentHealth the actual health
      */
     public void setCurrentHealth(int currentHealth) {
-        if (currentHealth <= maxHealth && currentHealth >= 0)
+        if (currentHealth <= maxHealth && currentHealth >= 0) {
             this.currentHealth = currentHealth;
+            barLength = barLength(currentHealth);
+        }
     }
     
     /**
@@ -196,16 +225,10 @@ public class HealthBar extends acomponent.AComponent {
         super.paintComponent(g);
         
         // Ensure the max health is not zero.
-        if (maxHealth != 0 ) {
-            // Determine the length of the current health bar.
-            double barLength = currentHealth == 0?
-                    0:
-                    (double)currentHealth * (double)getWidth() 
-                            / (double)maxHealth;
-
+        if (maxHealth != 0) {
             // Draw the health bar.
             g.setColor(adjustBarColor());
-            g.fillRect(0, 0, (int)barLength, getHeight());
+            g.fillRect(0, 0, barLength, getHeight());
         }
         
         // Display the numbers.
