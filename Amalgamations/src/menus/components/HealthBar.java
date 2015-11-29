@@ -38,8 +38,8 @@ public class HealthBar extends acomponent.AComponent {
      */
     public HealthBar(int maxHealth, int currentHealth, Color barColor) {
         this.maxHealth = maxHealth;
-        this.currentHealth = currentHealth;
         this.barColor = barColor;
+        setCurrentHealth(currentHealth);
         
         // Set the default size.
         java.awt.Dimension size = new java.awt.Dimension(300, 20);
@@ -193,6 +193,7 @@ public class HealthBar extends acomponent.AComponent {
             this.currentHealth = currentHealth;
             barLength = barLength(currentHealth);
         }
+        System.out.println(barLength);
     }
     
     /**
@@ -226,6 +227,9 @@ public class HealthBar extends acomponent.AComponent {
         
         // Ensure the max health is not zero.
         if (maxHealth != 0) {
+            // Check if the barLength needs calculated.
+            if (currentHealth != 0 && barLength == 0)
+                barLength = barLength(currentHealth);
             // Draw the health bar.
             g.setColor(adjustBarColor());
             g.fillRect(0, 0, barLength, getHeight());

@@ -163,6 +163,18 @@ public class AbilityPanel extends acomponent.AComponent {
     private void clicked() {
         if (clickAction != null && ability.isUsable())
             clickAction.run();
+        else
+            acomponent.ADialog.createMessageDialog(
+                    null,
+                    String.format("You must cool down for %d more %s before "
+                            + "using %s again.", 
+                            ability.getCurrentCooldown(), 
+                            ability.getCurrentCooldown() == 1? "turn":"turns", 
+                            ability.getName())
+            ).showDialog(
+                    (int)getLocationOnScreen().getX() + getWidth() / 2,
+                    (int)getLocationOnScreen().getY() + getHeight() / 2
+            );
         dehighlight(getWidth() / 2, getHeight() / 2, 0);
         setCursor(java.awt.Cursor.getDefaultCursor());
     }
