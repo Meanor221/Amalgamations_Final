@@ -318,6 +318,15 @@ public class Amalgamation implements Serializable {
     }
     
     /**
+     * Returns the level that the Amalgamation is at.
+     * 
+     * @return the level that the Amalgamation is at
+     */
+    public int getLevel() {
+        return level;
+    }
+    
+    /**
      * Retrieves the Amalgamation's luck variance.
      * 
      * @return the Amalgamation's luck variance
