@@ -76,8 +76,11 @@ public class AComponent extends JPanel {
     public AComponent await() {
         synchronized(animations) {
             // Ensure there is an animation to wait for.
-            if (!animations.isEmpty())
+            if (!animations.isEmpty()) {
+                setEnabled(false);
                 Animator.waitFor(animations.lastElement());
+                setEnabled(true);
+            }
         }
         
         return this;
@@ -94,6 +97,10 @@ public class AComponent extends JPanel {
      *         animation method calls together
      */
     public AComponent dehighlight(int x, int y, int radius) {
+        // Check if the component is enabled.
+        if (!isEnabled())
+            return this;
+        
         // Determine the velocity based on the size of the component.
         double velocity = getWidth() > getHeight()?
                 getWidth() / 100 + 10:
@@ -211,6 +218,10 @@ public class AComponent extends JPanel {
      *         animation method calls together
      */
     public AComponent highlight(int x, int y, int radius) {
+        // Check if the component is enabled.
+        if (!isEnabled())
+            return this;
+        
         // Calculate the end value of the highlight radius.
         int endRadius = highlightRadius(x, y);
         // Determine the velocity based on the size of the component.
@@ -396,6 +407,10 @@ public class AComponent extends JPanel {
      * Stops all currently running animations.
      */
     public void stopAnimations() {
+        // Check if the component is enabled.
+        if (!isEnabled())
+            return;
+        
         synchronized(animations) {
             while (!animations.isEmpty()) {
                 Animator.stopAnimation(animations.get(0));
@@ -417,8 +432,13 @@ public class AComponent extends JPanel {
         // Set the AnimationEndListener for the most previously added
         // animation.
         synchronized(animations) {
+            // Disable the component.
+            setEnabled(false);
             Animator.setAnimationEndListener(animations.lastElement(), 
-                    action::run);
+                    () -> {
+                        action.run();
+                        setEnabled(true);
+                    });
         }
         
         return this;

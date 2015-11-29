@@ -37,7 +37,7 @@ public class ALabel extends AComponent {
     }
     
     // Calculate and set the size based on the current font and text.
-    private void calculateSize() {
+    public void calculateSize() {
         // Calculate the bounds of the text.
         Rectangle2D bounds = 
                 getFontMetrics(getFont()).getStringBounds(text, getGraphics());
@@ -83,13 +83,6 @@ public class ALabel extends AComponent {
             textX = getWidth() / 2 - (int)bounds.getCenterX();
         // Draw the text on the component.
         g.drawString(text, textX, textY);
-    }
-    
-    @Override
-    public void setFont(Font font) {
-        super.setFont(font);
-        if (getGraphics() != null)
-            calculateSize();
     }
     
     /**
