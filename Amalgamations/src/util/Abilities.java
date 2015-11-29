@@ -24,6 +24,24 @@ public class Abilities implements Serializable {
     public static final int     TYPE_ATTACK         = 1;
     
     /**
+     * Cuts off any delimiters from a line of script that is meant to be
+     * interpreted. This should be done for any line of script that is going
+     * to be displayed to a player, as the delimiter may confuse them.
+     * 
+     * @param script the line of script to cut the delimiter from
+     * @return the cut line of script
+     */
+    public static String cutDelimiter(String script) {
+        // Check if the line containsa delimiter.
+        if (!script.contains("" + StatModifier.HEALTH_CHANGE_DELIM))
+            return script;
+        
+        // Cut off everything starting with the first delimiter.
+        return script.substring(0, 
+                script.indexOf(StatModifier.HEALTH_CHANGE_DELIM));
+    }
+    
+    /**
      * Deletes the Ability file with the specified name.
      * 
      * This delete operation cannot be reversed and does not prompt the user,
