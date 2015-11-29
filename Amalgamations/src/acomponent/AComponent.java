@@ -345,6 +345,54 @@ public class AComponent extends JPanel {
     }
     
     /**
+     * Translates the component horizontally.
+     * 
+     * @param deltaX the number of units to slide the component to the right.
+     *               If this is negative, the component will slide to the left.
+     * @param milliseconds the number of milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
+     */
+    public AComponent slideX(int deltaX, int milliseconds) {
+        animations.add(
+                Animator.animateValue(
+                        getX(), getX() + deltaX, milliseconds, 
+                        newX -> {
+                            setLocation((int)newX, getY());
+                            repaint();
+                        },
+                        null
+                )
+        );
+        
+        return this;
+    }
+    
+    /**
+     * Translates the component vertically.
+     * 
+     * @param deltaY the number of units to slide the component down.
+     *               If this is negative, the component will slide up.
+     * @param milliseconds the number of milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together
+     */
+    public AComponent slideY(int deltaY, int milliseconds) {
+        animations.add(
+                Animator.animateValue(
+                        getY(), getY() + deltaY, milliseconds, 
+                        newY -> {
+                            setLocation(getX(), (int)newY);
+                            repaint();
+                        },
+                        null
+                )
+        );
+        
+        return this;
+    }
+    
+    /**
      * Stops all currently running animations.
      */
     public void stopAnimations() {
