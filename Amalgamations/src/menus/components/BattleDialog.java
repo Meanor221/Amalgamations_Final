@@ -690,8 +690,8 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
             public void run() {
                 startBattle(
                         new amalgamation.battle.AIController(),
-                        util.Amalgamations.load("NYEH!"),
-                        util.Amalgamations.load("Horsey")
+                        util.Amalgamations.load("Witch"),
+                        util.Amalgamations.load("NYEH!")
                 );
             }
         });
