@@ -33,6 +33,28 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     private java.awt.Rectangle  doNothingBounds;
     private java.awt.Rectangle  eventsBounds;
     private java.awt.Rectangle  forfeitBounds;
+    // A cover to cover the screen when animating in.
+    private acomponent.AComponent cover;
+    
+    // Animates all of the components into place.
+    private void animateComponents() {
+        // Animate the Player in.
+        PlayerPanel.slideX(500, ANIMATION_TIME).await();
+        
+        PlayerStatus.setLocation(PlayerPanel.getLocation());
+        PlayerStatus.slideX((int)playerStatusLoc.getX() - PlayerStatus.getX(), 
+                ANIMATION_TIME).await();
+        
+        // Animate the opponent in.
+        OpponentPanel.slideX(-500, ANIMATION_TIME).await();
+        
+        OpponentStatus.setLocation(
+                OpponentPanel.getX(),
+                (int)opponentStatusLoc.getY()
+        );
+        OpponentStatus.slideX((int)opponentStatusLoc.getX() 
+                - OpponentStatus.getX(), ANIMATION_TIME).await();
+    }
     
     // Animates the AbilityPanels and buttons back in.
     private void animateIn() {
@@ -129,6 +151,14 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         return moveChosen;
     }
     
+    // Covers the screen with a white panel.
+    private void coverScreen() {
+        cover = new acomponent.AComponent(getWidth(), getHeight());
+        cover.setBackground(Color.WHITE);
+        cover.setLocation(0, 0);
+        add(cover, 0);
+    }
+    
     // Displays the script one line at a time and animates health changes.
     private void enactScript(String[] script, String player, String opponent) {
         // Do nothing if the script is empty.
@@ -203,41 +233,70 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         hideDialog();
     }
     
+    // Prepares all components to be animated in for the first time.
+    private void prepareAnimation() {
+        // Disable the component.
+        setComponentsEnabled(false);
+        
+        // Save the bounds of the buttons.
+        doNothingBounds = DoNothingButton.getBounds();
+        eventsBounds = EventsButton.getBounds();
+        forfeitBounds = ForfeitButton.getBounds();
+        
+        // Save the location of the statuses.
+        playerStatusLoc = PlayerStatus.getLocation();
+        opponentStatusLoc = OpponentStatus.getLocation();
+        
+        // Save the locations of the AbilityPanels.
+        abilLoc1 = AbilPanel1.getLocation();
+        abilLoc2 = AbilPanel2.getLocation();
+        abilLoc3 = AbilPanel3.getLocation();
+        abilLoc4 = AbilPanel4.getLocation();        
+        
+        // Prepare the panels to be animated in.
+        PlayerPanel.setLocation(PlayerPanel.getX() - 500, PlayerPanel.getY());
+        OpponentPanel.setLocation(OpponentPanel.getX() + 500, 
+                OpponentPanel.getY());
+        
+        // Prepare the statuses to be animated in.
+        PlayerStatus.setLocation(-1000, -1000);
+        OpponentStatus.setLocation(-1000, -1000);
+        
+        // Prepare the buttons to be animated in.
+        DoNothingButton.setBounds(
+                (int)DoNothingButton.getBounds().getCenterX(),
+                (int)DoNothingButton.getBounds().getCenterY(),
+                0, 0
+        );
+        EventsButton.setBounds(
+                (int)EventsButton.getBounds().getCenterX(),
+                (int)EventsButton.getBounds().getCenterY(),
+                0, 0
+        );
+        ForfeitButton.setBounds(
+                (int)ForfeitButton.getBounds().getCenterX(),
+                (int)ForfeitButton.getBounds().getCenterY(),
+                0, 0
+        );
+        
+        // Prepare the AbilityPanels to be animated in.
+        AbilPanel1.setLocation(-300, AbilPanel1.getY());
+        AbilPanel2.setLocation(-300, AbilPanel2.getY());
+        AbilPanel3.setLocation(-300, AbilPanel3.getY());
+        AbilPanel4.setLocation(-300, AbilPanel4.getY());
+    }
+    
     @Override
     public void readScript(Amalgamation player, Amalgamation opponent,
             String[] script) {
         // Display the script to the user.
         enactScript(script, player.getName(), opponent.getName());
         // Animate the moves in so the user can select a move.
-        if (doNothingBounds != null) 
-            animateIn();
+        animateIn();
     }
     
-    // Sets whether or not all components are enabled.
-    private void setComponentsEnabled(boolean enabled) {
-        PlayerPanel.setEnabled(enabled);
-        OpponentPanel.setEnabled(enabled);
-        AbilPanel1.setEnabled(enabled);
-        AbilPanel2.setEnabled(enabled);
-        AbilPanel3.setEnabled(enabled);
-        AbilPanel4.setEnabled(enabled);
-        DoNothingButton.setEnabled(enabled);
-        EventsButton.setEnabled(enabled);
-        ForfeitButton.setEnabled(enabled);
-    }
-    
-    @Override
-    public void startBattle(Amalgamation player, Amalgamation opponent) {
-        // Wait for the dialog to show.
-        while (!isShowing()) {
-            try {
-                // Sleep for a little bit and check again later.
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-                
+    // Sets the information for Amalgamation dependent panels.
+    private void setAmalgamations(Amalgamation player, Amalgamation opponent) {
         // Set the Amalgamations.
         PlayerPanel.setAmalgamation(player);
         PlayerStatus.setAmalgamation(player);
@@ -264,12 +323,51 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
             AbilPanel4.setAbility(player.getAbilities()[3]);
         else
             AbilPanel4.setVisible(false);
+    }
+    
+    // Sets whether or not all components are enabled.
+    private void setComponentsEnabled(boolean enabled) {
+        PlayerPanel.setEnabled(enabled);
+        OpponentPanel.setEnabled(enabled);
+        AbilPanel1.setEnabled(enabled);
+        AbilPanel2.setEnabled(enabled);
+        AbilPanel3.setEnabled(enabled);
+        AbilPanel4.setEnabled(enabled);
+        DoNothingButton.setEnabled(enabled);
+        EventsButton.setEnabled(enabled);
+        ForfeitButton.setEnabled(enabled);
+    }
+    
+    @Override
+    public void startBattle(Amalgamation player, Amalgamation opponent) {
+        // Wait for the dialog to show.
+        while (!isShowing()) {
+            try {
+                // Sleep for a little bit and check again later.
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         
+        // Set the Amalgamations for components that depend on them.
+        setAmalgamations(player, opponent);
+        // Set the last script to a default message until a real script is
+        // received.
         lastScript = "Nothing has happened yet.";
-        
-        // Animate in.
+        // Cover the screen to hide the layout so it can be animated in.
+        coverScreen();
+        // Animate the dialog in.
         setLocationRelativeTo(null);
         showDialog();
+        // Wait for the dialog to finish animating in.
+        await(); 
+        // Prepare the components to be animated in.
+        prepareAnimation();
+        // Uncover the screen.
+        uncoverScreen();
+        // Animate the components in.
+        animateComponents();
     }
     
     /**
@@ -300,6 +398,14 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
                         .getHeight());
         // Make the dialog visible.
         dialog.setVisible(true);
+    }
+    
+    // Removes the cover from the screen. Do not call unless coverScreen has
+    // been called first.
+    private void uncoverScreen() {
+        if (cover != null)
+            remove(cover);
+        repaint();
     }
     
     // Updates the AbilityPanels.
@@ -347,6 +453,11 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         ForfeitButton = new acomponent.AButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -450,7 +561,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(PlayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -462,17 +573,17 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(OpponentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 50, Short.MAX_VALUE)
+                .addGap(0, 40, Short.MAX_VALUE)
                 .addComponent(AbilPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(AbilPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(AbilPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(AbilPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(DoNothingButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -507,12 +618,19 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().setComponentZOrder(OpponentStatus,
+            getContentPane().getComponentZOrder(OpponentPanel) + 1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         scriptAdvance = true;
     }//GEN-LAST:event_formKeyPressed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        scriptAdvance = true;
+    }//GEN-LAST:event_formMouseClicked
 
     /**
      * @param args the command line arguments
@@ -523,7 +641,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
             public void run() {
                 startBattle(
                         new amalgamation.battle.AIController(),
-                        util.Amalgamations.load("Bowleg"),
+                        util.Amalgamations.load("NYEH!"),
                         util.Amalgamations.load("Horsey")
                 );
             }
