@@ -3,7 +3,6 @@ package amalgamation.abilities;
 import amalgamation.Amalgamation;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +16,9 @@ public class StatModifier implements Serializable {
     public static final int     MODIFIER_OPPONENT_ATTACK   = 4;
     public static final int     MODIFIER_OPPONENT_DEFENSE  = 5;
     public static final int     MODIFIER_OPPONENT_SPEED    = 6;
+    
+    // The character in a script that indicates that a health value has changed.
+    public static final char    HEALTH_CHANGE_DELIM        = '~';
     
     private final int           adder;
     private final double        multiplier;
@@ -107,12 +109,18 @@ public class StatModifier implements Serializable {
      */
     public String statAdjuster(Amalgamation player, Amalgamation opponent) {
         int calculatedModifier;
+        String string = script.substring(0);
         
         switch(ability_id)
         {
             case MODIFIER_USER_HEALTH:
                 calculatedModifier = (int)((player.getCurrentHealth() 
                         + adder) * multiplier);
+                // Add a health change indicator for the user in the script.
+                string += String.format("%c0%c%d%c", HEALTH_CHANGE_DELIM, 
+                        HEALTH_CHANGE_DELIM, 
+                        (calculatedModifier - player.getCurrentHealth()), 
+                        HEALTH_CHANGE_DELIM);
                 player.setCurrentHealth(calculatedModifier);
                 break;
             
@@ -157,8 +165,7 @@ public class StatModifier implements Serializable {
                         "Invalid Ability ID: " + ability_id);
      
         }
-        
-        String string = script.substring(0);
+            
         return string.replace("USER", player.getName())
                 .replace("TARGET", opponent.getName());
     }

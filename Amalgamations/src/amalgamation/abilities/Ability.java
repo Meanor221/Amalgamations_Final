@@ -11,10 +11,12 @@ import java.util.Random;
 
 /**
  * The Ability that an Amalgamation can use in combat
- * @author Jordan LaRiccia
+ * 
+ * @author Jordan LaRiccia, Caleb Rush
  */
 public class Ability implements Serializable {
     private final String name;
+    private final String description;
     private final int cooldown;
     private int currentCooldown;
     private final int accuracy;
@@ -28,14 +30,17 @@ public class Ability implements Serializable {
       * @param accuracy the accuracy value of the ability
       * @param level the level when this move is learned
       * @param modifiers the list of stat modifiers for the ability
+      * @param description a basic description of the Ability to be displayed
+      *                     to the user. This can use endline characters.
       */
     public Ability(String name, int cooldown, int accuracy, int level, 
-            StatModifier[] modifiers){
+            StatModifier[] modifiers, String description){
         this.name = name;
         this.accuracy = accuracy;
         this.cooldown = cooldown;
         this.level = level;
         this.modifiers = modifiers;
+        this.description = description;
     }
     
     /**
@@ -120,6 +125,15 @@ public class Ability implements Serializable {
     }
     
     /**
+     * Returns a basic description of the Ability.
+     * 
+     * @return a basic description of the Ability.
+     */
+    public String getDescription() {
+        return description;
+    }
+    
+    /**
      * Retrieves the array of Modifiers used by this Ability.
      * 
      * @return the array of Modifiers used by this Ability
@@ -161,12 +175,20 @@ public class Ability implements Serializable {
      * Decrements the Ability's current cooldown by 1.
      */
     public void iterateCooldown() {
-        if (currentCooldown > 0)
+        currentCooldown--;
+        if (currentCooldown < 0)
             currentCooldown = 0;
     }
     
     // Generates a random value to see if the Ability missed or hit.
     private boolean miss(double luckVariance) {
-        return new Random().nextInt(100) + 1 <= accuracy * luckVariance;
+        return new Random().nextInt(100) + 1 > accuracy * luckVariance;
+    }
+    
+    /**
+     * Resets the current cooldown to its default value.
+     */
+    public void resetCurrentCooldown() {
+        currentCooldown = 0;
     }
 }

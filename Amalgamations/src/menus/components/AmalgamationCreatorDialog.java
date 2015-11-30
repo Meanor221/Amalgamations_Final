@@ -10,20 +10,21 @@ import java.awt.Color;
  * 
  * @author Caleb Rush
  */
-public class AmalgamationCreatorDialog extends javax.swing.JDialog {
+public class AmalgamationCreatorDialog extends acomponent.ADialog {
     // The Body being constructed in he Dialog.
     private amalgamation.parts.Body body;
     
     /**
      * Creates new form AmalgamationCreatorDialog
      */
-    private AmalgamationCreatorDialog(java.awt.Frame parent) {
+    private AmalgamationCreatorDialog(javax.swing.JFrame parent) {
         super(parent, true);
+        // Give the dialog a title bar.
+        setUndecorated(false);
         getContentPane().setBackground(Color.WHITE);
         initComponents();
         // Center the dialog on the parent.
         setLocationRelativeTo(parent);
-        
     }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
@@ -339,7 +340,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
      *               closed.
      */
     public static void create(javax.swing.JFrame parent) {
-        new AmalgamationCreatorDialog(parent).setVisible(true);
+        new AmalgamationCreatorDialog(parent).showDialog();
     }
     
     // Attmepts to save the creation.
@@ -349,7 +350,7 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             // Save the creation to a file.
             Amalgamations.save(body, NameField.getText());
             // Close the dialog.
-            setVisible(false);
+            hideDialog();
         }
        
     }
@@ -359,10 +360,15 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         // Check the Body.
         if (body == null) {
             // Display an error message.
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
+            acomponent.ADialog.createMessageDialog(
+                    null,
                     "You haven't created anything yet!\n\n"
                             + "Choose a body type to get started."
+            ).showDialog(
+                    BodyPanel.getWidth() / 2 
+                            + (int)BodyPanel.getLocationOnScreen().getX(), 
+                    BodyPanel.getHeight() / 2
+                            + (int)BodyPanel.getLocationOnScreen().getY()
             );
             return false;
         }
@@ -371,9 +377,13 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             // Check if the slot is empty.
             if (s.getPart() == null) {
                 // Display an error message.
-                javax.swing.JOptionPane.showMessageDialog(
-                        this, 
-                        "Your creation looks like it's missing an Arm!"
+                acomponent.ADialog.createMessageDialog(
+                        null, 
+                        "Your creation looks like it's missing an Arm!",
+                        "Whoops"
+                ).showDialog(
+                        (int)DisplayPanel.getLocationOnScreen().getX() + s.getX(),
+                        (int)DisplayPanel.getLocationOnScreen().getY() + s.getY()
                 );
                 return false;
             }
@@ -383,9 +393,13 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             // Check if the slot is empty.
             if (s.getPart() == null) {
                 // Display an error message.
-                javax.swing.JOptionPane.showMessageDialog(
-                        this, 
-                        "Your creation looks like it's missing a Head!"
+                acomponent.ADialog.createMessageDialog(
+                        null, 
+                        "Your creation looks like it's missing a Head!",
+                        "Whoops"
+                ).showDialog(
+                        (int)DisplayPanel.getLocationOnScreen().getX() + s.getX(),
+                        (int)DisplayPanel.getLocationOnScreen().getY() + s.getY()
                 );
                 return false;
             }
@@ -395,9 +409,13 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
             // Check if the slot is empty.
             if (s.getPart() == null) {
                 // Display an error message.
-                javax.swing.JOptionPane.showMessageDialog(
-                        this, 
-                        "Your creation looks like it's missing a Leg!"
+                acomponent.ADialog.createMessageDialog(
+                        null, 
+                        "Your creation looks like it's missing a Leg!",
+                        "Whoops"
+                ).showDialog(
+                        (int)DisplayPanel.getLocationOnScreen().getX() + s.getX(),
+                        (int)DisplayPanel.getLocationOnScreen().getY() + s.getY()
                 );
                 return false;
             }
@@ -405,9 +423,15 @@ public class AmalgamationCreatorDialog extends javax.swing.JDialog {
         // Check the name.
         if ("".equals(NameField.getText())) {
             // Display an error message.
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Your creation may want a name!"
+            acomponent.ADialog.createMessageDialog(
+                    null,
+                    "Your creation may want a name!",
+                    "Maybe"
+            ).showDialog(
+                    (int)NameField.getLocationOnScreen().getX() 
+                            + NameField.getWidth() / 2,
+                    (int)NameField.getLocationOnScreen().getY() 
+                            + NameField.getHeight() / 2
             );
             return false;
         }

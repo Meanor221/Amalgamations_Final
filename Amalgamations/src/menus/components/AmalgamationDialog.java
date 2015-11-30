@@ -2,6 +2,7 @@ package menus.components;
 
 import amalgamation.Amalgamation;
 import java.awt.Color;
+import java.util.Arrays;
 
 /**
  * An AmalgamationDialog can be used to have a user select an Amalgamation from
@@ -9,7 +10,7 @@ import java.awt.Color;
  * 
  * @author Caleb Rush
  */
-public class AmalgamationDialog extends javax.swing.JDialog {
+public class AmalgamationDialog extends acomponent.ADialog {
     // The number of columns of AmalgamaitionNamePanels to display.
     private static final int COLUMNS = 3;
     
@@ -34,8 +35,8 @@ public class AmalgamationDialog extends javax.swing.JDialog {
         setLayout(new java.awt.BorderLayout());
         // Set the size of the dialog box.
         setSize(500, 500);
-        // Set the background color of the dialog.
-        getContentPane().setBackground(Color.WHITE);
+        // Make the dialog have a title bar.
+        setUndecorated(false);
         
         // Display instructions label.
         javax.swing.JLabel instructionsLabel = new javax.swing.JLabel();
@@ -78,7 +79,7 @@ public class AmalgamationDialog extends javax.swing.JDialog {
                 // Set the amalgamation to the chosen amalgamation.
                 amal = amals[index];
                 // Return control to the caller.
-                setVisible(false);
+                hideDialog();
             });
             
             // Create constraints for the panel.
@@ -113,7 +114,7 @@ public class AmalgamationDialog extends javax.swing.JDialog {
     public static Amalgamation showDialog(javax.swing.JFrame parent) {
         try {
             AmalgamationDialog dialog = new AmalgamationDialog(parent);
-            dialog.setVisible(true);
+            dialog.showDialog();
             return dialog.amal;
         } catch (java.io.IOException e) {
             javax.swing.JOptionPane.showMessageDialog(
@@ -121,7 +122,7 @@ public class AmalgamationDialog extends javax.swing.JDialog {
                     String.format("Could not locate the %s directory!\n\n"
                             + "Please ensure this directory exists.\n\n%s", 
                             util.Amalgamations.AMAL_RES_DIR, 
-                            e.getStackTrace().toString()),
+                            Arrays.toString(e.getStackTrace())),
                     "Could Not Locate Relative Amal Res Directory",
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );

@@ -6,8 +6,8 @@ package menus;
  * @author Caleb Rush
  */
 public class MainMenu extends javax.swing.JPanel {
-    // The currently selected Amalgamation.
-    private amalgamation.Amalgamation amalgamation;
+    // The currently selected Amalgamation's panel.
+    private menus.components.AmalgamationPanel amalgamation;
 
     /**
      * Creates new form MainMenu
@@ -31,6 +31,7 @@ public class MainMenu extends javax.swing.JPanel {
         LoadButton = new acomponent.AButton();
         CampaignButton = new acomponent.AButton();
         NetworkButton = new acomponent.AButton();
+        AmalPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -42,7 +43,7 @@ public class MainMenu extends javax.swing.JPanel {
         LogoPanel.setLayout(LogoPanelLayout);
         LogoPanelLayout.setHorizontalGroup(
             LogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 754, Short.MAX_VALUE)
         );
         LogoPanelLayout.setVerticalGroup(
             LogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,88 +72,136 @@ public class MainMenu extends javax.swing.JPanel {
         LoadButton.setBackground(new java.awt.Color(76, 175, 80));
         LoadButton.setActionListener(e -> {
             // Have the user choose an Amalgamation
-            amalgamation = menus.components.AmalgamationDialog.showDialog(null);
-        });
-        LoadButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
-        LoadButton.setText("Load");
+            amalgamation.Amalgamation amal =
+            menus.components.AmalgamationDialog.showDialog(null);
+            if (amal != null) {
+                swapAmalgamation(amal);
+            }
+        }
+    );
+    LoadButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
+    LoadButton.setText("Load");
 
-        javax.swing.GroupLayout LoadButtonLayout = new javax.swing.GroupLayout(LoadButton);
-        LoadButton.setLayout(LoadButtonLayout);
-        LoadButtonLayout.setHorizontalGroup(
-            LoadButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 173, Short.MAX_VALUE)
-        );
-        LoadButtonLayout.setVerticalGroup(
-            LoadButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+    javax.swing.GroupLayout LoadButtonLayout = new javax.swing.GroupLayout(LoadButton);
+    LoadButton.setLayout(LoadButtonLayout);
+    LoadButtonLayout.setHorizontalGroup(
+        LoadButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 173, Short.MAX_VALUE)
+    );
+    LoadButtonLayout.setVerticalGroup(
+        LoadButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 0, Short.MAX_VALUE)
+    );
 
-        CampaignButton.setBackground(new java.awt.Color(33, 150, 243));
-        CampaignButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
-        CampaignButton.setText("Campaign");
+    CampaignButton.setBackground(new java.awt.Color(33, 150, 243));
+    CampaignButton.setActionListener(e -> {
+        acomponent.ADialog.createMessageDialog(
+            null,
+            "The Campaign mode has not been created yet.",
+            "Curses!"
+        ).showDialog(
+            (int)CampaignButton.getLocationOnScreen().getX() +
+            CampaignButton.getWidth() / 2,
+            (int)CampaignButton.getLocationOnScreen().getY() +
+            CampaignButton.getHeight() / 2
+        );
+    });
+    CampaignButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
+    CampaignButton.setText("Campaign");
 
-        javax.swing.GroupLayout CampaignButtonLayout = new javax.swing.GroupLayout(CampaignButton);
-        CampaignButton.setLayout(CampaignButtonLayout);
-        CampaignButtonLayout.setHorizontalGroup(
-            CampaignButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 173, Short.MAX_VALUE)
-        );
-        CampaignButtonLayout.setVerticalGroup(
-            CampaignButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+    javax.swing.GroupLayout CampaignButtonLayout = new javax.swing.GroupLayout(CampaignButton);
+    CampaignButton.setLayout(CampaignButtonLayout);
+    CampaignButtonLayout.setHorizontalGroup(
+        CampaignButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 173, Short.MAX_VALUE)
+    );
+    CampaignButtonLayout.setVerticalGroup(
+        CampaignButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 0, Short.MAX_VALUE)
+    );
 
-        NetworkButton.setBackground(new java.awt.Color(66, 66, 66));
-        NetworkButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
-        NetworkButton.setText("Network");
+    NetworkButton.setBackground(new java.awt.Color(66, 66, 66));
+    NetworkButton.setActionListener(e -> {
+        acomponent.ADialog.createMessageDialog(
+            null,
+            "The Network mode has not been created yet.",
+            "Curses!"
+        ).showDialog(
+            (int)NetworkButton.getLocationOnScreen().getX() +
+            NetworkButton.getWidth() / 2,
+            (int)NetworkButton.getLocationOnScreen().getY() +
+            NetworkButton.getHeight() / 2
+        );
+    });
+    NetworkButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
+    NetworkButton.setText("Network");
 
-        javax.swing.GroupLayout NetworkButtonLayout = new javax.swing.GroupLayout(NetworkButton);
-        NetworkButton.setLayout(NetworkButtonLayout);
-        NetworkButtonLayout.setHorizontalGroup(
-            NetworkButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 173, Short.MAX_VALUE)
-        );
-        NetworkButtonLayout.setVerticalGroup(
-            NetworkButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+    javax.swing.GroupLayout NetworkButtonLayout = new javax.swing.GroupLayout(NetworkButton);
+    NetworkButton.setLayout(NetworkButtonLayout);
+    NetworkButtonLayout.setHorizontalGroup(
+        NetworkButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 173, Short.MAX_VALUE)
+    );
+    NetworkButtonLayout.setVerticalGroup(
+        NetworkButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 0, Short.MAX_VALUE)
+    );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LogoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(CreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(LoadButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(CampaignButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(NetworkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+    AmalPanel.setOpaque(false);
+
+    javax.swing.GroupLayout AmalPanelLayout = new javax.swing.GroupLayout(AmalPanel);
+    AmalPanel.setLayout(AmalPanelLayout);
+    AmalPanelLayout.setHorizontalGroup(
+        AmalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 235, Short.MAX_VALUE)
+    );
+    AmalPanelLayout.setVerticalGroup(
+        AmalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGap(0, 242, Short.MAX_VALUE)
+    );
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+    this.setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(LogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(CreateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(LoadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CampaignButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(NetworkButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(CreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(LoadButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(CampaignButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(NetworkButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(AmalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(LogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
+            .addComponent(AmalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(CreateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LoadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CampaignButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(NetworkButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap())
+    );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AmalPanel;
     private acomponent.AButton CampaignButton;
     private acomponent.AButton CreateButton;
     private acomponent.AButton LoadButton;
@@ -161,17 +210,111 @@ public class MainMenu extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 
-    public void enter() {
-        LogoPanel.enter(LogoPanel.getX(), LogoPanel.getY(), 
-                LogoPanel.getWidth(), LogoPanel.getHeight());
-        CreateButton.enter(CreateButton.getX(), CreateButton.getY(),
-                CreateButton.getWidth(), CreateButton.getHeight());
-        LoadButton.enter(LoadButton.getX(), LoadButton.getY(),
-                LoadButton.getWidth(), LoadButton.getHeight());
-        CampaignButton.enter(CampaignButton.getX(), CampaignButton.getY(),
-                CampaignButton.getWidth(), CampaignButton.getHeight());
-        NetworkButton.enter(NetworkButton.getX(), NetworkButton.getY(),
-                NetworkButton.getWidth(), NetworkButton.getHeight());
+    // Deletes the currently selected Amalgamation.
+    public void delete(int x, int y) {
+        // Make sure the user is really sure of their decision.
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Are you sure you would like to release " 
+                        + amalgamation.getAmalgamation().getName() + "?"
+            ).confirmed(x, y))
+            return;
+        
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Are you <i>really</i> sure you would like to release " 
+                        + amalgamation.getAmalgamation().getName() + "?"
+                + "\n\nYou will <i>never</i> get it back!"
+            ).confirmed(x, y))
+            return;
+        
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Hold on a moment. Like, this is some really heavy stuff here.\n\n"
+                + "You're talking about releasing " + amalgamation.getAmalgamation().getName() 
+                + " into the cold harsh world!\nIt doesn't have any skills or special talents "
+                + "that can help it get a job and make a living!\nFor all you know it may not"
+                + " even be able to survive out there!\n\nKnowing this, do you <i>still</i> want "
+                + "to release " + amalgamation.getAmalgamation().getName() + "?",
+                "Yes, I get it", "No"
+            ).confirmed(x, y))
+            return;
+        
+        if (!acomponent.ADialog.createConfirmDialog(
+                null,
+                "Okay, think about it. You created " + amalgamation.getAmalgamation().getName()
+                + ", so in a way, you're like its parent.\nThis thing probably won't last long"
+                + ", probably get immediately mauled by a pack of wolves.\nBy releasing it"
+                + ", you're basically performing an abortion.\n\n" + "Are you sure you "
+                + "can live with yourself?",
+                "Yes, I am a sociopath who doesn't care about the well being of others",
+                "No, I have a heart"
+            ).confirmed(x, y))
+            return;
+        
+        // Delete the Amalgamation.
+        util.Amalgamations.delete(amalgamation.getAmalgamation().getName());
+        
+        // Animate the Amalgamation out.
+        amalgamation.exit().then(() -> {            
+            remove(amalgamation);
+            amalgamation = null;
+        });
+        
+        acomponent.ADialog.createMessageDialog(null, 
+                amalgamation.getAmalgamation().getName() + " is gone forever."
+                + " Hope you're happy.", "I am. Mwahaha").showDialog();
+    }
+    
+    // Animates the components into the panel.
+    public void enter() {       
+        // Relocate the components to animate them back in.
+        CreateButton.translate(CreateButton.getX() - 200, CreateButton.getY(), 0);
+        LoadButton.translate(LoadButton.getX() - 400, LoadButton.getY(), 0);
+        CampaignButton.translate(CampaignButton.getX() + 400, CampaignButton.getY(), 0);
+        NetworkButton.translate(NetworkButton.getX() + 200, NetworkButton.getY(), 0);
+        
+        LogoPanel.enter(LogoPanel.getX(), LogoPanel.getY(), LogoPanel.getWidth(), 
+                LogoPanel.getHeight()).then(() -> {;
+            CreateButton.translate(CreateButton.getX() + 200,
+                    CreateButton.getY(), 200);
+            LoadButton.translate(LoadButton.getX() + 400, 
+                    LoadButton.getY(), 200);
+            CampaignButton.translate(CampaignButton.getX() - 400, 
+                    CampaignButton.getY(), 200);
+            NetworkButton.translate(NetworkButton.getX() - 200, 
+                    NetworkButton.getY(), 200);
+        });
+    }
+    
+    // Swaps out the currently selected amalgamation with the new one.
+    private void swapAmalgamation(amalgamation.Amalgamation amal) {
+        // Check if there is already an amalgaamtion in place.
+        if (amalgamation != null) {
+            // Remove the amalgamation.
+            amalgamation.exit().then(() -> {
+                remove(amalgamation);
+                amalgamation = null;
+                // Call the method again now that the amalgamation has been
+                // removed.
+                swapAmalgamation(amal);
+            });
+            
+            return;
+        }
+        
+        // Create a new panel for the amalagamation.
+        amalgamation = new menus.components.AmalgamationPanel(amal);
+        amalgamation.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                delete(e.getXOnScreen(), e.getYOnScreen());
+            }
+        });
+        // Add the new panel.
+        add(amalgamation);
+        amalgamation.enter(AmalPanel.getX(), AmalPanel.getY(), 
+                AmalPanel.getWidth(), AmalPanel.getHeight());
     }
     
     public static void main(String[] args) {
