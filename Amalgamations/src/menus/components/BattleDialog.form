@@ -100,6 +100,9 @@
   </Layout>
   <SubComponents>
     <Container class="menus.components.AmalgamationPanel" name="PlayerPanel">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="// Remove the mouse listener.&#xd;&#xa;PlayerPanel.removeMouseListener(PlayerPanel.getMouseListeners()[0]);"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -115,6 +118,9 @@
       </Layout>
     </Container>
     <Container class="menus.components.AmalgamationPanel" name="OpponentPanel">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="// Remove the mouse listener. &#xd;&#xa;OpponentPanel.removeMouseListener(OpponentPanel.getMouseListeners()[0]);"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">

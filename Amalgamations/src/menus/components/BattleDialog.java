@@ -38,6 +38,9 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     
     // Animates all of the components into place.
     private void animateComponents() {
+        // Disable the component.
+        setComponentsEnabled(false);
+        
         // Animate the Player in.
         PlayerPanel.slideX(500, ANIMATION_TIME).await();
         
@@ -58,6 +61,14 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     
     // Animates the AbilityPanels and buttons back in.
     private void animateIn() {
+        // Return the status panels to their original positions.
+        PlayerStatus.translate((int)playerStatusLoc.getX(), 
+                (int)playerStatusLoc.getY(), 
+                ANIMATION_TIME);
+        OpponentStatus.translate((int)opponentStatusLoc.getX(), 
+                (int)opponentStatusLoc.getY(), 
+                ANIMATION_TIME).await();
+        
         // Have the buttons re-enter.
         DoNothingButton.enter(doNothingBounds).await();
         EventsButton.enter(eventsBounds).await();
@@ -67,21 +78,13 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         updateAbilities();
         
         // Return the ability panels to their original positions.
-        AbilPanel1.translate((int)abilLoc1.getX(), (int)abilLoc1.getY(), 
+        AbilPanel1.slideX((int)abilLoc1.getX() - AbilPanel1.getX(), 
                 ANIMATION_TIME);
-        AbilPanel2.translate((int)abilLoc2.getX(), (int)abilLoc2.getY(), 
+        AbilPanel2.slideX((int)abilLoc2.getX() - AbilPanel2.getX(), 
                 ANIMATION_TIME);
-        AbilPanel3.translate((int)abilLoc3.getX(), (int)abilLoc3.getY(), 
+        AbilPanel3.slideX((int)abilLoc3.getX() - AbilPanel3.getX(), 
                 ANIMATION_TIME);
-        AbilPanel4.translate((int)abilLoc4.getX(), (int)abilLoc4.getY(), 
-                ANIMATION_TIME);
-        
-         // Return the status panels to their original positions.
-        PlayerStatus.translate((int)playerStatusLoc.getX(), 
-                (int)playerStatusLoc.getY(), 
-                ANIMATION_TIME);
-        OpponentStatus.translate((int)opponentStatusLoc.getX(), 
-                (int)opponentStatusLoc.getY(), 
+        AbilPanel4.slideX((int)abilLoc4.getX() - AbilPanel4.getX(), 
                 ANIMATION_TIME).await();
         
         // Enable all the components again.
@@ -111,10 +114,10 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         abilLoc4 = AbilPanel4.getLocation();
         
         // Slide the AbilityPanels to the left of the screen.
-        AbilPanel1.translate(-300, AbilPanel1.getY(), ANIMATION_TIME);
-        AbilPanel2.translate(-300, AbilPanel2.getY(), ANIMATION_TIME);
-        AbilPanel3.translate(-300, AbilPanel3.getY(), ANIMATION_TIME);
-        AbilPanel4.translate(-300, AbilPanel4.getY(), ANIMATION_TIME);
+        AbilPanel1.slideX(-AbilPanel1.getX() - 300, ANIMATION_TIME);
+        AbilPanel2.slideX(-AbilPanel2.getX() - 300, ANIMATION_TIME);
+        AbilPanel3.slideX(-AbilPanel3.getX() - 300, ANIMATION_TIME);
+        AbilPanel4.slideX(-AbilPanel4.getX() - 300, ANIMATION_TIME).await();
         
         // Save the locations of the StatusPanels.
         playerStatusLoc = PlayerStatus.getLocation();
@@ -129,13 +132,60 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
                 ANIMATION_TIME).await();
     }
     
+    // Changes the health of the specified Amalgamation.
+    private void changeHealth(int deltaHealth, boolean opponent) {
+        if (opponent) {
+            // Check if the health is an increase or a decrease.
+            OpponentPanel.setHighlightColor(
+                    deltaHealth > 0?
+                            new java.awt.Color(76, 175, 80):
+                            new java.awt.Color(244, 67, 54)
+            );
+            // Highlight the panel.
+            OpponentPanel.highlight(
+                    OpponentPanel.getWidth() / 2, 
+                    OpponentPanel.getHeight() / 2,
+                    20
+            ).await();
+            // Change the health.
+            OpponentStatus.changeHealth(deltaHealth);
+            // Dehighlight the panel.
+            OpponentPanel.dehighlight(
+                    OpponentPanel.getWidth() / 2, 
+                    OpponentPanel.getHeight() / 2,
+                    0
+            );
+        }
+        else {
+            // Check if the health is an increase or a decrease.
+            PlayerPanel.setHighlightColor(
+                    deltaHealth > 0?
+                            new java.awt.Color(76, 175, 80):
+                            new java.awt.Color(244, 67, 54)
+            );
+            // Highlight the panel.
+            PlayerPanel.highlight(
+                    PlayerPanel.getWidth() / 2, 
+                    PlayerPanel.getHeight() / 2,
+                    20
+            ).await();
+            // Change the health.
+            PlayerStatus.changeHealth(deltaHealth);
+            // Dehighlight the panel.
+            PlayerPanel.dehighlight(
+                    PlayerPanel.getWidth() / 2, 
+                    PlayerPanel.getHeight() / 2,
+                    0
+            );
+        }
+    }
+    
     @Override
     public int chooseMove(Amalgamation player, Amalgamation opponent, 
             String[] script) {
-        
+
         // Set the chosen move to an invalid value.
         moveChosen = Integer.MAX_VALUE;
-        
         // Wait until the chosen move is changed.
         while (moveChosen == Integer.MAX_VALUE)
             // Sleep for a little bit and check again later.
@@ -198,9 +248,9 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
             int p = util.Abilities.healthChanged(line, player);
             int o = util.Abilities.healthChanged(line, opponent);
             if (p != 0)
-                PlayerStatus.changeHealth(p);
+                changeHealth(p, false);
             if (o != 0)
-                OpponentStatus.changeHealth(o);
+                changeHealth(o, true);
             
             // Pause until the user presses a key.
             scriptAdvance = false;
@@ -213,7 +263,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
 
             // Animate the line off of the top of the screen.
             label.slideY(-getHeight() / 2 - label.getHeight() / 2, 
-                    ANIMATION_TIME).then(() -> remove(label));
+                    ANIMATION_TIME).then(() -> remove(label)).await();
             
             // Add the line to the formatted script.
             formattedScript.append(util.Abilities.cutDelimiter(line))
@@ -234,10 +284,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     }
     
     // Prepares all components to be animated in for the first time.
-    private void prepareAnimation() {
-        // Disable the component.
-        setComponentsEnabled(false);
-        
+    private void prepareAnimation() {        
         // Save the bounds of the buttons.
         doNothingBounds = DoNothingButton.getBounds();
         eventsBounds = EventsButton.getBounds();
@@ -327,8 +374,6 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     
     // Sets whether or not all components are enabled.
     private void setComponentsEnabled(boolean enabled) {
-        PlayerPanel.setEnabled(enabled);
-        OpponentPanel.setEnabled(enabled);
         AbilPanel1.setEnabled(enabled);
         AbilPanel2.setEnabled(enabled);
         AbilPanel3.setEnabled(enabled);
@@ -440,7 +485,11 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     private void initComponents() {
 
         PlayerPanel = new menus.components.AmalgamationPanel();
+        // Remove the mouse listener.
+        PlayerPanel.removeMouseListener(PlayerPanel.getMouseListeners()[0]);
         OpponentPanel = new menus.components.AmalgamationPanel();
+        // Remove the mouse listener. 
+        OpponentPanel.removeMouseListener(OpponentPanel.getMouseListeners()[0]);
         PlayerStatus = new menus.components.StatusPanel();
         OpponentStatus = new menus.components.StatusPanel();
         OpponentStatus.setDisplayNumbers(false);
