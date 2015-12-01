@@ -4,6 +4,7 @@ import amalgamation.Amalgamation;
 import amalgamation.battle.Controller;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.net.ServerSocket;
@@ -22,6 +23,10 @@ public class NetworkController implements AutoCloseable, Controller {
     private final ServerSocket      server;
     // The socket connection.
     private Socket                  socket;
+    // The input stream to receive the amalgamation through the connection.
+    private ObjectInputStream       in;
+    // The output stream to send objects through the socket connection.
+    private ObjectOutputStream      out;
     
     /**
      * Constructs a new NetworkController which constructs a new ServerSocket.
@@ -39,7 +44,7 @@ public class NetworkController implements AutoCloseable, Controller {
             String[] script) {
         try {
             // Retrieve the move from the network.
-            return socket.getInputStream().read();
+            return in.read();
         } catch (IOException e) {
             // Assume the opponent forfeited.
             return MOVE_FORFEIT;
@@ -56,6 +61,8 @@ public class NetworkController implements AutoCloseable, Controller {
      */
     public void connect() throws IOException {
         socket = server.accept();
+        in = new ObjectInputStream(socket.getInputStream());
+        out = new ObjectOutputStream(socket.getOutputStream());
     }
     
     @Override
@@ -69,15 +76,42 @@ public class NetworkController implements AutoCloseable, Controller {
     public void endBattle(Amalgamation player, Amalgamation opponent, 
             String[] script) {
         // Send the player, opponent, and script across the connection.
-        try (ObjectOutputStream out 
-                = new ObjectOutputStream(socket.getOutputStream())) {
+        try {
             // Send a signal that this is the end of the battle.
             out.writeBoolean(true);
+            out.flush();
             out.writeObject(player);
+            out.flush();
             out.writeObject(opponent);
+            out.flush();
             out.writeObject(script);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Retrieves the Amalgamation that the connected Controller wishes to
+     * control.
+     * 
+     * Whether this Amalgamation will be used or not, this method should be
+     * called before the battle starts, as the Amalgamation will always be the
+     * first thing sent over by the NetworkAdapter. If this method is not
+     * called before the battle, an IOException will almost certainly be thrown.
+     * 
+     * This method should not be called at any other time than this first time.
+     * Doing so will result in the return value being null.
+     * 
+     * @return the Amalgamation the connected Controller wishes to control if
+     *         this method was called in between the connect method and the
+     *         Battle starting. Otherwise, this will be null.
+     */
+    public Amalgamation retrieveAmalgamation() {
+        try {
+            return (Amalgamation)in.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            return null;
         }
     }
     
@@ -115,13 +149,16 @@ public class NetworkController implements AutoCloseable, Controller {
     public void readScript(Amalgamation player, Amalgamation opponent, 
             String[] script) {
         // Send the player, opponent, and script across the connection.
-        try (ObjectOutputStream out 
-                = new ObjectOutputStream(socket.getOutputStream())) {
+        try {
             // Send a signal that this is not the end of the battle.
             out.writeBoolean(false);
+            out.flush();
             out.writeObject(player);
+            out.flush();
             out.writeObject(opponent);
+            out.flush();
             out.writeObject(script);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,21 +167,13 @@ public class NetworkController implements AutoCloseable, Controller {
     @Override
     public void startBattle(Amalgamation player, Amalgamation opponent) {
         // Send the player and opponent across the connection.
-        try (ObjectOutputStream out 
-                = new ObjectOutputStream(socket.getOutputStream())) {
+        try {
             out.writeObject(player);
+            out.flush();
             out.writeObject(opponent);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    
-    public static void main(String[] args) {
-        try (NetworkController controller = new NetworkController()) {
-            System.out.println(controller.getPort());
-            System.out.println(controller.getHost());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } 
     }
 }
