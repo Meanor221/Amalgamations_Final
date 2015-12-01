@@ -434,7 +434,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         
         // Create a new Battle with the dialog as the player controller.
         new Battle(playerAmalgamation, opponentAmalgamation, dialog, opponent);
-        
+                
         // Place the dialog underneath the screen until its ready to reveal
         // itself.
         dialog.setLocationRelativeTo(null);
@@ -469,7 +469,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     /**
      * Creates new form BattleDialog
      */
-    private BattleDialog() {
+    public BattleDialog() {
         super(null, true);
         initComponents();
         setLocationRelativeTo(null);
