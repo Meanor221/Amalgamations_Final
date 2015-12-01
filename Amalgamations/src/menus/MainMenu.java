@@ -294,22 +294,23 @@ public class MainMenu extends javax.swing.JPanel {
         // Check if there is already an amalgaamtion in place.
         if (amalgamation != null) {
             // Remove the amalgamation.
+            levelPanel.transform(amalgamation.getWidth(), levelPanel.getHeight(), 
+                    100);
             levelPanel.slideX(-amalgamation.getWidth() - 
-                            statPanel.getWidth() - 20, 200).then(() -> {
-                                remove(levelPanel);
-                                levelPanel = null;
-                                statPanel.slideX(-amalgamation.getWidth() - 10, 200).then(() -> {
-                                remove(statPanel);
-                                statPanel = null;
-                                amalgamation.exit().then(() -> {
-                                    remove(amalgamation);
-                                    amalgamation = null;
+                        statPanel.getWidth() - 20, 200);
+            statPanel.slideX(-amalgamation.getWidth() - 10, 200).then(() -> {
+                remove(levelPanel);
+                remove(statPanel);
+                levelPanel = null;
+                statPanel = null;
+                amalgamation.exit().then(() -> {
+                    remove(amalgamation);
+                    amalgamation = null;
                     // Call the method again now that the amalgamation has been
                     // removed.
                                     swapAmalgamation(amal);
-                                    });
                                 });
-                            });
+                                });
             
             return;
         }
@@ -336,11 +337,13 @@ public class MainMenu extends javax.swing.JPanel {
                     levelPanel = new menus.components.LevelPanel(amal);
                     add(levelPanel);
                     levelPanel.setBounds(amalgamation.getBounds());
-                    levelPanel.setSize(levelPanel.getWidth() + 150, 
+                    levelPanel.setSize(levelPanel.getWidth(), 
                             levelPanel.getHeight()/2);
                     levelPanel.validate();
                     levelPanel.slideX(amalgamation.getWidth() + 
                             statPanel.getWidth() + 20, 200);
+                    levelPanel.transform(levelPanel.getWidth() + 150 , 
+                            levelPanel.getHeight() , 100);
                 });
     }
     

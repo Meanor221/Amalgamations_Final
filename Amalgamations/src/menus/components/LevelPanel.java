@@ -31,17 +31,33 @@ public class LevelPanel extends acomponent.AComponent {
 
         currentLevelLabel = new javax.swing.JLabel();
         targetExperienceLabel = new javax.swing.JLabel();
+        experienceBar = new menus.components.HealthBar();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 3, 3, new java.awt.Color(204, 204, 204)));
 
         currentLevelLabel.setBackground(new java.awt.Color(255, 255, 255));
         currentLevelLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        currentLevelLabel.setForeground(new java.awt.Color(33, 150, 243));
+        currentLevelLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         currentLevelLabel.setText("jLabel1");
+        currentLevelLabel.setOpaque(true);
 
         targetExperienceLabel.setBackground(new java.awt.Color(255, 255, 255));
         targetExperienceLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        targetExperienceLabel.setForeground(new java.awt.Color(76, 175, 80));
         targetExperienceLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout experienceBarLayout = new javax.swing.GroupLayout(experienceBar);
+        experienceBar.setLayout(experienceBarLayout);
+        experienceBarLayout.setHorizontalGroup(
+            experienceBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 263, Short.MAX_VALUE)
+        );
+        experienceBarLayout.setVerticalGroup(
+            experienceBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 17, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -50,8 +66,11 @@ public class LevelPanel extends acomponent.AComponent {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(currentLevelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                    .addComponent(targetExperienceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(currentLevelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(targetExperienceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(experienceBar, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -60,14 +79,17 @@ public class LevelPanel extends acomponent.AComponent {
                 .addContainerGap()
                 .addComponent(currentLevelLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(targetExperienceLabel)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(targetExperienceLabel)
+                    .addComponent(experienceBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel currentLevelLabel;
+    private menus.components.HealthBar experienceBar;
     private javax.swing.JLabel targetExperienceLabel;
     // End of variables declaration//GEN-END:variables
 
@@ -76,7 +98,10 @@ public class LevelPanel extends acomponent.AComponent {
     }
     
     private void displayExperience(Amalgamation amalgamation) {
-        targetExperienceLabel.setText("<html>EXP to next level:<br>" + amalgamation.getTargetExperience() + "</html>");
+        targetExperienceLabel.setText("EXP: ");
+        experienceBar.setMaxHealth(amalgamation.getTargetExperience());
+        experienceBar.setCurrentHealth(amalgamation.getExperience());
+        System.out.print(amalgamation.getExperience());
     }
 
 }
