@@ -3,11 +3,12 @@ package menus;
 /**
  * The main menu of the game.
  * 
- * @author Caleb Rush
+ * @author Caleb Rush, barely Adam Meanor
  */
 public class MainMenu extends javax.swing.JPanel {
     // The currently selected Amalgamation's panel.
     private menus.components.AmalgamationPanel amalgamation;
+    private menus.components.StatPanel statPanel;
 
     /**
      * Creates new form MainMenu
@@ -292,12 +293,16 @@ public class MainMenu extends javax.swing.JPanel {
         // Check if there is already an amalgaamtion in place.
         if (amalgamation != null) {
             // Remove the amalgamation.
-            amalgamation.exit().then(() -> {
-                remove(amalgamation);
-                amalgamation = null;
-                // Call the method again now that the amalgamation has been
-                // removed.
-                swapAmalgamation(amal);
+            statPanel.slideX(-amalgamation.getWidth() - 10, 200).then(() -> {
+                remove(statPanel);
+                statPanel = null;
+                amalgamation.exit().then(() -> {
+                    remove(amalgamation);
+                    amalgamation = null;
+                    // Call the method again now that the amalgamation has been
+                    // removed.
+                    swapAmalgamation(amal);
+                });
             });
             
             return;
@@ -311,10 +316,18 @@ public class MainMenu extends javax.swing.JPanel {
                 delete(e.getXOnScreen(), e.getYOnScreen());
             }
         });
-        // Add the new panel.
+        // Add the new panels.
         add(amalgamation);
         amalgamation.enter(AmalPanel.getX(), AmalPanel.getY(), 
-                AmalPanel.getWidth(), AmalPanel.getHeight());
+                AmalPanel.getWidth(), AmalPanel.getHeight()).then(() -> {
+                    statPanel = new menus.components.StatPanel(amal);
+                    add(statPanel);
+                    statPanel.setBounds(amalgamation.getBounds());
+                    statPanel.setSize(statPanel.getWidth()/2, 
+                            statPanel.getHeight());
+                    statPanel.validate();
+                    statPanel.slideX(amalgamation.getWidth() + 10, 200);
+                });
     }
     
     public static void main(String[] args) {
