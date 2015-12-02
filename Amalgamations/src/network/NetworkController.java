@@ -61,8 +61,8 @@ public class NetworkController implements AutoCloseable, Controller {
      */
     public void connect() throws IOException {
         socket = server.accept();
-        in = new ObjectInputStream(socket.getInputStream());
         out = new ObjectOutputStream(socket.getOutputStream());
+        in = new ObjectInputStream(socket.getInputStream());
     }
     
     @Override
