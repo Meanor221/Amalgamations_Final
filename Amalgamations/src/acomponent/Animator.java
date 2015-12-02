@@ -197,11 +197,7 @@ public class Animator {
      */
     public static String animateValue(double value, double endValue, 
             double velocity, double acceleration, FrameListener frameListener,
-            AnimationEndListener animationEndListener) {
-        // Ensure the value and end value are not the same.
-        if (value == endValue)
-            return "";
-        
+            AnimationEndListener animationEndListener) {        
         // Check if the universal animator has been created yet.
         if (animator == null)
             animator = new Animator();
