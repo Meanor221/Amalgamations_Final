@@ -3,15 +3,21 @@ package menus.components;
 import amalgamation.Amalgamation;
 
 /**
+ * Panel that displays stats for the currently displayed Amalgamation,
+ * more specifically it displays the current level 
+ * and an experience bar that shows the current experience value 
+ * and the value need to go to the next level in a graphical format.
  *
- * @author Adam Meanor
+ * @author Adam Meanor, Caleb Rush
  */
 public class LevelPanel extends acomponent.AComponent {
     
     Amalgamation amalgamation;
 
     /**
-     * Creates new form LevelPanel
+     * Creates a new form LevelPanel
+     * 
+     * @param amalgamation the amalgamation that is being displayed.
      */
     public LevelPanel(Amalgamation amalgamation) {
         initComponents();
@@ -31,7 +37,7 @@ public class LevelPanel extends acomponent.AComponent {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        NameLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
         currentLevelLabel = new javax.swing.JLabel();
         targetExperienceLabel = new javax.swing.JLabel();
         experienceBar = new menus.components.HealthBar();
@@ -43,17 +49,17 @@ public class LevelPanel extends acomponent.AComponent {
         layout.rowHeights = new int[] {0, 10, 0};
         setLayout(layout);
 
-        NameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
-        NameLabel.setForeground(new java.awt.Color(244, 67, 54));
-        NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        NameLabel.setText("dhfffffffs");
+        nameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        nameLabel.setForeground(new java.awt.Color(244, 67, 54));
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        nameLabel.setText("dhfffffffs");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        add(NameLabel, gridBagConstraints);
+        add(nameLabel, gridBagConstraints);
 
         currentLevelLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
         currentLevelLabel.setForeground(new java.awt.Color(33, 150, 243));
@@ -102,20 +108,37 @@ public class LevelPanel extends acomponent.AComponent {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel NameLabel;
     private javax.swing.JLabel currentLevelLabel;
     private menus.components.HealthBar experienceBar;
+    private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel targetExperienceLabel;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Sets the text of nameLabel to the name of the currently displayed 
+     * Amalgamation.
+     * 
+     * @param amalgamation the currently displayed Amalgamation.
+     */
     private void displayName(Amalgamation amalgamation) {
-        NameLabel.setText(amalgamation.getName());
+        nameLabel.setText(amalgamation.getName());
     }
     
+    /**
+     * Sets the text of currentLevelLabel 
+     * to the current level value of the currently displayed Amalgamation.
+     * 
+     * @param amalgamtaion the currently displayed Amalgamation.
+     */
     private void displayLevel(Amalgamation amalgamtaion) {
         currentLevelLabel.setText("LV: " + amalgamation.getLevel());
     }
     
+    /**
+     * Gives the experienceBar object the current experience value 
+     * and the value need to level up and then generates the bar.
+     * @param amalgamation 
+     */
     private void displayExperience(Amalgamation amalgamation) {
         targetExperienceLabel.setText("EXP: ");
         experienceBar.setMaxHealth(amalgamation.getTargetExperience());
