@@ -61,16 +61,16 @@ public class NetworkDialog extends ADialog {
     
     // Sets up a NetworkAdapter and waits for another player to connect.
     private void host() {
-        //hideDialog();
         // Show a new HostDialog.
         new HostDialog();
+        hideDialog();
     }
     
     // Prompts the user for the host name and port number and attempts to
     // connect to a server socket.
     private void join() {
-        //hideDialog();
         new JoinDialog();
+        hideDialog();
     }
     
     /**
@@ -118,6 +118,16 @@ public class NetworkDialog extends ADialog {
             CancelButton1 = new acomponent.AButton();
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            
+            HostField.setBorder(null);
+            HostField.setForeground(new java.awt.Color(76,175,80));
+            HostField.setCaretColor(new java.awt.Color(76,175,80));
+            HostField.setFont(new java.awt.Font("Berlin Sans FB Demi", java.awt.Font.BOLD, 18));
+            
+            PortField.setBorder(null);
+            PortField.setForeground(new java.awt.Color(76,175,80));
+            PortField.setCaretColor(new java.awt.Color(76,175,80));
+            PortField.setFont(new java.awt.Font("Berlin Sans FB Demi", java.awt.Font.BOLD, 18));
 
             jLabel1.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
             jLabel1.setText("If the other player chose \"Host\", ask them for the following information:");
@@ -227,11 +237,11 @@ public class NetworkDialog extends ADialog {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(HostLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(HostField, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(HostField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(PortLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(PortField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PortField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(CancelButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
