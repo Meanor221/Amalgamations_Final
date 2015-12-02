@@ -175,7 +175,7 @@
           <Color blue="42" green="42" red="42" type="rgb"/>
         </Property>
         <Property name="actionListener" type="java.awt.event.ActionListener" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="e -&gt; {&#xa;    acomponent.ADialog.createMessageDialog(&#xa;        null,&#xa;        &quot;The Network mode has not been created yet.&quot;,&#xa;        &quot;Curses!&quot;&#xa;    ).showDialog(&#xa;        (int)NetworkButton.getLocationOnScreen().getX() +&#xa;        NetworkButton.getWidth() / 2,&#xa;        (int)NetworkButton.getLocationOnScreen().getY() +&#xa;        NetworkButton.getHeight() / 2&#xa;    );&#xa;}" type="code"/>
+          <Connection code="e -&gt; {&#xa;    if (amalgamation == null)&#xa;    acomponent.ADialog.createMessageDialog(null,&#xa;        &quot;You must load an Amalgamation first!&quot;&#xa;    ).showDialog(&#xa;        (int)LoadButton.getLocationOnScreen().getX() + LoadButton.getWidth() / 2,&#xa;        (int)LoadButton.getLocationOnScreen().getY() + LoadButton.getHeight() / 2&#xa;    );&#xa;    else&#xa;    // Show a new NetworkDialog.&#xa;    menus.components.NetworkDialog.createNetworkDialog(&#xa;        amalgamation.getAmalgamation())&#xa;    .showDialog(&#xa;        (int)NetworkButton.getLocationOnScreen().getX() + NetworkButton.getWidth() / 2,&#xa;        (int)NetworkButton.getLocationOnScreen().getY() + NetworkButton.getHeight() / 2&#xa;    );&#xa;}" type="code"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Berlin Sans FB Demi" size="24" style="1"/>
