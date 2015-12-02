@@ -15,6 +15,21 @@ public class Amalgamations {
     public static final String  AMAL_RES_DIR   = "res/amal/";
     
     /**
+     * Deletes the Amal file with the specified name.
+     * 
+     * This delete operation cannot be reversed and does not prompt the user,
+     * so be sure to warn the user before performing this operation.
+     * 
+     * @param amalFileName the name of the Amal file to delete (should not
+     *                        include file extension or path)
+     */
+    public static void delete(String amalFileName) {
+        // Delete the file.
+        new java.io.File(AMAL_RES_DIR + amalFileName + AMAL_FILE_EXT)
+                .delete();
+    }
+    
+    /**
      * Attempts to load an Amalgamation file
      * @param amalFileName
      * @return null and an error message if the load fails,
@@ -96,6 +111,24 @@ public class Amalgamations {
                             resDirectory + name + AMAL_FILE_EXT))) {
             // Write the created Part to the file.
             out.writeObject(amalgamation);
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Saves the given Amalgamation to a file.
+     * 
+     * @param amal the Amalgamation to save to a file.
+     */
+    public static void save(Amalgamation amal) {
+        System.out.println(amal.getTargetExperience());
+         // Attempt to create the resource file.
+        try (java.io.ObjectOutputStream out = new java.io.ObjectOutputStream(
+                    new java.io.FileOutputStream(
+                            AMAL_RES_DIR + amal.getName() + AMAL_FILE_EXT))) {
+            // Write the created Part to the file.
+            out.writeObject(amal);
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }

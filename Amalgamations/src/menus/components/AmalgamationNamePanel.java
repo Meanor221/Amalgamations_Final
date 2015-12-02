@@ -22,7 +22,7 @@ public class AmalgamationNamePanel extends acomponent.AComponent {
      */
     public AmalgamationNamePanel(Amalgamation amal) {
         // Set the layout.
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
         // Create an AmalgamationPanel with the given Amalgamation.
         amalPanel = new AmalgamationPanel(amal);
         add(amalPanel);
@@ -71,14 +71,17 @@ public class AmalgamationNamePanel extends acomponent.AComponent {
     public static void main(String[] args) {
         javax.swing.JFrame window = new javax.swing.JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        window.setLayout(null);
+        window.setSize(500, 500);
         
         AmalgamationNamePanel panel = new AmalgamationNamePanel(
                 util.Amalgamations.load("Davy Jones"));
         panel.setHighlightColor(Color.GREEN);
         window.add(panel);
         
-        window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        
+        panel.enter(20, 20, 300, 300).then(window::pack);
     }
 }

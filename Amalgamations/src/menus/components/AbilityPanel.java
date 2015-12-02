@@ -18,7 +18,7 @@ public class AbilityPanel extends acomponent.AComponent {
             = java.awt.Color.WHITE;
     // The color of the background when the panel is hovered over.
     private final static java.awt.Color BG_HOVERED
-            = new java.awt.Color(139,195,74);
+            = new java.awt.Color(76, 175, 80);
     // The color of the text when the Ability is unusable.
     private final static java.awt.Color TEXT_DISABLED
             = new java.awt.Color(97, 97, 97);
@@ -33,40 +33,23 @@ public class AbilityPanel extends acomponent.AComponent {
             = new java.awt.Color(96,125,139);
     
     // The Ability this panel is creating a view for.
-    private final Ability ability;
+    private Ability ability;
     // The Runnable to run when the panel is clicked.
     private Runnable clickAction;
+    
+    public AbilityPanel() {
+        initComponents();
+    }
 
     /**
      * Creates new form AbilityPanel
      */
     public AbilityPanel(Ability ability) {
         initComponents();
-        
-        // Set the ability.
-        this.ability = ability;
-        setHighlightColor(BG_HOVERED);
-        NameLabel.setText(ability.getName());
-        changePowerAccuracy(ability instanceof Attack? 
-                ((Attack)ability).getDamage() : 0,
-                ability.getAccuracy());
-        if (ability.isUsable()) {
-            changeCooldown(ability.getCooldown());
-            setBackground(BG_ENABLED);
-            NameLabel.setForeground(ability instanceof Attack?
-                    NAME_ATTACK : NAME_ABILITY);
-            PowerAccuracyLabel.setForeground(TEXT_ENABLED);
-            CooldownLabel.setForeground(TEXT_ENABLED);
-        }
-        else {
-            changeCooldown(ability.getCurrentCooldown());
-            setBackground(BG_DISABLED);
-            NameLabel.setForeground(TEXT_DISABLED);
-            PowerAccuracyLabel.setForeground(TEXT_DISABLED);
-            CooldownLabel.setForeground(TEXT_DISABLED);
-        }
+        setAbility(ability);
     }
 
+    // <editor-fold desc="GUI Code" defaultstate="collapsed" >
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,15 +119,19 @@ public class AbilityPanel extends acomponent.AComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
-        exited(evt.getX(), evt.getY());
+        exited();
     }//GEN-LAST:event_formMouseExited
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
-        entered(evt.getX(), evt.getY());
+        entered();
     }//GEN-LAST:event_formMouseEntered
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        javax.swing.SwingUtilities.invokeLater(this::clicked);
+        // Check if the click was a left or right click.
+        if (javax.swing.SwingUtilities.isLeftMouseButton(evt))
+            clicked();
+        else if (javax.swing.SwingUtilities.isRightMouseButton(evt))
+            showDescription();
     }//GEN-LAST:event_formMouseClicked
 
 
@@ -153,6 +140,7 @@ public class AbilityPanel extends acomponent.AComponent {
     private javax.swing.JLabel NameLabel;
     private javax.swing.JLabel PowerAccuracyLabel;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold>
     
     // Changes the value in the cooldown label.
     private void changeCooldown(int cooldown) {
@@ -173,27 +161,69 @@ public class AbilityPanel extends acomponent.AComponent {
     
     // Performs the given click action.
     private void clicked() {
-        if (clickAction != null)
+        if (clickAction != null && ability.isUsable())
             clickAction.run();
+        else
+            acomponent.ADialog.createMessageDialog(
+                    null,
+                    String.format("You must cool down for %d more %s before "
+                            + "using %s again.", 
+                            ability.getCurrentCooldown(), 
+                            ability.getCurrentCooldown() == 1? "turn":"turns", 
+                            ability.getName())
+            ).showDialog(
+                    (int)getLocationOnScreen().getX() + getWidth() / 2,
+                    (int)getLocationOnScreen().getY() + getHeight() / 2
+            );
+        dehighlight(getWidth() / 2, getHeight() / 2, 0);
+        setCursor(java.awt.Cursor.getDefaultCursor());
     }
     
     // Changes the mouse icon and changes the background.
-    private void entered(int x, int y) {
-        if (ability.isUsable()) {
+    private void entered() {
+        if (ability != null && ability.isUsable()) {
             stopAnimations();
-            highlight(x, y, 10);
+            highlight(getWidth() / 2, getHeight() / 2, 10);
             setCursor(java.awt.Cursor.getPredefinedCursor(
                     java.awt.Cursor.HAND_CURSOR));
         }
     }
     
+    /**
+     * Returns the Ability displayed by this panel.
+     * 
+     * @return the Ability displayed by this panel.
+     */
+    public Ability getAbility() {
+        return ability;
+    }
+    
+    /**
+     * Returns the action to be performed when the panel is clicked.
+     * 
+     * @return the action to be performed when the panel is clicked.
+     */
+    public Runnable getClickAction() {
+        return clickAction;
+    }
+    
     // Changes the mouse icon and changes the background.
-    private void exited(int x, int y) {
-        if (ability.isUsable()) {
+    private void exited() {
+        if (ability != null && ability.isUsable()) {
             stopAnimations();
-            dehighlight(x, y, 0);
+            dehighlight(getWidth() / 2, getHeight() / 2, 0);
             setCursor(java.awt.Cursor.getDefaultCursor());
         }
+    }
+    
+    /**
+     * Sets the Ability displayed by this panel.
+     * 
+     * @param ability the Ability to be displayed by this panel.
+     */
+    public void setAbility(Ability ability) {
+        this.ability = ability;
+        updateView();
     }
     
     /**
@@ -207,5 +237,41 @@ public class AbilityPanel extends acomponent.AComponent {
      */
     public void setClickAction(Runnable clickAction) {
         this.clickAction = clickAction;
+    }
+    
+    public void updateView() {
+        if (ability != null) {
+            setHighlightColor(BG_HOVERED);
+            NameLabel.setText(ability.getName());
+            changePowerAccuracy(ability instanceof Attack? 
+                    ((Attack)ability).getDamage() : 0,
+                    ability.getAccuracy());
+            if (ability.isUsable()) {
+                changeCooldown(ability.getCooldown());
+                setBackground(BG_ENABLED);
+                NameLabel.setForeground(ability instanceof Attack?
+                        NAME_ATTACK : NAME_ABILITY);
+                PowerAccuracyLabel.setForeground(TEXT_ENABLED);
+                CooldownLabel.setForeground(TEXT_ENABLED);
+            }
+            else {
+                changeCooldown(ability.getCurrentCooldown());
+                setBackground(BG_DISABLED);
+                NameLabel.setForeground(TEXT_DISABLED);
+                PowerAccuracyLabel.setForeground(TEXT_DISABLED);
+                CooldownLabel.setForeground(TEXT_DISABLED);
+            }
+        }
+    }
+    
+    // Shows the description of the Ability in a dialog box.
+    private void showDescription() {
+        acomponent.ADialog.createMessageDialog(
+                null,
+                ability.getDescription()
+        ).showDialog(
+                (int)getLocationOnScreen().getX() + getWidth() / 2,
+                (int)getLocationOnScreen().getY() + getHeight() / 2
+        );
     }
 }

@@ -7,7 +7,6 @@ package menus.components;
 import util.Abilities;
 import amalgamation.Amalgamation;
 import util.Amalgamations;
-import menus.components.AbilityPanel;
 import amalgamation.abilities.*;
 
 /**
@@ -15,7 +14,7 @@ import amalgamation.abilities.*;
  * 
  * @author Caleb Rush
  */
-public class AbilityReplaceDialog extends javax.swing.JDialog {
+public class AbilityReplaceDialog extends acomponent.ADialog {
     // The Amalgamation whose moveset should be modified.
     private final Amalgamation amalgamation;
     // The Ability to attempt to teach the Amalgamation.
@@ -55,7 +54,8 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Click the Ability you would like to remove"));
+        Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Click the Ability you would like to remove (Right click to see a description of the move)"));
+        Panel.setOpaque(false);
 
         Move1Panel.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -138,8 +138,19 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[0]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 0);
-                setVisible(false);
+                hideDialog();
             });
             Move1Panel.add(panel);
         }
@@ -148,8 +159,19 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[1]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 1);
-                setVisible(false);
+                hideDialog();
             });
             Move2Panel.add(panel);
         }
@@ -158,8 +180,19 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[2]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 2);
-                setVisible(false);
+                hideDialog();
             });
             Move3Panel.add(panel);
         }
@@ -168,8 +201,19 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             amalgamation.getAbilities()[3]);
             panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null,
+                        amalgamation.getName() + " forgot the ability "
+                        + amalgamation.getAbilities()[0].getName() + " and "
+                        + "learned " + ability.getName() + "!",
+                        "Huzzah!"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
                 amalgamation.replaceAbility(ability, 3);
-                setVisible(false);
+                hideDialog();
             });
             Move4Panel.add(panel);
         }
@@ -177,7 +221,19 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
         if (ability != null) {
             AbilityPanel panel = new menus.components.AbilityPanel(
                             ability);
-            panel.setClickAction(() -> setVisible(false));
+            panel.setClickAction(() -> {
+                acomponent.ADialog.createMessageDialog(null, 
+                        amalgamation.getName() + " did not learn the ability "
+                        + ability.getName() + ".",
+                        "Good"
+                ).showDialog(
+                        (int)panel.getLocationOnScreen().getX() 
+                            + panel.getWidth() / 2,
+                        (int)panel.getLocationOnScreen().getY() 
+                            + panel.getHeight() / 2
+                );
+                hideDialog();
+            });
             NewMovePanel.add(panel);
         }
     }
@@ -194,24 +250,24 @@ public class AbilityReplaceDialog extends javax.swing.JDialog {
     public static void showAbilityReplaceDialog(javax.swing.JFrame parent,
             Amalgamation amalgamation, Ability ability) {
         // Prompt the user before displaying the dialog.
-        if (javax.swing.JOptionPane.showConfirmDialog(parent, 
+        if (acomponent.ADialog.createConfirmDialog(parent, 
                 String.format("%s can learn the ability %s.\n\n"
                         + "Would you like %s to forget one of its abilities "
                         + "to learn %s?", amalgamation.getName(), 
                         ability.getName(), amalgamation.getName(), 
-                        ability.getName()))
-                == javax.swing.JOptionPane.YES_OPTION)
+                        ability.getName()), "Sure", "Nah")
+                .confirmed())
             // Display the dialog.
             new AbilityReplaceDialog(parent, amalgamation, ability)
-                    .setVisible(true);
+                    .showDialog();
     }
     
     public static void main(String[] args) {
-        Amalgamation a = Amalgamations.load("Ama Gam");
+        Amalgamation a = Amalgamations.load("BOO");
         a.addAbility(Abilities.load("Kick"));
         a.addAbility(Abilities.load("Punch"));
-        //a.addAbility(Abilities.load("Trip"));
-        a.addAbility(Abilities.load("Leg"));
+        a.addAbility(Abilities.load("Trip"));
+        a.addAbility(Abilities.load("Derp"));
         showAbilityReplaceDialog(null, a, Abilities.load("For Glory"));
     }
 }

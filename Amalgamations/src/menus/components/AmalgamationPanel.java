@@ -11,9 +11,23 @@ import java.awt.Color;
  */
 public class AmalgamationPanel extends acomponent.AComponent {
     // The body to test.
-    private final Amalgamation amal;
+    private Amalgamation amal;
     // ImagePanel to draw the image.
     private Runnable clickAction;
+    // Whether or not the Amalgamation's image is flipped.
+    private boolean flipped;
+    
+    public AmalgamationPanel() {
+        initComponents();
+        setBackground(Color.WHITE);
+        // Set the highlight color to a pleasant shade of red.
+        setHighlightColor(new java.awt.Color(244, 67, 54));
+        // Initialize the mouse listener.
+        initMouseListener();
+        // Set the border.
+        setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 2, 2, 
+                Color.LIGHT_GRAY));
+    }
 
     /**
      * Creates a new AmalgamationPanel that displays the image of the given
@@ -30,7 +44,7 @@ public class AmalgamationPanel extends acomponent.AComponent {
         // Initialize the mouse listener.
         initMouseListener();
         // Set the border.
-        setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 2, 
+        setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 2, 2, 
                 Color.LIGHT_GRAY));
     }
     
@@ -41,6 +55,24 @@ public class AmalgamationPanel extends acomponent.AComponent {
      */
     public Amalgamation getAmalgamation() {
         return amal;
+    }
+    
+    /**
+     * Returns the action performed when this panel is clicked.
+     * 
+     * @return the action performed when this panel is clicked
+     */
+    public Runnable getClickAction() {
+        return clickAction;
+    }
+    
+    /**
+     * Returns whether or not the Amalgamation's image is flipped.
+     * 
+     * @return true if the image is flipped, false if it isn't
+     */
+    public boolean getFlipped() {
+        return flipped;
     }
     
     // Initializes the mouse listener.
@@ -78,23 +110,34 @@ public class AmalgamationPanel extends acomponent.AComponent {
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
         // Draw the image scaled to the size of the panel.
-        int width, height;
-        if (getWidth() <= getHeight()) {
-            width = getWidth();
-            height = amal.getFullImage().getHeight() 
-                    * width / amal.getFullImage().getWidth();
+        if (amal != null) {
+            int width, height;
+            if (getWidth() <= getHeight()) {
+                width = getWidth();
+                height = amal.getFullImage().getHeight() 
+                        * width / amal.getFullImage().getWidth();
+            }
+            else {
+                height = getHeight();
+                width = amal.getFullImage().getWidth() 
+                        * height / amal.getFullImage().getHeight();
+            }
+            g.drawImage(flipped? amal.getFullFlippedImage() : amal.getFullImage(), 
+                    getWidth() / 2 - width / 2, 
+                    getHeight() / 2 - height / 2,
+                    width,
+                    height,
+                    null);
         }
-        else {
-            height = getHeight();
-            width = amal.getFullImage().getWidth() 
-                    * height / amal.getFullImage().getHeight();
-        }
-        g.drawImage(amal.getFullImage(), 
-                getWidth() / 2 - width / 2, 
-                getHeight() / 2 - height / 2,
-                width,
-                height,
-                null);
+    }
+    
+    /**
+     * Sets the Amalgamation displayed by this panel.
+     * 
+     * @param amal the Amalgamation to be displayed by this panel.
+     */
+    public void setAmalgamation(Amalgamation amal) {
+        this.amal = amal;
     }
     
     /**
@@ -104,6 +147,15 @@ public class AmalgamationPanel extends acomponent.AComponent {
      */
     public void setClickAction(Runnable clickAction) {
         this.clickAction = clickAction;
+    }
+    
+    /**
+     * Sets whether or not the Amalgamation's image should be flipped.
+     * 
+     * @param flipped true if it should be flipped, false if not
+     */
+    public void setFlipped(boolean flipped) {
+        this.flipped = flipped;
     }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">

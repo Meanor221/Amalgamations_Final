@@ -28,7 +28,7 @@ public class Amalgamation implements Serializable {
     // The name of the Amalgamation.
     private final String    name;
     // The graphical representation of the Amalgamation.
-    private BufferedImage   fullImage;
+    private transient BufferedImage   fullImage;
     // The level of the Amalgamation.
     private int             level;
     // The amount of experience the Amalgamation has,
@@ -69,11 +69,11 @@ public class Amalgamation implements Serializable {
         speedVariance   =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         attackVariance  =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         defenseVariance =   random.nextDouble() % VARIANCE_RANGE + 0.85;
-        luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 0.85;
+        luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 1.0;
         
         // Level up initially to start at Level 1.
-        levelUp();
         calculateStats();
+        gainExp(targetExperience);
     }
     
     /**
@@ -112,9 +112,8 @@ public class Amalgamation implements Serializable {
      * Calculates the stats of the Amalgamation based on current level
      */
     private void calculateStats() {
-        System.out.println(healthVariance);
-        health  = (int)(2 * ((double)level/(double)MAX_LEVEL) 
-                * body.totalBaseHealth() * healthVariance) + 5;
+        health  = (int)(10 * ((double)level/(double)MAX_LEVEL) 
+                * body.totalBaseHealth() * healthVariance) + 20;
         
         attack  = (int)(2 * ((double)level/(double)MAX_LEVEL) 
                 * body.totalBaseAttack() * attackVariance) + 5;
@@ -129,6 +128,8 @@ public class Amalgamation implements Serializable {
         
         targetExperience = (int)(Math.pow(MAX_LEVEL, 2) / 
                 (1 + Math.pow( Math.E, (-0.08 * (level - 50)))));
+        
+        resetCurrentStats();
     }
 
     /**
@@ -267,6 +268,15 @@ public class Amalgamation implements Serializable {
     }
     
     /**
+     * Retrieves the current amount of experience the amalgamation has.
+     * 
+     * @return the current experience value of the amalgamation.
+     */
+    public int getExperience() {
+        return experience;
+    }
+    
+    /**
      * Retrieves the health stat of the Amalgamation.
      * 
      * @return the health stat of the Amalgamation
@@ -300,6 +310,20 @@ public class Amalgamation implements Serializable {
         return fullImage;
     }
     
+    public BufferedImage getFullFlippedImage() {
+        // Retrieve the full image.
+        BufferedImage image = getFullImage();
+        // Create a new base image to hold the modified image.
+        BufferedImage flippedImage = new BufferedImage(image.getWidth(), 
+                image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        // Draw the image flipped on the new base image.
+        flippedImage.createGraphics().drawImage(image, image.getWidth(), 0, 
+                -image.getWidth(), image.getHeight(), 
+                null);
+        
+        return flippedImage;
+    }
+    
     /**
      * Retrieves the graphical representation of the Amalgamation.
      * 
@@ -314,6 +338,15 @@ public class Amalgamation implements Serializable {
     public BufferedImage getFullUpdatedImage() {
         fullImage = body.fullImage();
         return fullImage;
+    }
+    
+    /**
+     * Returns the level that the Amalgamation is at.
+     * 
+     * @return the level that the Amalgamation is at
+     */
+    public int getLevel() {
+        return level;
     }
     
     /**
@@ -349,6 +382,12 @@ public class Amalgamation implements Serializable {
     public void levelUp() {
         level++;
         
+        acomponent.ADialog.createMessageDialog(
+                null, 
+                name + " grew to level " + level + "!", 
+                "Sweet!"
+        ).showDialog();
+        
         // Recalculate the stats since the level has changed.
         calculateStats();
         
@@ -356,8 +395,9 @@ public class Amalgamation implements Serializable {
         for (Ability a : newAbilities()) {
             // Try to add the Ability to the array.
             if (addAbility(a))
-                javax.swing.JOptionPane.showMessageDialog(null, String.format(
-                        "%s learned the ability %s!", name, a.getName()));
+                acomponent.ADialog.createMessageDialog(null, String.format(
+                        "%s learned the ability %s!", name, a.getName()),
+                        "Huzzah!").showDialog();
             else
                 // Show a dialog to learn the ability.
                 AbilityReplaceDialog.showAbilityReplaceDialog(null, this, a);
@@ -400,6 +440,10 @@ public class Amalgamation implements Serializable {
         currentAttack = attack;
         currentDefense = defense;
         currentSpeed = speed;
+        // Reset Ability cooldowns.
+        for (Ability a : abilities)
+            if (a != null)
+                a.resetCurrentCooldown();
     }
     
     /**

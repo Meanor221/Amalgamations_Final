@@ -49,14 +49,17 @@ public class AButton extends AComponent {
     public AButton(int width, int height) {
         this();
         setSize(width, height);
+        setPreferredSize(new java.awt.Dimension(width, height));
     }
     
     @Override
-    public void dehighlight(int x, int y, int radius) {
+    public AComponent dehighlight(int x, int y, int radius) {
         super.dehighlight(x, y, radius);
         
         // Set the text color back to normal.
         setForeground(textColor);
+        
+        return this;
     }
     
     public void doClick() {
@@ -88,12 +91,14 @@ public class AButton extends AComponent {
     }
     
     @Override
-    public void highlight(int x, int y, int radius) {
+    public AComponent highlight(int x, int y, int radius) {
         super.highlight(x, y, radius);
         
         // Set the text color to white.
         textColor = getForeground();
         setForeground(getBackground());
+        
+        return this;
     }
     
     // Initializes the mouse listener for the button.
@@ -105,7 +110,8 @@ public class AButton extends AComponent {
                 if (actionListener != null)
                     actionListener.actionPerformed(new ActionEvent(
                             this, ActionEvent.ACTION_PERFORMED, null));
-                
+                stopAnimations();
+                dehighlight(getWidth() / 2, getHeight() / 2, 0);
             }
             
             @Override

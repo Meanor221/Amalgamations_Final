@@ -17,6 +17,8 @@ import java.util.Vector;
 public class Animator {
     // The number of frames to be advanced in a second.
     private static int fps = 60;
+    // Whether or not to wait for an animation to finish.
+    private static boolean wait;
     // The universal Animator instance to be used.
     private static Animator animator;
     
@@ -73,23 +75,27 @@ public class Animator {
                         incrementValue(i);
                         notifyFrameListener(i);
                         if (valueAtEnd(i)) {
+                            FrameListener l = frameListeners.get(i);
+                            double value = endValues.get(i);
                             // Notify the frame listener one last time.
-                            frameListeners.get(i).frameIncremented(
-                                    endValues.get(i).intValue());
+                            javax.swing.SwingUtilities.invokeLater(() -> {
+                                l.frameIncremented(value);
+                            });
                             // Alert the end listener.
                             if (animationEndListeners.get(i) != null)
-                                animationEndListeners.get(i).animationEnded();
+                                javax.swing.SwingUtilities.invokeLater(
+                                        animationEndListeners.get(i)::animationEnded);
                             removeValue(i);
                             // Decrement the loop counter so that the next element
                             // does not get skipped.
                             i--;
                         }
                     }
-                }
                 
-                // Check if there are any values left to animate.
-                if (values.isEmpty()) 
-                    running = false;
+                    // Check if there are any values left to animate.
+                    if (values.isEmpty()) 
+                        running = false;
+                }
             }
         }).start();
     }
@@ -191,27 +197,29 @@ public class Animator {
      */
     public static String animateValue(double value, double endValue, 
             double velocity, double acceleration, FrameListener frameListener,
-            AnimationEndListener animationEndListener) {
+            AnimationEndListener animationEndListener) {        
         // Check if the universal animator has been created yet.
         if (animator == null)
             animator = new Animator();
         
-        // Add the value to the animator.
-        animator.keys.add(String.format("%f%f%f%f%s%d", value, endValue, velocity, 
-                acceleration, frameListener.toString(), animator.values.size()));
-        animator.values.add(value);
-        animator.endValues.add(endValue);
-        animator.velocities.add(velocity);
-        animator.accelerations.add(acceleration);
-        animator.frameListeners.add(frameListener);
-        animator.animationEndListeners.add(animationEndListener);
+        synchronized(animator.keys) {
+            // Add the value to the animator.
+            animator.keys.add(String.format("%f%f%f%f%s%d", value, endValue, velocity, 
+                    acceleration, frameListener.toString(), animator.values.size()));
+            animator.values.add(value);
+            animator.endValues.add(endValue);
+            animator.velocities.add(velocity);
+            animator.accelerations.add(acceleration);
+            animator.frameListeners.add(frameListener);
+            animator.animationEndListeners.add(animationEndListener);
         
-        // Start the animator if it is stopped.
-        if (!animator.running)
-            animator.animate();
-        
-        // Return an identifier String.
-        return animator.keys.lastElement();
+            // Start the animator if it is stopped.
+            if (!animator.running)
+                animator.animate();
+
+            // Return an identifier String.
+            return animator.keys.lastElement();
+        }
     }
     
     // Increments the value at the given index.
@@ -226,7 +234,11 @@ public class Animator {
     
     // Notifies the frame listener at the given index of a change in value.
     private void notifyFrameListener(int i) {
-        frameListeners.get(i).frameIncremented(values.get(i).intValue());
+        FrameListener l = frameListeners.get(i);
+        int value = values.get(i).intValue();
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            l.frameIncremented(value);
+        });
     }
 
     // Remove the value at the given index.
@@ -244,20 +256,50 @@ public class Animator {
     }
     
     /**
+     * Sets the AnimationEndListener for the specified animation.
+     * 
+     * @param key the identifying key of the animation to be changed. This key
+     *            was returned when the animateValue method was called.
+     * @param animationEndListener the AnimationEndListener to set for the 
+     *                             specified animation
+     * @return true if the listener was successfully set, false otherwise
+     */
+    public static boolean setAnimationEndListener(String key, 
+            AnimationEndListener animationEndListener) {
+        if (animator != null) {
+            synchronized(animator.keys) {
+                // Find the index of the given key.
+                int index = animator.keys.indexOf(key);
+                // Check if the key was found.
+                if (index != -1) {
+                    // Add the listener at the index.
+                    animator.animationEndListeners.set(index, 
+                            animationEndListener);
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Stops the animation with the specified key.
      * 
      * @param key the identifier String of the value animation to stop
      * @return true if the animation was successfully stopped, false otherwise
      */
     public static boolean stopAnimation(String key) {
-        // Retrieve the index for the key.
-        int i = animator.keys.indexOf(key);
-        
-        // Check if the key existed.
-        if (i != -1) {
-            // Remove the value.
-            animator.removeValue(i);
-            return true;
+        synchronized(animator.keys) {
+            // Retrieve the index for the key.
+            int i = animator.keys.indexOf(key);
+
+            // Check if the key existed.
+            if (i != -1) {
+                // Remove the value.
+                animator.removeValue(i);
+                return true;
+            }
         }
         
         return false;
@@ -285,6 +327,48 @@ public class Animator {
     }
     
     /**
+     * Causes the current thread to sleep until the specified animation
+     * finishes.
+     * 
+     * If the specified key does not correspond to a running animation, the 
+     * thread will continue immediately.
+     * 
+     * This method should never be called from the event thread, as stopping
+     * the event thread will prevent all events from being processed until
+     * the animation is complete. In most applications of an animation, this
+     * will mean that any modifications to the GUI will not appear until after
+     * the animation, meaning the animation will not work.
+     * 
+     * @param key the identifier of the animation to wait for. This was returned
+     *            when the animateValue method was called.
+     */
+    public static void waitFor(String key) {     
+        if (animator == null)
+            return;
+        
+        // Add an AnimationEndListener to the animation.
+        synchronized (animator.keys) {
+            int index = animator.keys.indexOf(key);
+            if (index == -1)
+                return;
+            
+            animator.animationEndListeners.set(index, 
+                    () -> wait = false);
+        }
+        
+        // Sleep until the key is no longer found.
+        wait = true;
+        while (wait) {
+            // Sleep for the specified framerate.
+            try {
+                Thread.sleep(1000/fps);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+    
+    /**
      * A FrameListener should be used by anything utilizing an Animator to alert
      * itself any time the Animator increments a frame.
      */
@@ -297,7 +381,7 @@ public class Animator {
          * 
          * @param value the incremented value.
          */
-        void frameIncremented(int value);
+        void frameIncremented(double value);
     }
     
     /**
