@@ -613,4 +613,40 @@ public class AComponent extends JPanel {
         
         return this;
     }
+    
+    /**
+     * Animates the component over the specified length of time towards the 
+     * specified X position.
+     * 
+     * @param x the X position to animate towards.
+     * @param milliseconds the number of milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together 
+     */
+    public AComponent translateX(int x, int milliseconds) {
+        animations.add(
+            Animator.animateValue(getX(), x, milliseconds, value -> {
+                setLocation((int)value, getY());
+        }, null));
+        
+        return this;
+    }
+    
+    /**
+     * Animates the component over the specified length of time towards the 
+     * specified Y position.
+     * 
+     * @param y the Y position to animate towards.
+     * @param milliseconds the number of milliseconds the animation should last
+     * @return this instance of the AComponent to be used with chaining
+     *         animation method calls together 
+     */
+    public AComponent translateY(int y, int milliseconds) {
+        animations.add(
+            Animator.animateValue(getY(), y, milliseconds, value -> {
+                setLocation(getX(), (int)value);
+        }, null));
+        
+        return this;
+    }
 }
