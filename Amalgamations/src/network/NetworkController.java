@@ -126,7 +126,7 @@ public class NetworkController implements AutoCloseable, Controller {
      */
     public String getHost() {
         try {
-            return server.getInetAddress().getLocalHost().getHostName();
+            return server.getInetAddress().getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             return "";
         }
