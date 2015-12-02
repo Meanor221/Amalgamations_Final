@@ -189,10 +189,10 @@ public class Battle {
             script.add(String.format("%s was defeated!", 
                     playerAmalgamation.getName()));
         
+        new Thread(() -> opponent.endBattle(opponentAmalgamation, playerAmalgamation, 
+                script.toArray(new String[0]))).start();
         // Alert the controllers that the Battle has ended.
         player.endBattle(playerAmalgamation, opponentAmalgamation, 
-                script.toArray(new String[0]));
-        opponent.endBattle(opponentAmalgamation, playerAmalgamation, 
                 script.toArray(new String[0]));
         
         if (playerWon)
@@ -213,8 +213,9 @@ public class Battle {
      */
     public void startBattle() {
         // Alert the controllers that the Battle has started.
+        new Thread(() -> opponent.startBattle(opponentAmalgamation, 
+                playerAmalgamation)).start();
         player.startBattle(playerAmalgamation, opponentAmalgamation);
-        opponent.startBattle(opponentAmalgamation, playerAmalgamation);
         
         // Enact the first turn.
         doTurn();
