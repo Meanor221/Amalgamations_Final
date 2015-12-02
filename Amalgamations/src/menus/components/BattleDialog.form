@@ -100,6 +100,9 @@
   </Layout>
   <SubComponents>
     <Container class="menus.components.AmalgamationPanel" name="PlayerPanel">
+      <Properties>
+        <Property name="flipped" type="boolean" value="true"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="// Remove the mouse listener.&#xd;&#xa;PlayerPanel.removeMouseListener(PlayerPanel.getMouseListeners()[0]);"/>
       </AuxValues>

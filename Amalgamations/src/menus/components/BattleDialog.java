@@ -513,6 +513,8 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
             }
         });
 
+        PlayerPanel.setFlipped(true);
+
         javax.swing.GroupLayout PlayerPanelLayout = new javax.swing.GroupLayout(PlayerPanel);
         PlayerPanel.setLayout(PlayerPanelLayout);
         PlayerPanelLayout.setHorizontalGroup(
