@@ -183,6 +183,13 @@ public class HealthBar extends acomponent.AComponent {
         this.barLength = barLength;
     }
     
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        // Recalculate bar length.
+        barLength = barLength(currentHealth);
+    }
+    
     /**
      * Sets the actual health.
      * 
@@ -222,6 +229,13 @@ public class HealthBar extends acomponent.AComponent {
         this.maxHealth = maxHealth;
         if (currentHealth > maxHealth)
             setCurrentHealth(maxHealth);
+    }
+    
+    @Override
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        // Recalculate bar length.
+        barLength = barLength(currentHealth);
     }
     
     @Override
