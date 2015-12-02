@@ -55,6 +55,25 @@ public class ADialog extends javax.swing.JDialog {
         // Set the layout as a BorderLayout.
         setLayout(new java.awt.BorderLayout(20, 20));
         animations = new Vector<>();
+        
+        // Create a mouse listener to move the dialog around.
+        java.awt.event.MouseAdapter mouse = new java.awt.event.MouseAdapter() {
+            private int x;
+            private int y;
+            
+            @Override
+            public void mouseDragged(java.awt.event.MouseEvent e) {
+                setLocation(e.getXOnScreen() - x, e.getYOnScreen() - y);
+            }
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+        };
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
+        
     }
     
     /**
@@ -66,7 +85,7 @@ public class ADialog extends javax.swing.JDialog {
      */
     public void addButton(String text, 
             java.awt.event.ActionListener actionListener) {
-        addButton(text, actionListener, Color.BLACK);
+        addButton(text, actionListener, new Color(66,66,66));
     }
     
     /**
