@@ -262,19 +262,29 @@ public class MainMenu extends javax.swing.JPanel {
         // Delete the Amalgamation.
         util.Amalgamations.delete(amalgamation.getAmalgamation().getName());
         
-        // Animate the Amalgamation out.
-        amalgamation.exit().then(() -> {            
+        // Remove the amalgamation.
+        levelPanel.translateX(getWidth(), 500);
+        statPanel.translateX(getWidth(), 500);
+        amalgamation.slideX(-400, 500).then(() -> {
             remove(amalgamation);
-            amalgamation = null;
-        });
-        
-        acomponent.ADialog.createMessageDialog(null, 
+            remove(levelPanel);
+            remove(statPanel);
+                
+            acomponent.ADialog.createMessageDialog(null, 
                 amalgamation.getAmalgamation().getName() + " is gone forever."
                 + " Hope you're happy.", "I am. Mwahaha").showDialog();
+            amalgamation = null;
+        });
     }
     
     // Animates the components into the panel.
-    public void enter() {       
+    public void enter() {
+        // Disable the buttons so they cannot interrupt the animation.
+        CreateButton.setEnabled(false);
+        LoadButton.setEnabled(false);
+        CampaignButton.setEnabled(false);
+        NetworkButton.setEnabled(false);
+        
         // Relocate the components to animate them back in.
         CreateButton.translate(CreateButton.getX() - 200, CreateButton.getY(), 0);
         LoadButton.translate(LoadButton.getX() - 400, LoadButton.getY(), 0);
@@ -283,14 +293,16 @@ public class MainMenu extends javax.swing.JPanel {
         
         LogoPanel.enter(LogoPanel.getX(), LogoPanel.getY(), LogoPanel.getWidth(), 
                 LogoPanel.getHeight()).then(() -> {;
-            CreateButton.translate(CreateButton.getX() + 200,
-                    CreateButton.getY(), 200);
-            LoadButton.translate(LoadButton.getX() + 400, 
-                    LoadButton.getY(), 200);
-            CampaignButton.translate(CampaignButton.getX() - 400, 
-                    CampaignButton.getY(), 200);
-            NetworkButton.translate(NetworkButton.getX() - 200, 
-                    NetworkButton.getY(), 200);
+            CreateButton.slideX(200, 350);
+            LoadButton.slideX(400, 350);
+            CampaignButton.slideX(-400, 350);
+            NetworkButton.slideX(-200, 350).then(() -> {
+                        // Re-enable the buttons.
+                        CreateButton.setEnabled(true);
+                        LoadButton.setEnabled(true);
+                        CampaignButton.setEnabled(true);
+                        NetworkButton.setEnabled(true);
+                });
         });
     }
     
@@ -299,23 +311,18 @@ public class MainMenu extends javax.swing.JPanel {
         // Check if there is already an amalgaamtion in place.
         if (amalgamation != null) {
             // Remove the amalgamation.
-            levelPanel.transform(amalgamation.getWidth(), levelPanel.getHeight(), 
-                    100);
-            levelPanel.slideX(-amalgamation.getWidth() - 
-                        statPanel.getWidth() - 20, 200);
-            statPanel.slideX(-amalgamation.getWidth() - 10, 200).then(() -> {
+            levelPanel.translateX(getWidth(), 300);
+            statPanel.translateX(getWidth(), 300);
+            amalgamation.slideX(-400, 300).then(() -> {
+                remove(amalgamation);
                 remove(levelPanel);
                 remove(statPanel);
-                levelPanel = null;
-                statPanel = null;
-                amalgamation.exit().then(() -> {
-                    remove(amalgamation);
-                    amalgamation = null;
-                    // Call the method again now that the amalgamation has been
-                    // removed.
-                                    swapAmalgamation(amal);
-                                });
-                                });
+                amalgamation = null;
+                
+                // Call the method again now that the amalgamation has been
+                // removed.
+                swapAmalgamation(amal);
+            });
             
             return;
         }
@@ -330,25 +337,29 @@ public class MainMenu extends javax.swing.JPanel {
         });
         // Add the new panels.
         add(amalgamation);
-        amalgamation.enter(AmalPanel.getX(), AmalPanel.getY(), 
-                AmalPanel.getWidth(), AmalPanel.getHeight()).then(() -> {
+        amalgamation.setBounds(LoadButton.getX() + LoadButton.getWidth() / 2,
+                LoadButton.getY() + LoadButton.getHeight() / 2,
+                0, 0);
+        amalgamation.translate(AmalPanel.getX(), AmalPanel.getY(), 400);
+        amalgamation.transform(AmalPanel.getWidth(), AmalPanel.getHeight(),
+                400).then(() -> {
                     statPanel = new menus.components.StatPanel(amal);
                     add(statPanel);
                     statPanel.setBounds(amalgamation.getBounds());
                     statPanel.setSize(statPanel.getWidth()/2, 
                             statPanel.getHeight());
                     statPanel.validate();
-                    statPanel.slideX(amalgamation.getWidth() + 10, 200);
+                    statPanel.slideX(amalgamation.getWidth() + 10, 250);
                     levelPanel = new menus.components.LevelPanel(amal);
                     add(levelPanel);
                     levelPanel.setBounds(amalgamation.getBounds());
                     levelPanel.setSize(levelPanel.getWidth(), 
-                            levelPanel.getHeight()/2);
+                            levelPanel.getHeight()/3);
                     levelPanel.validate();
                     levelPanel.slideX(amalgamation.getWidth() + 
-                            statPanel.getWidth() + 20, 200);
+                            statPanel.getWidth() + 20, 250);
                     levelPanel.transform(levelPanel.getWidth() + 150 , 
-                            levelPanel.getHeight() , 100);
+                            levelPanel.getHeight() , 250);
                 });
     }
     
