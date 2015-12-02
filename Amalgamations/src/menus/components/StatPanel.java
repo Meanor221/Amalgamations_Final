@@ -45,20 +45,24 @@ public class StatPanel extends acomponent.AComponent {
         setLayout(new java.awt.GridLayout(4, 0));
 
         healthLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        healthLabel.setForeground(new java.awt.Color(76, 175, 80));
         healthLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         healthLabel.setText("jLabel1");
         add(healthLabel);
 
         attackLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        attackLabel.setForeground(new java.awt.Color(244, 67, 54));
         attackLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         attackLabel.setText("jLabel2");
         add(attackLabel);
 
         defenseLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        defenseLabel.setForeground(new java.awt.Color(33, 150, 243));
         defenseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         defenseLabel.setText("jLabel3");
         add(defenseLabel);
 
+        speedLabel.setBackground(new java.awt.Color(66, 66, 66));
         speedLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
         speedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         speedLabel.setText("jLabel4");

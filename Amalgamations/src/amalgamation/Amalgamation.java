@@ -72,8 +72,8 @@ public class Amalgamation implements Serializable {
         luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 1.0;
         
         // Level up initially to start at Level 1.
-        levelUp();
         calculateStats();
+        gainExp(targetExperience);
     }
     
     /**
@@ -265,6 +265,15 @@ public class Amalgamation implements Serializable {
      */
     public int getDefense() {
         return defense;
+    }
+    
+    /**
+     * Retrieves the current amount of experience the amalgamation has.
+     * 
+     * @return the current experience value of the amalgamation.
+     */
+    public int getExperience() {
+        return experience;
     }
     
     /**
