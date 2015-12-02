@@ -14,6 +14,8 @@ public class AmalgamationPanel extends acomponent.AComponent {
     private Amalgamation amal;
     // ImagePanel to draw the image.
     private Runnable clickAction;
+    // Whether or not the Amalgamation's image is flipped.
+    private boolean flipped;
     
     public AmalgamationPanel() {
         initComponents();
@@ -64,6 +66,15 @@ public class AmalgamationPanel extends acomponent.AComponent {
         return clickAction;
     }
     
+    /**
+     * Returns whether or not the Amalgamation's image is flipped.
+     * 
+     * @return true if the image is flipped, false if it isn't
+     */
+    public boolean getFlipped() {
+        return flipped;
+    }
+    
     // Initializes the mouse listener.
     private final void initMouseListener() {
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -111,7 +122,7 @@ public class AmalgamationPanel extends acomponent.AComponent {
                 width = amal.getFullImage().getWidth() 
                         * height / amal.getFullImage().getHeight();
             }
-            g.drawImage(amal.getFullImage(), 
+            g.drawImage(flipped? amal.getFullFlippedImage() : amal.getFullImage(), 
                     getWidth() / 2 - width / 2, 
                     getHeight() / 2 - height / 2,
                     width,
@@ -136,6 +147,15 @@ public class AmalgamationPanel extends acomponent.AComponent {
      */
     public void setClickAction(Runnable clickAction) {
         this.clickAction = clickAction;
+    }
+    
+    /**
+     * Sets whether or not the Amalgamation's image should be flipped.
+     * 
+     * @param flipped true if it should be flipped, false if not
+     */
+    public void setFlipped(boolean flipped) {
+        this.flipped = flipped;
     }
 
     // <editor-fold desc="GUI Variables" defaultstate="collapsed">
