@@ -26,7 +26,7 @@
     <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,0,66,0,0,1,124"/>
   </AuxValues>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="NameLabel">
+    <Component class="javax.swing.JLabel" name="nameLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Berlin Sans FB Demi" size="18" style="1"/>
@@ -250,11 +250,11 @@
         <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component, java.lang.Object"/>
       </StatementProvider>
       <Parameters>
-        <CodeExpression id="11_NameLabel">
-          <CodeVariable name="NameLabel" type="8194" declaredType="javax.swing.JLabel"/>
+        <CodeExpression id="11_nameLabel">
+          <CodeVariable name="nameLabel" type="8194" declaredType="javax.swing.JLabel"/>
           <ExpressionOrigin>
             <ExpressionProvider type="ComponentRef">
-              <ComponentRef name="NameLabel"/>
+              <ComponentRef name="nameLabel"/>
             </ExpressionProvider>
           </ExpressionOrigin>
         </CodeExpression>
