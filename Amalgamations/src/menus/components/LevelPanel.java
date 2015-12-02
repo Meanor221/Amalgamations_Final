@@ -16,6 +16,7 @@ public class LevelPanel extends acomponent.AComponent {
     public LevelPanel(Amalgamation amalgamation) {
         initComponents();
         this.amalgamation = amalgamation;
+        this.displayName(amalgamation);
         this.displayLevel(amalgamation);
         this.displayExperience(amalgamation);
     }
@@ -28,71 +29,89 @@ public class LevelPanel extends acomponent.AComponent {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        NameLabel = new javax.swing.JLabel();
         currentLevelLabel = new javax.swing.JLabel();
         targetExperienceLabel = new javax.swing.JLabel();
         experienceBar = new menus.components.HealthBar();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 3, 3, new java.awt.Color(204, 204, 204)));
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0};
+        layout.rowHeights = new int[] {0, 10, 0};
+        setLayout(layout);
 
-        currentLevelLabel.setBackground(new java.awt.Color(255, 255, 255));
+        NameLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        NameLabel.setForeground(new java.awt.Color(244, 67, 54));
+        NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        NameLabel.setText("dhfffffffs");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(NameLabel, gridBagConstraints);
+
         currentLevelLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
         currentLevelLabel.setForeground(new java.awt.Color(33, 150, 243));
-        currentLevelLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        currentLevelLabel.setText("jLabel1");
-        currentLevelLabel.setOpaque(true);
+        currentLevelLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        currentLevelLabel.setText("LV: 15");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        add(currentLevelLabel, gridBagConstraints);
 
-        targetExperienceLabel.setBackground(new java.awt.Color(255, 255, 255));
         targetExperienceLabel.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
         targetExperienceLabel.setForeground(new java.awt.Color(76, 175, 80));
-        targetExperienceLabel.setText("jLabel1");
+        targetExperienceLabel.setText("Exp:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(targetExperienceLabel, gridBagConstraints);
+
+        experienceBar.setMaximumSize(null);
+        experienceBar.setMinimumSize(new java.awt.Dimension(0, 0));
 
         javax.swing.GroupLayout experienceBarLayout = new javax.swing.GroupLayout(experienceBar);
         experienceBar.setLayout(experienceBarLayout);
         experienceBarLayout.setHorizontalGroup(
             experienceBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addGap(0, 297, Short.MAX_VALUE)
         );
         experienceBarLayout.setVerticalGroup(
             experienceBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 17, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(currentLevelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(targetExperienceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(experienceBar, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(currentLevelLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(targetExperienceLabel)
-                    .addComponent(experienceBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        add(experienceBar, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel NameLabel;
     private javax.swing.JLabel currentLevelLabel;
     private menus.components.HealthBar experienceBar;
     private javax.swing.JLabel targetExperienceLabel;
     // End of variables declaration//GEN-END:variables
 
+    private void displayName(Amalgamation amalgamation) {
+        NameLabel.setText(amalgamation.getName());
+    }
+    
     private void displayLevel(Amalgamation amalgamtaion) {
         currentLevelLabel.setText("LV: " + amalgamation.getLevel());
     }
@@ -100,8 +119,15 @@ public class LevelPanel extends acomponent.AComponent {
     private void displayExperience(Amalgamation amalgamation) {
         targetExperienceLabel.setText("EXP: ");
         experienceBar.setMaxHealth(amalgamation.getTargetExperience());
-        experienceBar.setCurrentHealth(amalgamation.getExperience());
-        System.out.print(amalgamation.getExperience());
+        experienceBar.setCurrentHealth(0);
+        experienceBar.animateHealth(amalgamation.getExperience());
+    }
+    
+    @Override
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        revalidate();
+        repaint();
     }
 
 }
