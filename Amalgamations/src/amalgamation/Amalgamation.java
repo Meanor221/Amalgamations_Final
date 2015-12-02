@@ -310,6 +310,20 @@ public class Amalgamation implements Serializable {
         return fullImage;
     }
     
+    public BufferedImage getFullFlippedImage() {
+        // Retrieve the full image.
+        BufferedImage image = getFullImage();
+        // Create a new base image to hold the modified image.
+        BufferedImage flippedImage = new BufferedImage(image.getWidth(), 
+                image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        // Draw the image flipped on the new base image.
+        flippedImage.createGraphics().drawImage(image, image.getWidth(), 0, 
+                -image.getWidth(), image.getHeight(), 
+                null);
+        
+        return flippedImage;
+    }
+    
     /**
      * Retrieves the graphical representation of the Amalgamation.
      * 
