@@ -35,8 +35,6 @@ public class AmalgamationDialog extends acomponent.ADialog {
         setLayout(new java.awt.BorderLayout());
         // Set the size of the dialog box.
         setSize(500, 500);
-        // Make the dialog have a title bar.
-        setUndecorated(false);
         
         // Display instructions label.
         javax.swing.JLabel instructionsLabel = new javax.swing.JLabel();
@@ -93,6 +91,8 @@ public class AmalgamationDialog extends acomponent.ADialog {
             // Add the panel to the select panel.
             selectPanel.add(panel, constraints);
         }
+        // Add a cancel button.
+        addButton("Cancel", e -> hideDialog());
     }
     // </editor-fold>
     

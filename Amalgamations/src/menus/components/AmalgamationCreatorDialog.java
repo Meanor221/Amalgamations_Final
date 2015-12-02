@@ -19,8 +19,6 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
      */
     private AmalgamationCreatorDialog(javax.swing.JFrame parent) {
         super(parent, true);
-        // Give the dialog a title bar.
-        setUndecorated(false);
         getContentPane().setBackground(Color.WHITE);
         initComponents();
         // Center the dialog on the parent.
@@ -45,6 +43,7 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
         DisplayPanel = new javax.swing.JPanel();
         SaveButton = new acomponent.AButton();
         PartsPane = new javax.swing.JTabbedPane();
+        aButton1 = new acomponent.AButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create an Amalgmation");
@@ -150,6 +149,25 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
         PartsPane.setTabPlacement(javax.swing.JTabbedPane.RIGHT);
         PartsPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        aButton1.setBackground(new java.awt.Color(255, 255, 255));
+        aButton1.setBorder(null);
+        aButton1.setForeground(new java.awt.Color(66, 66, 66));
+        aButton1.setActionListener(e -> hideDialog());
+        aButton1.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        aButton1.setHighlightColor(new java.awt.Color(66, 66, 66));
+        aButton1.setText("Cancel");
+
+        javax.swing.GroupLayout aButton1Layout = new javax.swing.GroupLayout(aButton1);
+        aButton1.setLayout(aButton1Layout);
+        aButton1Layout.setHorizontalGroup(
+            aButton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 73, Short.MAX_VALUE)
+        );
+        aButton1Layout.setVerticalGroup(
+            aButton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 27, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +181,11 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(PartsPane)))
+                        .addComponent(PartsPane))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -175,12 +197,14 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 37, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(PartsPane)
                             .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))))
         );
 
         pack();
@@ -219,6 +243,7 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
     private javax.swing.JPanel NamePanel;
     private javax.swing.JTabbedPane PartsPane;
     private acomponent.AButton SaveButton;
+    private acomponent.AButton aButton1;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 
