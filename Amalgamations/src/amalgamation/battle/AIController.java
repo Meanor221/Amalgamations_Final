@@ -12,9 +12,19 @@ import java.util.Random;
  * @author Caleb Rush
  */
 public class AIController implements Controller {
+    // Whether or not the AIController won its most recent battle.
+    private boolean battleWon;
+    
     @Override
     public void endBattle(Amalgamation player, Amalgamation opponent, 
-            String[] script) {}
+            String[] script) {
+        // Check if the last line of the script mentions the opponent being
+        // defeated.
+        if (script[script.length - 1].equals(player.getName() 
+                + " was defeated!"))
+            // Set the most recent battle as won.
+            battleWon = true;
+    }
     
     @Override
     public int chooseMove(Amalgamation player, Amalgamation opponent, 
@@ -33,6 +43,18 @@ public class AIController implements Controller {
         
         // Choose a random index.
         return indices.get(new Random().nextInt(indices.size()));
+    }
+    
+    /**
+     * Returns whether or not the AIController won its most recent Battle.
+     * 
+     * If the AIController has not finished its first Battle yet, this method
+     * will return false.
+     * 
+     * @return true if the AIController won its last Battle, false otherwise
+     */
+    public boolean isBattleWon() {
+        return battleWon;
     }
     
     @Override
