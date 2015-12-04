@@ -7,6 +7,7 @@ import amalgamation.parts.Head;
 import amalgamation.parts.Leg;
 import amalgamation.parts.Part;
 import amalgamation.parts.Slot;
+import java.util.Random;
 /**
  * Parts is a utility class that contains useful Part related functions and
  * constants.
@@ -283,6 +284,88 @@ public class Parts {
         }
         
         return parts;
+    }
+    
+    /**
+     * Generates a random Body using all of the Parts available in the Parts
+     * resource directory.
+     * 
+     * @return the randomized Body
+     * @throws java.io.IOException If any of the Part resource directories
+     *                             cannot be accessed due to invalid permissions
+     *                             or the directories not existing.
+     * @throws IllegalArgumentException If any of the directories do not contain
+     *                                  any parts.
+     */
+    public static Body randomBody() 
+            throws java.io.IOException, IllegalArgumentException {
+        return randomBody(getArms(ARMS_RES_DIR), getBodies(BODIES_RES_DIR), 
+                getHeads(HEADS_RES_DIR), getLegs(LEGS_RES_DIR));
+    }
+    
+    /**
+     * Generates a random Body using the given Parts.
+     * 
+     * The Body will already have its Slots set to randomized Parts.
+     * 
+     * @param arms the Arms the randomized Body can choose from
+     * @param bodies the Bodies the randomized Body can be
+     * @param heads the Heads the randomized Body can choose from
+     * @param legs the Legs the randomized Body can choose from
+     * @return the randomized Body
+     * @throw IllegalArgumentException if any of the arrays of parts are null or
+     *                                 empty
+     */
+    public static Body randomBody(Arm[] arms, Body[] bodies, Head[] heads, 
+            Leg[] legs) throws IllegalArgumentException {
+        // Ensure that each of the arrays are not null or empty.
+        if (arms == null)
+            throw new IllegalArgumentException(
+                    "The array of Arms cannot be null!");
+        else if (arms.length == 0)
+            throw new IllegalArgumentException(
+                    "The array of Arms cannot be empty!");
+        if (bodies == null)
+            throw new IllegalArgumentException(
+                    "The array of Bodies cannot be null!");
+        else if (bodies.length == 0)
+            throw new IllegalArgumentException(
+                    "The array of Bodies cannot be empty!");
+        if (heads == null)
+            throw new IllegalArgumentException(
+                    "The array of Heads cannot be null!");
+        else if (heads.length == 0)
+            throw new IllegalArgumentException(
+                    "The array of Heads cannot be empty!");
+        if (legs == null)
+            throw new IllegalArgumentException(
+                    "The array of Legs cannot be null!");
+        else if (legs.length == 0)
+            throw new IllegalArgumentException(
+                    "The array of Legs cannot be empty!");
+        
+        // Create a random number generator.
+        Random rand = new Random();
+        
+        // Choose a random body.
+        Body body = bodies[rand.nextInt(bodies.length)];
+        
+        // Iterate through the body's Arm slots.
+        for (Slot s : body.getArmSlots())
+            // Set a random arm to the slot.
+            s.setPart(arms[rand.nextInt(arms.length)]);
+        
+        // Iterate through the body's Head slots.
+        for (Slot s : body.getHeadSlots())
+            // Set a random head to the slot.
+            s.setPart(heads[rand.nextInt(heads.length)]);
+        
+        // Iterate through the body's Leg slots.
+        for (Slot s : body.getLegSlots())
+            // Set a random leg to the slot.
+            s.setPart(legs[rand.nextInt(legs.length)]);
+        
+        return body;
     }
 
     /**
