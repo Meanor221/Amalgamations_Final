@@ -1,5 +1,6 @@
 package menus.components;
 
+import acomponent.Animator;
 import util.Amalgamations;
 import java.awt.Color;
 
@@ -274,13 +275,31 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
     // <editor-fold desc="Display Panel" defaultstate="collapsed">
     // The panel that displays the Body's image.
     private class DisplayPanel extends javax.swing.JPanel {
+        private int x = 0;
+        
+        // Slides the image either in or out.
+        public void slide(boolean in) {
+            int endX = in?
+                    0 : getWidth();
+            if (in)
+                x = -getWidth();
+            Animator.waitFor(
+                    Animator.animateValue(x, endX, 250, 
+                        newX -> {
+                            x = (int)newX;
+                            repaint();
+                        },
+                        null
+            ));
+        }
+        
         @Override
         protected void paintComponent(java.awt.Graphics g){
             super.paintComponent(g);
             
             // Draw the Body's full image.
             if (body != null)
-                g.drawImage(body.fullImage(), 0, 0, getWidth(), getHeight(), 
+                g.drawImage(body.fullImage(), x, 0, getWidth(), getHeight(), 
                         this);
         }
     }
@@ -288,89 +307,98 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
 
     // Sets the body and updates the PartsPane.
     private void changeBody(amalgamation.parts.Body body) {
-        this.body = body;
-        
-        // Remove all the tabs in the PartsPane.
-        for (int i = PartsPane.getTabCount() - 1; i >= 0; i--)
-            PartsPane.removeTabAt(i);
-        
-        // Set up the new tabs for the PartListPanels.
-        for (int i = 0; i < body.getArmSlots().length; i++) {
-            // Create a new tab containing the PartListPanel.
-            menus.components.PartListPanel panel 
-                    = new menus.components.PartListPanel(
-                            util.Parts.TYPE_ARM,
-                            (int)body.getArmSlots()[i].getRotationDegrees());
-            PartsPane.addTab("Arm " + (i + 1), panel);
+        // 
+        new Thread(() -> {
+            // Animate the body out.
+            ((DisplayPanel)DisplayPanel.getComponent(0)).slide(false);
+
+            this.body = body;
             
-            // Set the PartChooseListener for the panel.
-            final int index = i;
-            panel.setPartChangeListener(part -> {
-                // Set the specific slot to the chosen Part.
-                body.getArmSlots()[index].setPart((amalgamation.parts.Arm)part);
-                repaint();
-            });
-            
-            // Set the rotation slider's listener for the panel.
-            panel.setSliderListener(rotation -> {
-                // Change the rotation for the specific slot.
-                body.getArmSlots()[index].setRotationDegrees((double)rotation);
-                repaint();
-            });
-        }
-        
-        // Set up the new tabs for the PartListPanels.
-        for (int i = 0; i < body.getHeadSlots().length; i++) {
-            // Create a new tab containing the PartListPanel.
-            menus.components.PartListPanel panel 
-                    = new menus.components.PartListPanel(
-                            util.Parts.TYPE_HEAD,
-                            (int)body.getHeadSlots()[i].getRotationDegrees());
-            PartsPane.addTab("Head " + (i + 1), panel);
-            
-            // Set the PartChooseListener for the panel.
-            final int index = i;
-            panel.setPartChangeListener(part -> {
-                // Set the specific slot to the chosen Part.
-                body.getHeadSlots()[index].setPart(
-                        (amalgamation.parts.Head)part);
-                repaint();
-            });
-            
-            // Set the rotation slider's listener for the panel.
-            panel.setSliderListener(rotation -> {
-                // Change the rotation for the specific slot.
-                body.getHeadSlots()[index].setRotationDegrees((double)rotation);
-                repaint();
-            });
-        }
-        
-        // Set up the new tabs for the PartListPanels.
-        for (int i = 0; i < body.getLegSlots().length; i++) {
-            // Create a new tab containing the PartListPanel.
-            menus.components.PartListPanel panel 
-                    = new menus.components.PartListPanel(
-                            util.Parts.TYPE_LEG,
-                            (int)body.getLegSlots()[i].getRotationDegrees());
-            PartsPane.addTab("Leg " + (i + 1), panel);
-            
-            // Set the PartChooseListener for the panel.
-            final int index = i;
-            panel.setPartChangeListener(part -> {
-                // Set the specific slot to the chosen Part.
-                body.getLegSlots()[index].setPart((amalgamation.parts.Leg)part);
-                repaint();
-            });
-            
-            // Set the rotation slider's listener for the panel.
-            panel.setSliderListener(rotation -> {
-                // Change the rotation for the specific slot.
-                body.getLegSlots()[index].setRotationDegrees((double)rotation);
-                repaint();
-            });
-        }
-        
-        repaint();
+            // Animate the body in.
+            ((DisplayPanel)DisplayPanel.getComponent(0)).slide(true);
+
+            // Remove all the tabs in the PartsPane.
+            for (int i = PartsPane.getTabCount() - 1; i >= 0; i--)
+                PartsPane.removeTabAt(i);
+
+            // Set up the new tabs for the PartListPanels.
+            for (int i = 0; i < body.getArmSlots().length; i++) {
+                // Create a new tab containing the PartListPanel.
+                menus.components.PartListPanel panel 
+                        = new menus.components.PartListPanel(
+                                util.Parts.TYPE_ARM,
+                                (int)body.getArmSlots()[i].getRotationDegrees());
+                PartsPane.addTab("Arm " + (i + 1), panel);
+
+                // Set the PartChooseListener for the panel.
+                final int index = i;
+                panel.setPartChangeListener(part -> {
+                    // Set the specific slot to the chosen Part.
+                    body.getArmSlots()[index].setPart((amalgamation.parts.Arm)part);
+                    repaint();
+                });
+
+                // Set the rotation slider's listener for the panel.
+                panel.setSliderListener(rotation -> {
+                    // Change the rotation for the specific slot.
+                    body.getArmSlots()[index].setRotationDegrees((double)rotation);
+                    repaint();
+                });
+            }
+
+            // Set up the new tabs for the PartListPanels.
+            for (int i = 0; i < body.getHeadSlots().length; i++) {
+                // Create a new tab containing the PartListPanel.
+                menus.components.PartListPanel panel 
+                        = new menus.components.PartListPanel(
+                                util.Parts.TYPE_HEAD,
+                                (int)body.getHeadSlots()[i].getRotationDegrees());
+                PartsPane.addTab("Head " + (i + 1), panel);
+
+                // Set the PartChooseListener for the panel.
+                final int index = i;
+                panel.setPartChangeListener(part -> {
+                    // Set the specific slot to the chosen Part.
+                    body.getHeadSlots()[index].setPart(
+                            (amalgamation.parts.Head)part);
+                    repaint();
+                });
+
+                // Set the rotation slider's listener for the panel.
+                panel.setSliderListener(rotation -> {
+                    // Change the rotation for the specific slot.
+                    body.getHeadSlots()[index].setRotationDegrees((double)rotation);
+                    repaint();
+                });
+            }
+
+            // Set up the new tabs for the PartListPanels.
+            for (int i = 0; i < body.getLegSlots().length; i++) {
+                // Create a new tab containing the PartListPanel.
+                menus.components.PartListPanel panel 
+                        = new menus.components.PartListPanel(
+                                util.Parts.TYPE_LEG,
+                                (int)body.getLegSlots()[i].getRotationDegrees());
+                PartsPane.addTab("Leg " + (i + 1), panel);
+
+                // Set the PartChooseListener for the panel.
+                final int index = i;
+                panel.setPartChangeListener(part -> {
+                    // Set the specific slot to the chosen Part.
+                    body.getLegSlots()[index].setPart((amalgamation.parts.Leg)part);
+                    repaint();
+                });
+
+                // Set the rotation slider's listener for the panel.
+                panel.setSliderListener(rotation -> {
+                    // Change the rotation for the specific slot.
+                    body.getLegSlots()[index].setRotationDegrees((double)rotation);
+                    repaint();
+                });
+            }
+
+            repaint();
+        }).start();
     }
     
     /**
