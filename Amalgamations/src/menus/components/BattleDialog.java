@@ -60,7 +60,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     }
     
     // Animates the AbilityPanels and buttons back in.
-    private void animateIn() {
+    private void animateIn(Amalgamation updatedPlayer) {
         // Return the status panels to their original positions.
         PlayerStatus.translate((int)playerStatusLoc.getX(), 
                 (int)playerStatusLoc.getY(), 
@@ -74,8 +74,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         EventsButton.enter(eventsBounds).await();
         ForfeitButton.enter(forfeitBounds).await();
         
-        // Update the abilities.
-        updateAbilities();
+        updateAmalgamation(updatedPlayer);
         
         // Return the ability panels to their original positions.
         AbilPanel1.slideX((int)abilLoc1.getX() - AbilPanel1.getX(), 
@@ -339,7 +338,7 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
         // Display the script to the user.
         enactScript(script, player.getName(), opponent.getName());
         // Animate the moves in so the user can select a move.
-        animateIn();
+        animateIn(player);
     }
     
     // Sets the information for Amalgamation dependent panels.
@@ -454,15 +453,27 @@ public class BattleDialog extends acomponent.ADialog implements Controller {
     }
     
     // Updates the AbilityPanels.
-    private void updateAbilities() {
-        if (AbilPanel1.getAbility() != null)
-            AbilPanel1.updateView();
-        if (AbilPanel2.getAbility() != null)
-            AbilPanel2.updateView();
-        if (AbilPanel3.getAbility() != null)
-            AbilPanel3.updateView();
-        if (AbilPanel4.getAbility() != null)
-            AbilPanel4.updateView();
+    private void updateAmalgamation(Amalgamation player) {
+        // Set the player's Abilities.
+        if (player.getAbilities()[0] != null)
+            AbilPanel1.setAbility(player.getAbilities()[0]);
+        else
+            AbilPanel1.setVisible(false);
+        
+        if (player.getAbilities()[1] != null)
+            AbilPanel2.setAbility(player.getAbilities()[1]);
+        else
+            AbilPanel2.setVisible(false);
+        
+        if (player.getAbilities()[2] != null)
+            AbilPanel3.setAbility(player.getAbilities()[2]);
+        else
+            AbilPanel3.setVisible(false);
+        
+        if (player.getAbilities()[3] != null)
+            AbilPanel4.setAbility(player.getAbilities()[3]);
+        else
+            AbilPanel4.setVisible(false);        
     }
     
     // <editor-fold desc="GUI Code" defaultstate="collapsed" >

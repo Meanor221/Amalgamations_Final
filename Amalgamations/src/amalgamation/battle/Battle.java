@@ -183,22 +183,43 @@ public class Battle {
             script.add(String.format("%s gained %d EXP!", 
                     playerAmalgamation.getName(), 
                     opponentAmalgamation.getDefeatedExperience()));
+            script.add(String.format("%s gained %d EXP!", 
+                    opponentAmalgamation.getName(), 
+                    playerAmalgamation.getDefeatedExperience()/10));
             
         }
-        else
+        else{
             script.add(String.format("%s was defeated!", 
                     playerAmalgamation.getName()));
-        
+            script.add(String.format("%s gained %d EXP!", 
+                    playerAmalgamation.getName(), 
+                    opponentAmalgamation.getDefeatedExperience()/10));
+            script.add(String.format("%s gained %d EXP!", 
+                    opponentAmalgamation.getName(), 
+                    playerAmalgamation.getDefeatedExperience()));
+        }
         new Thread(() -> opponent.endBattle(opponentAmalgamation, playerAmalgamation, 
                 script.toArray(new String[0]))).start();
         // Alert the controllers that the Battle has ended.
         player.endBattle(playerAmalgamation, opponentAmalgamation, 
                 script.toArray(new String[0]));
         
-        if (playerWon)
+        if (playerWon){
             // Raise the player's experience.
             playerAmalgamation.gainExp(
                     opponentAmalgamation.getDefeatedExperience());
+            opponentAmalgamation.gainExp(
+                    playerAmalgamation.getDefeatedExperience()/10);
+        }
+        
+        else if(opponentWon){
+            playerAmalgamation.gainExp(
+                    opponentAmalgamation.getDefeatedExperience()/10);
+            opponentAmalgamation.gainExp(
+                    playerAmalgamation.getDefeatedExperience());
+            
+        }
+            
         
         // Reset the amalgamations current stats.
         playerAmalgamation.resetCurrentStats();
@@ -206,6 +227,7 @@ public class Battle {
         
         // Save the player Amalgamation.
         util.Amalgamations.save(playerAmalgamation);
+        util.Amalgamations.save(opponentAmalgamation);
     }
     
     /**

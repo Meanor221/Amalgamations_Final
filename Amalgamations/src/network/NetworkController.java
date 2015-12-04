@@ -150,6 +150,10 @@ public class NetworkController implements AutoCloseable, Controller {
             String[] script) {
         // Send the player, opponent, and script across the connection.
         try {
+            // Reset the OutputStream, the sent Amalgamations will simply be
+            // references to the older versions sent earlier.
+            out.reset();
+            
             // Send a signal that this is not the end of the battle.
             out.writeBoolean(false);
             out.flush();
