@@ -84,7 +84,15 @@ public class NetworkAdapter implements AutoCloseable {
                     // Check if the Controller should end the battle or choose a 
                     // move.
                     if (endBattle)
+                    {
                         controller.endBattle(player, opponent, script);
+                        if(script[script.length - 1].equals(opponent.getName() 
+                                + "was defeated!"))
+                        {
+                            player.gainExp(opponent.getDefeatedExperience());
+                            util.Amalgamations.save(player);
+                        }
+                    }
                     else {
                         // Have the controller read the script.
                         controller.readScript(player, opponent, script);
