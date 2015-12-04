@@ -520,7 +520,6 @@ public class Amalgamation implements Serializable {
         calculateStats();
         ArrayList<Ability> allAbilities = new ArrayList();
         Collections.addAll(allAbilities, availableAbilities());
-        System.out.println(allAbilities);
         
         for(int i = 0; i < 4; i++)
         {
