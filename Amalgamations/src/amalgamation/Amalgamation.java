@@ -513,7 +513,7 @@ public class Amalgamation implements Serializable {
      * 
      * @param level the level that you want to set the Amalgamation to.
      */
-    private void setLevel(int level) {
+    public void setLevel(int level) {
         int randomAbility;
         Random randomGenerator = new Random();
         this.level = level;
