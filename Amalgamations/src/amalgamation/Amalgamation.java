@@ -6,6 +6,8 @@ import amalgamation.parts.Body;
 import java.awt.image.BufferedImage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import java.util.Random;
 
@@ -71,9 +73,9 @@ public class Amalgamation implements Serializable {
         defenseVariance =   random.nextDouble() % VARIANCE_RANGE + 0.85;
         luckVariance    =   random.nextDouble() % VARIANCE_RANGE + 1.0;
         
-        // Level up initially to start at Level 1.
+        // Set level initially to start at Level 1.
         calculateStats();
-        gainExp(targetExperience);
+        setLevel(1);
     }
     
     /**
@@ -502,5 +504,35 @@ public class Amalgamation implements Serializable {
             this.currentSpeed = 5;
         else
             this.currentSpeed = currentSpeed;
+    }
+    
+    /**
+     * Sets the level of an Amalgamation, calculates the new stats, 
+     * then from a list of valid abilities picks 4 random abilities to 
+     * give the Amalgamation.
+     * 
+     * @param level the level that you want to set the Amalgamation to.
+     */
+    private void setLevel(int level) {
+        int randomAbility;
+        Random randomGenerator = new Random();
+        this.level = level;
+        calculateStats();
+        ArrayList<Ability> allAbilities = new ArrayList();
+        Collections.addAll(allAbilities, availableAbilities());
+        System.out.println(allAbilities);
+        
+        for(int i = 0; i < 4; i++)
+        {
+            if(allAbilities.isEmpty())
+                replaceAbility(null, i);
+            else
+            {
+                randomAbility = randomGenerator.nextInt(allAbilities.size());
+                replaceAbility(allAbilities.get(randomAbility), i);
+                allAbilities.remove(randomAbility);
+                allAbilities.trimToSize();
+            }
+        }
     }
 }
