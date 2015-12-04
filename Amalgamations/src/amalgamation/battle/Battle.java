@@ -208,18 +208,7 @@ public class Battle {
             // Raise the player's experience.
             playerAmalgamation.gainExp(
                     opponentAmalgamation.getDefeatedExperience());
-            opponentAmalgamation.gainExp(
-                    playerAmalgamation.getDefeatedExperience()/10);
-        }
-        
-        else if(opponentWon){
-            playerAmalgamation.gainExp(
-                    opponentAmalgamation.getDefeatedExperience()/10);
-            opponentAmalgamation.gainExp(
-                    playerAmalgamation.getDefeatedExperience());
-            
-        }
-            
+        }   
         
         // Reset the amalgamations current stats.
         playerAmalgamation.resetCurrentStats();
@@ -227,7 +216,6 @@ public class Battle {
         
         // Save the player Amalgamation.
         util.Amalgamations.save(playerAmalgamation);
-        util.Amalgamations.save(opponentAmalgamation);
     }
     
     /**
