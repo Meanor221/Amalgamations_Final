@@ -1,7 +1,13 @@
 package util;
 
 import amalgamation.Amalgamation;
+import amalgamation.parts.Arm;
 import amalgamation.parts.Body;
+import amalgamation.parts.Head;
+import amalgamation.parts.Leg;
+import amalgamation.parts.Slot;
+
+import java.util.Random;
 
 /**
  *
@@ -92,6 +98,41 @@ public class Amalgamations {
         }
         
         return amalgamations;
+    }
+    
+    /**
+     * Randomly generates an Amalgamation using any of the parts available in
+     * the parts resource folder.
+     * 
+     * @return the randomly generated Amalgamation
+     * @throws java.io.IOException if any of the part or rand resource folders
+     *                             cannot be loaded or if any are empty
+     */
+    public static Amalgamation randomAmalgamation() throws java.io.IOException, 
+            IllegalArgumentException {
+        return new Amalgamation(
+                util.Randoms.randomName(),
+                util.Parts.randomBody());
+    }
+    
+    /**
+     * Randomly generates an Amalgamation using the given parts.
+     * 
+     * @param arms the Arms the Amalgamation can have
+     * @param bodies the Bodies the Amalgamation can have
+     * @param heads the Heads the Amalgamation can have
+     * @param legs the Legs the Amalgamation can have
+     * @return the randomly generated Amalgamation
+     * @throws java.io.IOException if the names or adjectives resource files
+     *                             cannot be loaded to generate a name
+     * @throws IllegalArgumentException if any of the arrays are empty or null
+     */
+    public static Amalgamation randomAmalgamation(Arm[] arms, Body[] bodies, 
+            Head[] heads, Leg[] legs) throws java.io.IOException, 
+            IllegalArgumentException {
+        return new Amalgamation(
+                util.Randoms.randomName(),
+                util.Parts.randomBody(arms, bodies, heads, legs));
     }
     
     /**
