@@ -281,16 +281,25 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
         public void slide(boolean in) {
             int endX = in?
                     0 : getWidth();
-            if (in)
+            if (in) {
                 x = -getWidth();
-            Animator.waitFor(
-                    Animator.animateValue(x, endX, 250, 
+                Animator.animateValue(x, endX, 250, 
                         newX -> {
                             x = (int)newX;
                             repaint();
                         },
                         null
-            ));
+                );
+            }
+            else
+                Animator.waitFor(
+                        Animator.animateValue(x, endX, 250, 
+                            newX -> {
+                                x = (int)newX;
+                                repaint();
+                            },
+                            null
+                ));
         }
         
         @Override
@@ -307,7 +316,7 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
 
     // Sets the body and updates the PartsPane.
     private void changeBody(amalgamation.parts.Body body) {
-        // 
+        // Create a new thread so the event handler thread does not get held up.
         new Thread(() -> {
             // Animate the body out.
             ((DisplayPanel)DisplayPanel.getComponent(0)).slide(false);
