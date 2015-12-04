@@ -43,7 +43,8 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
         DisplayPanel = new javax.swing.JPanel();
         SaveButton = new acomponent.AButton();
         PartsPane = new javax.swing.JTabbedPane();
-        aButton1 = new acomponent.AButton();
+        CancelButton = new acomponent.AButton();
+        RandomizeButton = new acomponent.AButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create an Amalgmation");
@@ -149,23 +150,39 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
         PartsPane.setTabPlacement(javax.swing.JTabbedPane.RIGHT);
         PartsPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        aButton1.setBackground(new java.awt.Color(255, 255, 255));
-        aButton1.setBorder(null);
-        aButton1.setForeground(new java.awt.Color(66, 66, 66));
-        aButton1.setActionListener(e -> hideDialog());
-        aButton1.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
-        aButton1.setHighlightColor(new java.awt.Color(66, 66, 66));
-        aButton1.setText("Cancel");
+        CancelButton.setBackground(new java.awt.Color(255, 255, 255));
+        CancelButton.setBorder(null);
+        CancelButton.setForeground(new java.awt.Color(66, 66, 66));
+        CancelButton.setActionListener(e -> hideDialog());
+        CancelButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        CancelButton.setHighlightColor(new java.awt.Color(66, 66, 66));
+        CancelButton.setText("Cancel");
 
-        javax.swing.GroupLayout aButton1Layout = new javax.swing.GroupLayout(aButton1);
-        aButton1.setLayout(aButton1Layout);
-        aButton1Layout.setHorizontalGroup(
-            aButton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout CancelButtonLayout = new javax.swing.GroupLayout(CancelButton);
+        CancelButton.setLayout(CancelButtonLayout);
+        CancelButtonLayout.setHorizontalGroup(
+            CancelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 73, Short.MAX_VALUE)
         );
-        aButton1Layout.setVerticalGroup(
-            aButton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        CancelButtonLayout.setVerticalGroup(
+            CancelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 27, Short.MAX_VALUE)
+        );
+
+        RandomizeButton.setBackground(new java.awt.Color(76, 175, 80));
+        RandomizeButton.setActionListener(e -> randomize());
+        RandomizeButton.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 18)); // NOI18N
+        RandomizeButton.setText("Randomize");
+
+        javax.swing.GroupLayout RandomizeButtonLayout = new javax.swing.GroupLayout(RandomizeButton);
+        RandomizeButton.setLayout(RandomizeButtonLayout);
+        RandomizeButtonLayout.setHorizontalGroup(
+            RandomizeButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        RandomizeButtonLayout.setVerticalGroup(
+            RandomizeButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,15 +194,18 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(InstructionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BodyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(PartsPane))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(NamePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(RandomizeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(PartsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -196,15 +216,18 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 37, Short.MAX_VALUE))
+                        .addComponent(PartsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PartsPane)
-                            .addComponent(BodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(BodyPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(NamePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(RandomizeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
@@ -236,14 +259,15 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BodyPanel;
+    private acomponent.AButton CancelButton;
     private javax.swing.JPanel DisplayPanel;
     private javax.swing.JLabel InstructionsLabel;
     private javax.swing.JTextField NameField;
     private javax.swing.JLabel NameLabel;
     private javax.swing.JPanel NamePanel;
     private javax.swing.JTabbedPane PartsPane;
+    private acomponent.AButton RandomizeButton;
     private acomponent.AButton SaveButton;
-    private acomponent.AButton aButton1;
     // End of variables declaration//GEN-END:variables
     // </editor-fold>
 
@@ -366,6 +390,24 @@ public class AmalgamationCreatorDialog extends acomponent.ADialog {
      */
     public static void create(javax.swing.JFrame parent) {
         new AmalgamationCreatorDialog(parent).showDialog();
+    }
+    
+    // Randomizes the Amalgamation to give the user inspiration.
+    private void randomize() {
+        try {
+            // Generate a random name.
+            NameField.setText(util.Randoms.randomName());
+            // Generate a random body.
+            changeBody(util.Parts.randomBody());
+        } catch (java.io.IOException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Could not generate random Amalgamation because one of the"
+                            + " res files either doesn't exist or is corrupted.",
+                    "Random Generation Failed",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     // Attmepts to save the creation.
